@@ -1,0 +1,275 @@
+const navBar = document.querySelector(".navbar"),
+cardSlider = document.querySelector(".carousel"),
+navIcon = document.querySelector(".bar-icon"),
+toggleNav = document.querySelector(".navbar .navbar-nav"),
+closeNav = document.querySelector(".navbar-nav .close-btn"),
+barIcon = document.querySelector(".navbar .bar-icon"),
+scrollBtn = document.querySelector(".scroll-top");
+
+var typed = new Typed(".home .home-content .text-3 span",{
+  strings : ['Freelancer','Full-Stack Developer','Digital editor'],
+  typeSpeed: 100,
+  backSpeed: 130,
+  loop : true
+});
+var typed = new Typed(".about .about-content .right .text span",{
+  strings : ['Freelancer','Full-Stack Developer','Digital editor',"BSc.CSIT Sutdent"],
+  typeSpeed: 150,
+  backSpeed: 150,
+  loop : true
+});
+window.addEventListener('scroll', ()=>{
+  let scroLL = this.scrollY;
+  if(scroLL > 20){
+    navBar.classList.add("sticky");
+    scrollBtn.classList.add("active");
+  }else{
+    navBar.classList.remove("sticky");
+    scrollBtn.classList.remove("active");
+  }
+});
+scrollBtn.onclick = ()=>{
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop=0;
+}
+document.querySelector(".logo").onclick = ()=>{
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop=0;
+}
+navIcon.onclick = () =>{
+  toggleNav.classList.add("active");
+  barIcon.classList.add("deactive");
+}
+closeNav.onclick = ()=>{
+  toggleNav.classList.remove("active");
+  barIcon.classList.remove("deactive");
+}
+
+const hireButton = document.querySelector(".home .home-content a");
+hireButton.href = `mailto:darpand263@gmail.com?&subject=Hiring as a employee&body=Hello,Darpan Adhikari. \n I want to hire you as a ....... \n In my company .... \n Company name:.....`;
+
+
+const nameInput = document.querySelector(".contact .right .name input"),
+subjectInput = document.querySelector(".contact .right .subject input"),
+messageInput = document.querySelector(".contact .right .message textarea"),
+messageSend = document.querySelector(".contact .right .submit-btn button"),
+checkBox = document.querySelector("#check-box");
+checkBox.onclick = ()=>{
+    nameInput.classList.remove("invalid");
+    subjectInput.classList.remove("invalid");
+    messageInput.classList.remove("invalid");
+  if((messageInput.value != "")&&(nameInput.value != "")&&(subjectInput.value != "")){
+    const mailInfo = `mailto:darpand263@gmail.com?&subject=${subjectInput.value}&body=My Name is ${nameInput.value},
+    ${messageInput.value}`;
+    messageSend.addEventListener("click",()=>{
+      let anchorTag = document.createElement("a");
+			document.body.appendChild(anchorTag);
+      anchorTag.href = mailInfo;
+      anchorTag.target = "_blank";
+      anchorTag.click();
+    });
+  }else{
+    if(nameInput.value == ""){
+      nameInput.classList.add("invalid");
+      nameInput.setAttribute("placeholder","Name field should not empty..");
+    checkBox.checked = false;
+    }else if(subjectInput.value == ""){
+      subjectInput.classList.add("invalid");
+      subjectInput.setAttribute("placeholder","Subject field should not empty..");
+    checkBox.checked = false;
+    }else if(messageInput.value == ""){
+      messageInput.classList.add("invalid");
+      messageInput.setAttribute("placeholder","Message field should not empty..");
+    checkBox.checked = false;
+    }
+  }
+  if(checkBox.checked){
+    document.querySelector(".contact .right .checkbox label").classList.add("checked");
+  }else{
+    document.querySelector(".contact .right .checkbox label").classList.remove("checked");
+  }
+}
+ var mytext = document.getElementById('message');
+    var result = document.getElementById('count');
+    result.textContent = 0;
+    mytext.addEventListener('input',function(){
+        var textlength = mytext.value.length;
+        result.textContent = textlength;
+    });
+
+
+const cards = document.querySelectorAll(".card"),
+ columns = document.querySelectorAll(".column")
+
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    entry.target.classList.toggle("active", entry.isIntersecting)
+    if(entry.isIntersecting) observer.unobserve(entry.target);
+  })
+},
+{
+  threshold:0.5,
+})
+cards.forEach(card =>{
+  observer.observe(card);
+})
+columns.forEach(column =>{
+  observer.observe(column);
+});
+
+const carousel = document.querySelector(".projects .carousel"),
+   projectCards = document.querySelectorAll(".projects .carousel .card"),
+    buttonPrev = document.querySelector(".projects .carousel-btn span.prev"),
+    buttonNext = document.querySelector(".projects .carousel-btn span.next");
+
+    let cardSize = projectCards[0].clientWidth;
+    let cardCount = projectCards.length;
+    let carouselLength = carousel.clientWidth;
+    let carouselEnd = carousel.offsetWidth;
+    carousel.scrollLeft = (carouselLength/cardCount);
+    let scrollPosition =  carousel.scrollLeft;
+    let mobile_view = window.matchMedia("(max-width: 785px)");
+    if(mobile_view.matches){
+     cardSize = projectCards[0].clientWidth;
+    }
+    buttonNext.onclick=()=>{  
+      carousel.scrollLeft += cardSize;
+     }
+  buttonPrev.onclick=()=>{
+    carousel.scrollLeft -= cardSize;
+   } 
+ window.onload=()=>{
+  var opacity = 0;
+  i = 0.25;
+  let scrollButton = document.querySelector(".projects .carousel-btn");
+  setInterval(()=>{   
+    if(scrollButton.style.opacity > "0") {
+    scrollButton.style.opacity = "1" - i;
+    i=i+i;}else{
+      scrollButton.style.opacity = "0" + i;
+    }
+    scrollButton.classList.toggle("active");
+ },1500);
+}
+   
+const mainImage = document.querySelector(".popup-carousel .main-img img"),
+slideBtn = document.querySelectorAll(".popup-carousel .nav-item .drp"),
+ImgConClose = document.querySelector(".popup-carousel .drp.close"),
+slideCheckBox = document.querySelector(".popup-carousel #slideCheckBox"),
+subImages = document.querySelectorAll(".popup-carousel .sub-img img"),
+closePopup = document.querySelector(".popup-carousel-close"),
+fetchImg = document.querySelectorAll(".projects .carousel .card img");
+let imageNo = subImages.length;
+
+ let fetched;
+fetchImg.forEach(img=>{
+  img.onclick=()=>{
+    document.querySelector(".popup-carousel").classList.add("active");
+   fetched = img.getAttribute("src");
+    mainImage.setAttribute("src",fetched);
+  }
+});
+
+closePopup.onclick=()=>{
+  document.querySelector(".popup-carousel").classList.remove("active");
+	clearInterval(interval);
+}
+slideBtn[3].onclick=()=>{
+  document.querySelector(".popup-carousel .image-container .sub-img").classList.add("active");
+}
+ImgConClose.onclick=()=>{
+  document.querySelector(".popup-carousel .image-container .sub-img").classList.remove("active");
+}
+
+subImages.forEach(image=>{
+  image.onclick=()=>{
+    let update = image.getAttribute("src");
+     mainImage.setAttribute("src",update);
+     image.classList.add("active");
+     mainImage.classList.add("zoom");
+     setTimeout(()=>{
+      image.classList.remove("active");
+      mainImage.classList.remove("zoom");
+     },1500);
+  }
+});
+var counter = 0;
+slideBtn[2].onclick=()=>{
+    counter++;
+    subImages[counter].click();
+    if(counter >= imageNo-1) counter = 0;
+}
+slideBtn[0].onclick = () => {
+  if(counter <= 0){
+    counter = imageNo-1;
+  }else{
+    counter--;
+    subImages[counter].click();
+  }
+}
+slideBtn[1].onclick = () => {
+  slideCheckBox.click();
+}
+
+  var interval;
+slideCheckBox.onclick=()=>{
+  if(slideCheckBox.checked){
+     interval = setInterval(()=>{
+      slideBtn[2].click();
+     },2000);
+    }else{
+      clearInterval(interval);
+    }
+  }
+   
+   
+// window.oncontextmenu = () => {
+//   return false;
+// }
+document.body.addEventListener('keydown', event => {
+  if (event.ctrlKey && 'us'.indexOf(event.key) !== -1) {
+    event.preventDefault();
+  }
+});
+ 
+ 
+    document.addEventListener("visibilitychange",()=>{
+      if(document.visibilityState == "visible"){
+        document.title = "Darpan Adhikari || Developer";
+      }else{
+        document.title = "Open me..";
+      }   
+    });
+    
+    window.addEventListener("offline",()=>{
+     setTimeout(()=>{
+      document.querySelector(".bottom-network-check").classList.remove("active");
+     },5000)
+     document.querySelector(".bottom-network-check").classList.add("active");
+     document.querySelector(".bottom-network-check").textContent = "you are offline!!😥";
+     document.querySelector(".bottom-network-check").style.background ="red";
+  });
+  window.addEventListener("online",()=>{
+    setTimeout(()=>{
+      document.querySelector(".bottom-network-check").classList.remove("active");
+     },5000)
+     document.querySelector(".bottom-network-check").classList.add("active");
+     document.querySelector(".bottom-network-check").textContent = "Back to online🥰";
+     document.querySelector(".bottom-network-check").style.background ="green";
+  });
+ 
+const date = new Date();
+document.getElementById("date").textContent = date.getFullYear();
+
+window.addEventListener("load",()=>{
+  document.querySelector(".greeting-field").classList.add("active");
+  setTimeout(()=>{
+    document.querySelector(".greeting-field").classList.remove("active");
+    document.querySelector(".greeting-field").style.display = "none";
+  },3000);
+});
+     const greet = ["Good Morning 🙏","Good Afternoon 🙏","Good Evening 🙏","Good wishes for your dream 🙏"];
+    const thisTime = new Date().getHours();
+
+    let greetIng = thisTime <= 12 && thisTime >= 0 ? 0 : thisTime >= 12 && thisTime <= 17 ? 1 : thisTime >=17 && thisTime <= 21 ? 2 : thisTime >= 21 && thisTime <=23.99 ? 3 : 0;
+    document.querySelector(".greeting-field").textContent = greet[greetIng];
