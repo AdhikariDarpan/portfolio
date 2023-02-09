@@ -195,13 +195,17 @@ subImages.forEach(image=>{
 });
 var counter = 0;
 slideBtn[2].onclick=()=>{
-    counter++;
-    subImages[counter].click();
-    if(counter >= imageNo-1) counter = 0;
+    if(counter >= imageNo-1){
+      counter = 0;
+    } else{
+      counter++;
+      subImages[counter].click();
+    }
 }
 slideBtn[0].onclick = () => {
   if(counter <= 0){
     counter = imageNo-1;
+    subImages[counter].click();
   }else{
     counter--;
     subImages[counter].click();
