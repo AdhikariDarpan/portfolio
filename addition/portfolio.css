@@ -1105,3 +1105,25 @@ footer span a:hover{
     font-size: 25px;
   }
 }
+@media (max-width:900px) and (orientation:portrait) {
+  .popup-carousel .image-container .main-img img{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    height: 450px;
+  }
+}
+@media (max-width:900px) and (orientation:landscape){
+  .popup-carousel .image-container .main-img img{
+    position: absolute;
+    width: 100%;
+    top: 72px;
+    left:0;
+    height: 250px;
+  }
+  .popup-carousel-close .drp{
+    font-size: 25px;
+    position: absolute;
+    bottom: -8px;
+  }
+}
