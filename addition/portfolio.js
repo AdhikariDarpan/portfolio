@@ -197,6 +197,8 @@ var counter = 0;
 slideBtn[2].onclick=()=>{
     if(counter >= imageNo-1){
       counter = 0;
+      subImages[counter].click();
+
     } else{
       counter++;
       subImages[counter].click();
