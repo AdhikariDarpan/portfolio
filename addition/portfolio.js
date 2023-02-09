@@ -227,9 +227,9 @@ slideCheckBox.onclick=()=>{
   }
    
    
-// window.oncontextmenu = () => {
-//   return false;
-// }
+window.oncontextmenu = () => {
+  return false;
+}
 document.body.addEventListener('keydown', event => {
   if (event.ctrlKey && 'us'.indexOf(event.key) !== -1) {
     event.preventDefault();
