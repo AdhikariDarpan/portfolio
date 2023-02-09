@@ -773,7 +773,7 @@ div .text{
 footer{
   background: #111;
   color: #fff;
-  padding: 0 35% 0 35%;
+  text-align: center;
 }
 footer span{
   font-style: italic; font-size: small; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -1094,9 +1094,6 @@ footer span a:hover{
   .projects .carousel .card img{
     height: 150px;
     width: 220px;
-  }
-  footer{
-    padding: 0 20% 0 20%;
   }
    .popup-carousel .image-container .main-img{
     margin-top: 25px;
