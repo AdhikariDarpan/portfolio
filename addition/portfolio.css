@@ -107,6 +107,32 @@ body::-webkit-scrollbar-thumb:hover{
   padding: 12px 1px 12px 7px;
   font-size: 20px;
 }
+.dark-mode{
+  background: #4272f5;
+}
+.about.dark-mode .title::after{
+  background: #4272f5;
+}
+.skills.dark-mode .title::after{
+  background: #4272f5;
+}
+.contact.dark-mode .title::after{
+  background: #4272f5;
+}
+.dark-mode-btn{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.dark-mode-btn i{
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
+  color: #fff;
+  box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+}
 .navbar .navbar-nav .close-btn span{
   height: 30px;
   width: 50px;
