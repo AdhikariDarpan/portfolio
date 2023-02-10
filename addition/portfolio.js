@@ -9,7 +9,7 @@ scrollBtn = document.querySelector(".scroll-top");
 
 var typed = new Typed(".home .home-content .text-3 span",{
   strings : ['Freelancer','Full-Stack Developer','Digital editor'],
-  typeSpeed: 100,
+  typeSpeed: 60,
   backSpeed: 130,
   loop : true
 });
