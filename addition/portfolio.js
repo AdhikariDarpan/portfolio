@@ -1,3 +1,4 @@
+//navbar script --------------------------------------------------------------
 const navBar = document.querySelector(".navbar"),
 cardSlider = document.querySelector(".carousel"),
 navIcon = document.querySelector(".bar-icon"),
@@ -48,6 +49,7 @@ closeNav.onclick = ()=>{
 const hireButton = document.querySelector(".home .home-content a");
 hireButton.href = `mailto:darpand263@gmail.com?&subject=Hiring as a employee&body=Hello,Darpan Adhikari. \n I want to hire you as a ....... \n In my company .... \n Company name:.....`;
 
+//contact form script-------------------------------------------------------------------------
 
 const nameInput = document.querySelector(".contact .right .name input"),
 subjectInput = document.querySelector(".contact .right .subject input"),
@@ -117,6 +119,8 @@ columns.forEach(column =>{
   observer.observe(column);
 });
 
+// card slider script-----------------------------------------------------------------------------
+
 const carousel = document.querySelector(".projects .carousel"),
    projectCards = document.querySelectorAll(".projects .carousel .card"),
     buttonPrev = document.querySelector(".projects .carousel-btn span.prev"),
@@ -151,6 +155,8 @@ const carousel = document.querySelector(".projects .carousel"),
     scrollButton.classList.toggle("active");
  },1500);
 }
+ 
+ // image carousel script------------------------------------------------------------------------------------
    
 const mainImage = document.querySelector(".popup-carousel .main-img img"),
 slideBtn = document.querySelectorAll(".popup-carousel .nav-item .drp"),
@@ -279,3 +285,39 @@ window.addEventListener("load",()=>{
 
     let greetIng = thisTime <= 12 && thisTime >= 0 ? 0 : thisTime >= 12 && thisTime <= 17 ? 1 : thisTime >=17 && thisTime <= 21 ? 2 : thisTime >= 21 && thisTime <=23.99 ? 3 : 0;
     document.querySelector(".greeting-field").textContent = greet[greetIng];
+
+
+//dark mode switcher script ----------------------------------------------------------------------------------
+
+const darkModeBtn = document.querySelector(".dark-mode-btn i");
+const everySection = document.querySelectorAll("section");
+
+let darkMode = localStorage.getItem("dark-mode");
+const enableDarkMode = () => {
+  everySection.forEach(eachSection => {
+    eachSection.classList.add("dark-mode");
+  });
+  darkModeBtn.className = "fa fa-moon";
+  localStorage.setItem("dark-mode", "enabled");
+};
+
+const disableDarkMode = () => {
+  everySection.forEach(eachSection => {
+    eachSection.classList.remove("dark-mode");
+  });
+  darkModeBtn.className = "fa fa-sun";
+  localStorage.setItem("dark-mode", "disabled");
+};
+
+if (darkMode === "enabled") {
+  enableDarkMode();
+}
+
+darkModeBtn.addEventListener("click", (e) => {
+  darkMode = localStorage.getItem("dark-mode");
+  if (darkMode === "disabled") {
+    enableDarkMode();
+  } else {
+    disableDarkMode();
+  }
+});
