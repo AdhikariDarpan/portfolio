@@ -918,24 +918,14 @@ footer span a:hover{
   height: 80vh;
 }
 .popup-carousel .image-container .main-img img.zoom{
-  animation: zoomInOut 1.5s linear;
+  animation: zoomInOut 1.5s forward linear;
 }
 @keyframes zoomInOut {
-  0%{
-    opacity: 0;
-  }
-   25%{
-    opacity: 0.25;
-  }
-  50%{
-    opacity: .5;
-  }
-  75%{
-    opacity: 0.75;
-  }
-  25%{
-    opacity: 1;
-  }
+ 0%{opacity: 0;}
+ 25%{opacity: 0.25;}
+ 50%{opacity: 0.5;}
+ 70%{opacity: 0.75;}
+ 100%{opacity: 1;}
 }
 .popup-carousel .image-container .sub-img{
   display: none;
