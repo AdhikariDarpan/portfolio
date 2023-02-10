@@ -119,6 +119,9 @@ body::-webkit-scrollbar-thumb:hover{
 .contact.dark-mode .title::after{
   background: #4272f5;
 }
+.contact.dark-mode input,.contact.dark-mode textarea{
+  background: transparent;
+}
 .dark-mode-btn{
   width: 30px;
   height: 30px;
@@ -695,6 +698,12 @@ div .text{
  }
  .contact .contact-content .social-icons a:nth-child(5):hover{
   background: #bb0000;
+ }
+ .contact .contact-content .social-icons a:nth-child(6){
+  color: #000;
+ }
+ .contact .contact-content .social-icons a:nth-child(6):hover{
+  background: #000;
  }
 .contact .contact-content .row{
   display: flex;
