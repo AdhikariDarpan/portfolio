@@ -29,6 +29,39 @@ body::-webkit-scrollbar-thumb:hover{
   background: #daa520;
   color: crimson;
 }
+.preloader-container{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background: rgba(119, 119, 119,0.8);
+  transition: all 1.5s ease-in-out;
+  z-index: 999;
+}
+.preloader-container.deactive{
+  opacity: 0;
+  z-index: -999;
+}
+.preloader-container .loader-animation{
+  width: 150px;
+  height: 150px;
+  margin: 20% auto;
+  border: 15px solid #dc143c;
+  border-top-color: #DAA522;
+  border-radius: 50%;
+  box-shadow: 1.5px 1px 10px 8px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  animation:loaderAnimate 3.4s forwards infinite;
+}
+
+@keyframes loaderAnimate {
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
 .greeting-field.active{
       opacity: 1;
     }
@@ -48,7 +81,7 @@ body::-webkit-scrollbar-thumb:hover{
       transition: all 1s ease-in-out;
       user-select: none;
       padding-bottom: 4px;
-      z-index: 999;
+      z-index: 140;
     }
 .fnav{
   padding: 0 50px;
