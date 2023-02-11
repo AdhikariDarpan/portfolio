@@ -328,3 +328,20 @@ darkModeBtn.addEventListener("click", (e) => {
     disableDarkMode();
   }
 });
+
+// timer script-----------------------------------------------------
+   const hours = document.querySelector(".hours"),
+    minutes =  document.querySelector(".minutes"),
+    second =  document.querySelector(".second");
+    setInterval(()=>{
+      var clockDate = new Date();
+      hr = clockDate.getHours();
+      min = clockDate.getMinutes();
+      sec = clockDate.getSeconds();
+      if(hr < 10) {min = "0"+hr;}
+      if(min < 10) {min = "0"+min;}
+    
+      hours.textContent = hr;
+      minutes.textContent = min;
+      second.textContent = sec;
+    },500); 
