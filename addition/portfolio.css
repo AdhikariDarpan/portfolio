@@ -44,9 +44,11 @@ body::-webkit-scrollbar-thumb:hover{
   z-index: -999;
 }
 .preloader-container .loader-animation{
+  position: absolute;
   width: 150px;
   height: 150px;
-  margin: 20% auto;
+  left: 40%;
+  bottom: 40%;
   border: 15px solid #dc143c;
   border-top-color: #DAA522;
   border-radius: 50%;
