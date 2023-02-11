@@ -1,3 +1,10 @@
+//preloder script-----------------------------------
+const loader = document.querySelector(".preloader-container");
+    window.addEventListener("load",()=>{
+      loader.classList.add("deactive");
+    });
+
+
 //navbar script --------------------------------------------------------------
 const navBar = document.querySelector(".navbar"),
 cardSlider = document.querySelector(".carousel"),
