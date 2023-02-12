@@ -953,7 +953,7 @@ footer span a:hover{
   height: 80vh;
 }
 .popup-carousel .image-container .main-img img.zoom{
-  animation: zoomInOut 1.5s forward linear;
+  animation: zoomInOut 1.3s linear forwards;
 }
 @keyframes zoomInOut {
  0%{opacity: 0;}
