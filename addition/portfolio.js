@@ -345,4 +345,4 @@ darkModeBtn.addEventListener("click", (e) => {
       hours.textContent = hr;
       minutes.textContent = min;
       second.textContent = sec;
-    },500); 
+    }); 
