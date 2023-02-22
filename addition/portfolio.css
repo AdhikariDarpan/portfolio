@@ -112,6 +112,13 @@ body::-webkit-scrollbar-thumb:hover{
  font-size: 30px;
  font-weight: 600;
  cursor: pointer;
+  animation: fontColor 5s linear infinite;
+}
+@keyframes fontColor {
+  0%{color: crimson;}
+  25%{color: #daa520;}
+  75%{color: #4272f5;}
+  100%{color: #99243b;}
 }
 .navbar .logo a span{
   color: #daa520;
