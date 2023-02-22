@@ -1082,26 +1082,22 @@ footer span a:hover{
     right: 0;
     bottom: 0;
   }
-  .navbar-nav li{
-    margin-top: 30px;
-  }
-  .navbar .navbar-nav li i{
-    text-align: center;
+   .navbar-nav li{
+    margin-top: 60px;
     width: 100%;
+    text-align: center;
   }
   .navbar .navbar-nav li a{
-    display: inline-block;
+    width: 100%;
     font-size: 25px;
     text-align: center;
     filter: grayscale(0);
   }
   .navbar-nav a{
-    font-weight: bold;
     padding: 10px 5px 9px 5px;
   }
   .navbar-nav i{
-    font-size: 35px;
-    text-align: center;
+    display: none;
   }
    .home img{
     height: 100vh;
