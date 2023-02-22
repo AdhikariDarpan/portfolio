@@ -137,7 +137,6 @@ const carousel = document.querySelector(".projects .carousel"),
     let cardCount = projectCards.length;
     let carouselLength = carousel.clientWidth;
     let carouselEnd = carousel.offsetWidth;
-    carousel.scrollLeft = (carouselLength/cardCount);
     let scrollPosition =  carousel.scrollLeft;
     let mobile_view = window.matchMedia("(max-width: 785px)");
     if(mobile_view.matches){
