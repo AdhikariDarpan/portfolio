@@ -162,6 +162,14 @@ const carousel = document.querySelector(".projects .carousel"),
  },1500);
 }
  
+ let id = cardCount;
+for (var i = 0; i < cardCount - 1; i++) {
+  var element = document.querySelector(".indicator");
+  var clone = element.cloneNode(true);
+  clone.href = `#project${id--}`;
+  element.after(clone);
+}
+
  // image carousel script------------------------------------------------------------------------------------
    
 const mainImage = document.querySelector(".popup-carousel .main-img img"),
