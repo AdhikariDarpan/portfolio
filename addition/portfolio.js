@@ -173,12 +173,16 @@ closePopup = document.querySelector(".popup-carousel-close"),
 fetchImg = document.querySelectorAll(".projects .carousel .card img");
 let imageNo = subImages.length;
 
- let fetched;
-fetchImg.forEach(img=>{
+ fetchImg.forEach(img=>{
   img.onclick=()=>{
     document.querySelector(".popup-carousel").classList.add("active");
-   fetched = img.getAttribute("src");
-    mainImage.setAttribute("src",fetched);
+   let fetched = img.getAttribute("src");
+    for(var i=0;i<imageNo-1;i++){
+      if(fetched===subImages[i].getAttribute("src")){
+        subImages[i].click();
+        counter = i;
+      }
+    }
   }
 });
 
