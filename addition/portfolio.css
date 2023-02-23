@@ -404,6 +404,10 @@ section .title::after{
 .service .service-content .card:hover .box{
   transform: scale(1.07);
 }
+.service .service-content .card .box p,
+.projects .card .box p{
+  text-align: justify;
+}
 .service .service-content .card:hover{
   background: rgba(218, 165, 32,0.4);
 }
