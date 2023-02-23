@@ -700,6 +700,28 @@ div .text{
     opacity: 1;
   }
 }
+/* recently changed things in card indicator */
+.indicator-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+.indicator{
+  margin-left: 5px;
+ display: inline-flex;
+ width: 20px;
+ height: 20px;
+ border-radius: 50%;
+ border: 3px solid #DAA520;
+ transition: all 0.5s ease;
+}
+.indicator:hover{
+  background: crimson;
+}
+
+
 .contact .title::after{
   content: "get in touch";
 }
