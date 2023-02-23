@@ -43,23 +43,40 @@ body::-webkit-scrollbar-thumb:hover{
   opacity: 0;
   z-index: -999;
 }
+.preloader-container p{
+  width: 100%;
+  text-align: center;
+  margin: 48% auto;
+  position: absolute;
+  font-size: 30px;
+  font-weight: 600;
+  z-index: 10;
+  color: #fff;
+  animation: fontColor 5s linear infinite;
+}
 .preloader-container .loader-animation{
   width: 150px;
   height: 150px;
-  border: 15px solid #dc143c;
-  border-top-color: #DAA522;
   margin: 40% auto;
   border-radius: 50%;
-  box-shadow: 1.5px 1px 10px 8px rgba(0, 0, 0, 0.5);
+  padding: 3px;
   display: flex;
   justify-content: center;
-  animation:loaderAnimate 3.4s forwards infinite;
+  background: rgb(63, 249, 220);
+  background: linear-gradient(0deg,rgba(63, 249, 220,0.1) 33%, #43CBFF 100%);
+  animation:loaderAnimate 1.8s linear infinite;
 }
 
 @keyframes loaderAnimate {
   100%{
     transform: rotate(360deg);
   }
+}
+.core-loader{
+ width: 100%;
+ height: 100%;
+ border-radius: 50%;
+ background: rgba(119, 119, 119);
 }
 
 .greeting-field.active{
