@@ -284,16 +284,20 @@ section .title::after{
   filter: grayscale(20%) opacity(1);
   transition: all 0.3s ease;
 }
-.home img{
+.home img,
+.home canvas {
   position: absolute;
   bottom: 0;
   right: 0;
- height: 100vh;
+  height: 100vh;
   opacity: 0.8;
   z-index: -10;
   -webkit-user-drag: none;
   user-select: none;
   transition: all 0.5s ease;
+}
+.home canvas{
+  z-index: -11;
 }
 .home .content{
   margin: auto 0 auto 40px;
