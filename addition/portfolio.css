@@ -90,11 +90,12 @@ body::-webkit-scrollbar-thumb:hover{
       width: 100%;
       font-size: 30px;
       font-weight: 600;
-      background: #c2bbbb;
       text-align: center;
       color: #025302;
       text-shadow: 2px 2px 3px 2px #888;
-      border-radius: 15px;
+     background: #27b827;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
       transition: all 1s ease-in-out;
       user-select: none;
       padding-bottom: 4px;
