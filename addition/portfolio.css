@@ -600,6 +600,21 @@ div .text{
 .projects{
   background: #000;
 }
+.projects.dark-mode{
+  animation: ChangeBack 5s linear infinite;
+}
+.projects.dark-mode .title::after{
+  animation: ChangeBack 5s linear infinite;
+}
+@keyframes ChangeBack{
+  to{
+    background-image: linear-gradient(bottom, rgb(105, 173, 212) 0%, rgb(23, 82, 145) 85%);
+  background-image: -webkit-gradient(linear, left bottom,
+      left top,
+      color-stop(0, rgb(105, 173, 212)),
+      color-stop(0.84, rgb(23, 82, 145)));
+  }
+}
 .projects .title{
   color: #fff;
 }
