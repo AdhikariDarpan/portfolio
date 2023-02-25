@@ -714,8 +714,7 @@ div .text{
   cursor: pointer;
 }
 .projects .carousel .card img:hover{
-  border: 4px dotted #0505cf;
-  animation: fadeInOut 3s backwards infinite;
+  animation: fadeInOut 3s backwards linear;
 }
 @keyframes fadeInOut {
   0%{
@@ -1078,7 +1077,7 @@ footer span a:hover{
   display: none;
   opacity: 0;
   transition: all 0.5s ease;
-  overflow-y:auto;
+/*   overflow-y:auto; */
 }
 .popup-carousel .image-container .sub-img.active{
   display: block;
