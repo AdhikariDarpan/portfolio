@@ -5,11 +5,12 @@
   text-decoration: none;
   box-sizing: border-box;
 }
-html{
+html,body{
   scroll-behavior: smooth;
 }
 body::-webkit-scrollbar {
   width: 8px;
+  display: none;
 }
 
 body::-webkit-scrollbar-track {
@@ -112,6 +113,8 @@ body::-webkit-scrollbar-thumb:hover{
   font-family: 'Ubuntu',cursive;
   z-index: 100;
   transition: all 0.3s ease;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 .navbar.sticky{
   padding: 12px 0;
