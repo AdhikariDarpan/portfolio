@@ -713,55 +713,7 @@ div .text{
   border-radius: 10px;
   cursor: pointer;
 }
-.projects .carousel .card img:hover{
-  animation: fadeInOut 3s backwards linear;
-}
-@keyframes fadeInOut {
-  0%{
-    background: #c2bbbb;
-    opacity: 0;
-  }
-  10%{
-    background: #c2bbbb;
-    opacity: 0.1;
-  }
-  20%{
-    background: #c2bbbb;
-    opacity: 0.2;
-  }
-  30%{
-    background: #c2bbbb;
-    opacity: 0.3;
-  }
-  40%{
-    background: #c2bbbb;
-    opacity: 0.4;
-  }
-  50%{
-    background: #c2bbbb;
-    opacity: 0.5;
-  }
-  60%{
-    background: #c2bbbb;
-    opacity: 0.6;
-  }
-  70%{
-    background: #c2bbbb;
-    opacity: 0.7;
-  }
-  80%{
-    background: #c2bbbb;
-    opacity: 0.8;
-  }
- 90%{
-    background: #c2bbbb;
-    opacity: 0.9;
-  }
-  100%{
-    background: #c2bbbb;
-    opacity: 1;
-  }
-}
+
 /* recently changed things in card indicator */
 .indicator-container{
   display: flex;
