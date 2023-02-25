@@ -214,11 +214,18 @@ body::-webkit-scrollbar-thumb:hover{
   background: transparent;
   color: #fff;
 }
-.dark-mode-btn{
+.dark-mode-btn {
   width: 30px;
   height: 30px;
   border-radius: 50%;
   cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: all .5s ease;
+}
+.dark-mode-btn.active{
+  opacity: 1;
+  pointer-events: auto;
 }
 .dark-mode-btn i{
   font-size: 30px;
