@@ -60,21 +60,21 @@ hireButton.href = `mailto:darpand263@gmail.com?&subject=Hiring as a employee&bod
 
 // paragraph writter script----------------------------------
 
-const paraGraph = document.querySelectorAll(".about p").forEach(fontOf => {
-  var i = 10;
-  var txt = fontOf.textContent;
-  var speed = 5;
-  fontOf.textContent = "";
+// const paraGraph = document.querySelectorAll(".about p").forEach(fontOf => {
+//   var i = 10;
+//   var txt = fontOf.textContent;
+//   var speed = 5;
+//   fontOf.textContent = "";
 
-  function typeWriter() {
-    if (i < txt.length) {
-      fontOf.textContent += txt.charAt(i);
-      i++;
-      setTimeout(typeWriter, speed);
-    }
-  }
-  typeWriter();
-});
+//   function typeWriter() {
+//     if (i < txt.length) {
+//       fontOf.textContent += txt.charAt(i);
+//       i++;
+//       setTimeout(typeWriter, speed);
+//     }
+//   }
+//   typeWriter();
+// });
 
 
 //contact form script-------------------------------------------------------------------------
