@@ -26,7 +26,6 @@ body::-webkit-scrollbar-thumb:hover{
   background: #37373a;
 }
 ::selection{
-  background: #daa520;
   color: crimson;
 }
 .preloader-container{
