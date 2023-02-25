@@ -56,6 +56,25 @@ closeNav.onclick = ()=>{
 const hireButton = document.querySelector(".home .home-content a");
 hireButton.href = `mailto:darpand263@gmail.com?&subject=Hiring as a employee&body=Hello,Darpan Adhikari. \n I want to hire you as a ....... \n In my company .... \n Company name:.....`;
 
+
+// paragraph writter script----------------------------------
+
+const paraGraph = document.querySelectorAll("p").forEach(fontOf => {
+  var i = 0;
+  var txt = fontOf.textContent;
+  var speed = 5;
+  fontOf.textContent = "";
+
+  function typeWriter() {
+    if (i < txt.length) {
+      fontOf.textContent += txt.charAt(i);
+      i++;
+      setTimeout(typeWriter, speed);
+    }
+  }
+  typeWriter();
+});
+
 //contact form script-------------------------------------------------------------------------
 
 const nameInput = document.querySelector(".contact .right .name input"),
