@@ -427,7 +427,7 @@ section .title::after{
   border-radius: 7px 3px;
   border: 2px solid transparent;
   box-shadow: 2px 3px 2px 2px #222;
-  transform: all 0.3s ease;
+  transition: all 0.5s ease;
 }
 .about .about-content .right a:hover{
   background: transparent;
@@ -947,9 +947,10 @@ div .text{
   font-weight: 600;
   box-shadow: 2px 3px 2px 2px #37373a;
   cursor: pointer;
+  transition: all 0.5s ease;
 }
 .contact .right .submit-btn button:hover{
-  background: #fff;
+  background: none;
   box-shadow: 0 2px 1px 0 #444;
 }
 footer{
