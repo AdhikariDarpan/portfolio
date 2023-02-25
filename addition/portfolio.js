@@ -57,10 +57,11 @@ const hireButton = document.querySelector(".home .home-content a");
 hireButton.href = `mailto:darpand263@gmail.com?&subject=Hiring as a employee&body=Hello,Darpan Adhikari. \n I want to hire you as a ....... \n In my company .... \n Company name:.....`;
 
 
+
 // paragraph writter script----------------------------------
 
-const paraGraph = document.querySelectorAll("p").forEach(fontOf => {
-  var i = 0;
+const paraGraph = document.querySelectorAll(".about p").forEach(fontOf => {
+  var i = 10;
   var txt = fontOf.textContent;
   var speed = 5;
   fontOf.textContent = "";
@@ -74,6 +75,7 @@ const paraGraph = document.querySelectorAll("p").forEach(fontOf => {
   }
   typeWriter();
 });
+
 
 //contact form script-------------------------------------------------------------------------
 
