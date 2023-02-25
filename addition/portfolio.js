@@ -31,9 +31,11 @@ window.addEventListener('scroll', ()=>{
   if(scroLL > 20){
     navBar.classList.add("sticky");
     scrollBtn.classList.add("active");
+    document.querySelector(".dark-mode-btn").classList.add("active");
   }else{
     navBar.classList.remove("sticky");
     scrollBtn.classList.remove("active");
+    document.querySelector(".dark-mode-btn").classList.remove("active");
   }
 });
 scrollBtn.onclick = ()=>{
