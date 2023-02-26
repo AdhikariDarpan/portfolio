@@ -398,8 +398,8 @@ class Drop{
   constructor(){
     this.x = Math.random() * cnv.width;
     this.y = Math.random() * cnv.height;
-    this.r = Math.random() * 2.5;
-    this.v = Math.random() * 3.5;
+    this.r = Math.random() * 3.5;
+    this.v = Math.random() * 2.5;
     
   }
   make(){
