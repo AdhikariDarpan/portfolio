@@ -701,17 +701,42 @@ div .text{
 }
 .projects .carousel .card .box .text {
   border-bottom-width: -20;
-  border-bottom: 2px solid white;
+  border-bottom: 2px solid #fff;
   font-size: 20px;
   color: #daa520;
 }
 
-.projects .carousel .card img {
+.projects .carousel .card img,
+.projects .carousel .card .imageHover {
   height: 250px;
   width: 400px;
   object-fit: cover;
   border-radius: 10px;
   cursor: pointer;
+}
+.projects .carousel .card .imageHover{
+  position: absolute;
+  top: 20px;
+  z-index: -119;
+  background: #000;
+  opacity: 0;
+  transition: all 2s ease;
+}
+.projects .carousel .card picture:hover .imageHover{
+  opacity: 1;
+  z-index: 119;
+}
+.projects .carousel .card .imageHover .drp{
+  position: absolute;
+  top: 38%;
+  left: 43%;
+  font-size: 40px;
+  font-weight: 600;
+  color: #fff;
+  opacity: 0.5;
+  width: fit-content;
+  height: fit-content;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255,0.5);
 }
 
 /* recently changed things in card indicator */
@@ -1227,6 +1252,10 @@ footer span a:hover{
   }
   .popup-carousel .nav-item .drp{
     font-size: 25px;
+  }
+  .projects .carousel .card .imageHover .drp{
+    left: 40%;
+    top: 27%;
   }
 }
 @media (max-width:900px) and (orientation:portrait) {
