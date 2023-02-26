@@ -204,16 +204,23 @@ closePopup = document.querySelector(".popup-carousel-close"),
 fetchImg = document.querySelectorAll(".projects .carousel .card img");
 let imageNo = subImages.length;
 
- fetchImg.forEach(img=>{
-  img.onclick=()=>{
-    document.querySelector(".popup-carousel").classList.add("active");
-   let fetched = img.getAttribute("src");
-    for(var i=0;i<imageNo-1;i++){
-      if(fetched===subImages[i].getAttribute("src")){
+fetchImg.forEach(img => {
+  img.onmouseover=()=>{
+    let fetched = img.getAttribute("src");
+    for (var i = 0; i < imageNo - 1; i++) {
+      if (fetched === subImages[i].getAttribute("src")) {
         subImages[i].click();
         counter = i;
       }
     }
+  }
+  img.addEventListener("click",()=>{
+    document.querySelector(".popup-carousel").classList.add("active");
+  });
+});
+document.querySelectorAll(".imageHover").forEach(imageHover=>{
+  imageHover.onclick=()=>{
+    document.querySelector(".popup-carousel").classList.add("active");
   }
 });
 
