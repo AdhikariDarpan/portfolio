@@ -342,6 +342,7 @@ section .title::after{
 }
 .home canvas{
   z-index: -11;
+  opacity: 0.5;
 }
 .home .content{
   margin: auto 0 auto 40px;
