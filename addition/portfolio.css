@@ -1244,7 +1244,8 @@ footer span a:hover{
   .projects .carousel .card{
     width: 100%;
   }
-  .projects .carousel .card img{
+  .projects .carousel .card img,
+  .projects .carousel .card .imageHover{
     height: 150px;
     width: 220px;
   }
