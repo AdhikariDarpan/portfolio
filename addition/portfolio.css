@@ -718,14 +718,14 @@ div .text{
 .projects .carousel .card .imageHover{
   position: absolute;
   top: 20px;
-  z-index: -119;
+  visibility: hidden;
   background: #000;
   opacity: 0;
   transition: all 2s ease;
 }
 .projects .carousel .card picture:hover .imageHover{
   opacity: 1;
-  z-index: 119;
+  visibility: visible;
 }
 .projects .carousel .card .imageHover .drp{
   position: absolute;
@@ -959,7 +959,7 @@ footer span a:hover{
 }
 
 .popup-carousel{
-  display: none;
+  visibility: hidden;
   opacity: 0;
   position: fixed; 
   width: 100vw;
@@ -969,10 +969,10 @@ footer span a:hover{
   z-index: 120;
   background: rgba(0, 0, 0, 0.7);
   user-select: none;
-  transition: all 0.4s ease-in-out;
+  transition: all .8s ease;
 }
 .popup-carousel.active{
-  display: block;
+  visibility: visible;
   opacity: 1;
 }
 .popup-carousel-close{
