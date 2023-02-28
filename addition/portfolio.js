@@ -293,13 +293,13 @@ document.body.addEventListener('keydown', event => {
 });
  
  
-    document.addEventListener("visibilitychange",()=>{
-      if(document.visibilityState == "visible"){
-        document.title = "Darpan Adhikari || Developer";
-      }else{
-        document.title = "Open me..";
-      }   
-    });
+//     document.addEventListener("visibilitychange",()=>{
+//       if(document.visibilityState == "visible"){
+//         document.title = "Darpan Adhikari || Developer";
+//       }else{
+//         document.title = "Open me..";
+//       }   
+//     });
     
     window.addEventListener("offline",()=>{
      setTimeout(()=>{
