@@ -29,6 +29,9 @@ body::-webkit-scrollbar-thumb:hover{
 ::selection{
   color: crimson;
 }
+p{
+  line-height: 2;
+}
 .preloader-container{
   position: fixed;
   left: 0;
