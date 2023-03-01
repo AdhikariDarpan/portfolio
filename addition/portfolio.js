@@ -229,9 +229,11 @@ document.querySelectorAll(".imageHover").forEach(imageHover=>{
     document.querySelector(".popup-carousel").classList.add("active");
   }
 });
-document.querySelector(".projects .carousel .card .box p").addEventListener("click",()=>{
+document.querySelectorAll(".projects .carousel .card .box p").forEach(desc=>{
+  desc.onclick=()=>{
     document.querySelector(".popup-carousel").classList.add("active");
-  });
+  }
+});
 
 closePopup.onclick=()=>{
   document.querySelector(".popup-carousel").classList.remove("active");
