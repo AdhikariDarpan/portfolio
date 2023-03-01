@@ -747,6 +747,32 @@ div .text{
   text-shadow: 2px 2px 4px rgba(255, 255, 255,0.5);
 }
 
+.projects .projectLink{
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px;
+  justify-content: center;
+  gap: 15px;
+  user-select: none;
+}
+.projectLink li{
+  list-style: none;
+  border: 2px solid #fff;
+  padding: 5px;
+  border-radius: 9px;
+  background: linear-gradient(332deg,#0b2683,#755243,#75d1b5);
+}
+.projectLink li:hover{
+  transform: scale(1.2);
+}
+.projectLink li a{
+  text-decoration: none;
+  color: #fff;
+  font-size: 15px;
+  font-weight:  600;
+  letter-spacing: 1px;
+}
+
 /* recently changed things in card indicator */
 .indicator-container{
   display: flex;
@@ -1265,6 +1291,9 @@ footer span a:hover{
   .projects .carousel .card .imageHover .drp{
     left: 40%;
     top: 27%;
+  }
+   .projects .projectLink li a{
+    font-size: 10px;
   }
 }
 @media (max-width:900px) and (orientation:portrait) {
