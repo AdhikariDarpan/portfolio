@@ -37,6 +37,9 @@ window.addEventListener('scroll', ()=>{
     document.querySelector(".dark-mode-btn").classList.remove("active");
   }
 });
+window.onload=()=>{
+  if(scrollY>20) {navBar.classList.add("sticky");}
+ }
 scrollBtn.onclick = ()=>{
   document.body.scrollTop = 0;
   document.documentElement.scrollTop=0;
