@@ -2,15 +2,8 @@
 const loader = document.querySelector(".preloader-container");
     window.addEventListener("load",()=>{
       loader.classList.add("deactive");
-      welComeVisitor();
     });
 
-function welComeVisitor(){
-  let GreetFirst = `${greet[greetIng].slice(0,-1)} Friends, I'm Darpan Adhikari and welcome to my portfolio`;
-  var utterance =new SpeechSynthesisUtterance(GreetFirst);
-  utterance.lang = "hi-IN";
-  speechSynthesis.speak(utterance);
-}
 //navbar script --------------------------------------------------------------
 const navBar = document.querySelector(".navbar"),
 cardSlider = document.querySelector(".carousel"),
@@ -440,3 +433,14 @@ window.addEventListener("resize",()=>{
   cnv.width = window.innerWidth;
   cnv.height = window.innerHeight;
 });
+
+// greeting via voice--------------
+function welComeVisitor() {
+  if (speechSynthesis.speaking !== true) {
+    let GreetFirst = `${greet[greetIng].slice(0,-1)}Friends, I'm Darpan Adhikari and welcome to my portfolio`;
+    var utterance = new SpeechSynthesisUtterance(GreetFirst);
+    utterance.lang = "hi-IN";
+    speechSynthesis.speak(utterance);
+  }
+}
+  welComeVisitor();
