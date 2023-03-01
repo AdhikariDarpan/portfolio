@@ -697,23 +697,36 @@ div .text{
 .projects .carousel .card {
   width: calc(33% -20px);
   background: #222;
-  text-align: center;
-  border-radius: 15px;
-  padding: 20px 10px;
+  text-align: justify;
+  border-radius: 10px;
   color: #fff;
   transition: all 0.5s ease;
-  box-shadow: 1px 1px 5px 5px rgba(51, 51, 51, 0.4);
-}
-.projects .carousel .card .box{
-  transition: all 0.5s ease;
-}
-.projects .carousel .card .box .text {
-  border-bottom-width: -20;
-  border-bottom: 2px solid #fff;
-  font-size: 20px;
-  color: #daa520;
 }
 
+.projects .carousel .card .box {
+  transition: all 0.5s ease;
+}
+
+.projects .carousel .card .box .text {
+   display: none;
+}
+.projects .carousel .card .box p{
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  right: 10px;
+  visibility: hidden;
+  color: #DAA520;
+  opacity: 0;
+  transition: all 0.8s ease;
+  font-weight: 600;
+  transform: translate(-50px,-50px);
+}
+.projects .carousel .card:hover .box p{
+  visibility: visible;
+  opacity: 1;
+  transform: translate(0);
+}
 .projects .carousel .card img,
 .projects .carousel .card .imageHover {
   height: 250px;
@@ -724,15 +737,17 @@ div .text{
 }
 .projects .carousel .card .imageHover{
   position: absolute;
-  top: 20px;
+  top: 0;
   visibility: hidden;
   background: #000;
   opacity: 0;
-  transition: all 2s ease;
+  transition: all .5s ease;
+  transform: translateY(-50px);
 }
-.projects .carousel .card picture:hover .imageHover{
+.projects .carousel .card:hover .imageHover{
   opacity: 1;
   visibility: visible;
+  transform: translateY(0);
 }
 .projects .carousel .card .imageHover .drp{
   position: absolute;
@@ -746,7 +761,9 @@ div .text{
   height: fit-content;
   text-shadow: 2px 2px 4px rgba(255, 255, 255,0.5);
 }
-
+ .projects .carousel .card .box p{
+    font-size: 10px;
+  }
 .projects .projectLink{
   display: flex;
   flex-wrap: wrap;
