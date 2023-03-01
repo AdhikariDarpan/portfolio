@@ -229,6 +229,9 @@ document.querySelectorAll(".imageHover").forEach(imageHover=>{
     document.querySelector(".popup-carousel").classList.add("active");
   }
 });
+document.querySelector(".projects .carousel .card .box p").addEventListener("click",()=>{
+    document.querySelector(".popup-carousel").classList.add("active");
+  });
 
 closePopup.onclick=()=>{
   document.querySelector(".popup-carousel").classList.remove("active");
