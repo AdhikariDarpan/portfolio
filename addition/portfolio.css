@@ -1101,11 +1101,14 @@ footer span a:hover{
  70%{opacity: 0.75;}
  100%{opacity: 1;}
 }
-.popup-carousel .image-container .sub-img{
+.popup-carousel .image-container .sub-img {
   display: none;
   opacity: 0;
   transition: all 0.5s ease;
-/*   overflow-y:auto; */
+  overflow: auto;
+}
+.popup-carousel .image-container .sub-img::-webkit-scrollbar{
+  display: none;
 }
 .popup-carousel .image-container .sub-img.active{
   display: block;
@@ -1299,8 +1302,8 @@ footer span a:hover{
     height: 150px;
     width: 220px;
   }
-   .popup-carousel .image-container .main-img{
-    margin-top: 35px;
+     .popup-carousel .image-container .main-img img{
+      margin-top: 50px;
   }
   .popup-carousel .nav-item .drp{
     font-size: 25px;
