@@ -718,6 +718,7 @@ div .text{
   visibility: hidden;
   color: #DAA520;
   opacity: 0;
+/*   font-size: 15px; */
   transition: all 0.8s ease;
   font-weight: 600;
   transform: translate(-50px,-50px);
