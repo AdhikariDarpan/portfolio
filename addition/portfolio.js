@@ -7,7 +7,7 @@ const loader = document.querySelector(".preloader-container");
 
 function welComeVisitor(){
   let GreetFirst = `${greet[greetIng].slice(0,-1)} Friends, I'm Darpan Adhikari and welcome to my portfolio`;
-  var utterance =new SpeechSynthesisUtterance(\GreetFirst);
+  var utterance =new SpeechSynthesisUtterance(GreetFirst);
   utterance.lang = "hi-IN";
   speechSynthesis.speak(utterance);
 }
