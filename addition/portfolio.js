@@ -194,7 +194,10 @@ for (var i = 0; i < cardCount - 1; i++) {
   clone.href = `#project${id--}`;
   element.after(clone);
 }
-
+carousel.addEventListener("wheel",(evt)=>{
+  evt.preventDefault();
+  carousel.scrollLeft += evt.deltaY;
+});
  // image carousel script------------------------------------------------------------------------------------
    
 const mainImage = document.querySelector(".popup-carousel .main-img img"),
