@@ -93,6 +93,7 @@ p{
 }
 .greeting-field.active {
   opacity: 1;
+  transform: translateY(0);
 }
 
 .greeting-field {
@@ -106,6 +107,7 @@ p{
   transition: all 1.5s ease;
   user-select: none;
   padding-bottom: 4px;
+  transform: translateY(150px);
 }
 
 .fnav{
