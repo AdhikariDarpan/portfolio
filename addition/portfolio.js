@@ -219,9 +219,18 @@ fetchImg.forEach(img => {
       }
     }
   }
-  img.addEventListener("click",()=>{
+});
+fetchImg.forEach(imag => {
+  imag.onclick=()=>{
+    let fetched = imag.getAttribute("src");
+    for (var i = 0; i < imageNo - 1; i++) {
+      if (fetched === subImages[i].getAttribute("src")) {
+        subImages[i].click();
+        counter = i;
+      }
+    }
     document.querySelector(".popup-carousel").classList.add("active");
-  });
+  }
 });
 document.querySelectorAll(".imageHover").forEach(imageHover=>{
   imageHover.onclick=()=>{
