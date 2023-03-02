@@ -441,12 +441,21 @@ window.addEventListener("resize",()=>{
 });
 
 // greeting via voice--------------
-function welComeVisitor() {
-  if (speechSynthesis.speaking !== true) {
-    let GreetFirst = `${greet[greetIng].slice(0,-1)}Friends, I'm Darpan Adhikari and welcome to my portfolio`;
-    var utterance = new SpeechSynthesisUtterance(GreetFirst);
-    utterance.lang = "hi-IN";
-    speechSynthesis.speak(utterance);
+var msgCount = 0;
+window.addEventListener('mouseover', () => {
+  if (msgCount < 1) {
+    if (speechSynthesis.speaking !== true) {
+      if ('speechSynthesis' in window) {
+        const msg = new SpeechSynthesisUtterance();
+        msg.text = `${greet[greetIng].slice(0, -1)}Friends, I'm Darpan Adhikari and welcome to my portfolio`;
+        msg.lang = "hi-IN";
+        window.speechSynthesis.speak(msg);
+      }
+      if(speechSynthesis.speaking === true) {
+        msgCount += 1;
+      }
+    } else {
+      msgCount += 1;
+    }
   }
-}
-  welComeVisitor();
+});
