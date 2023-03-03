@@ -452,11 +452,23 @@ window.addEventListener("resize",()=>{
 // greeting via voice--------------
 var msgCount = 0;
 window.addEventListener('mouseover', () => {
+  speak();
+});
+window.addEventListener('wheel', () => {
+  speak();
+});
+window.addEventListener('load', () => {
+  speak();
+});
+window.addEventListener('touchstart', () => {
+  speak();
+});
+function speak(){
   if (msgCount < 1) {
     if (speechSynthesis.speaking !== true) {
       if ('speechSynthesis' in window) {
         const msg = new SpeechSynthesisUtterance();
-        msg.text = `${greet[greetIng].slice(0, -1)}Friend, I'm Darpan Adhikari and welcome to my portfolio`;
+        msg.text = `${greet[greetIng].slice(0, -1)}Friends, I'm Darpan Adhikari and welcome to my portfolio`;
         msg.lang = "hi-IN";
         window.speechSynthesis.speak(msg);
       }
@@ -467,4 +479,4 @@ window.addEventListener('mouseover', () => {
       msgCount += 1;
     }
   }
-});
+}
