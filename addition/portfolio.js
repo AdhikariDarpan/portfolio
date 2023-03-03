@@ -5,6 +5,12 @@ const loader = document.querySelector(".preloader-container");
     });
 
 //navbar script --------------------------------------------------------------
+document.querySelectorAll(".navbar-nav li a").forEach(PlayClick=>{
+  PlayClick.onclick=()=>{
+    document.querySelector("#click").play();
+  }
+});
+
 const navBar = document.querySelector(".navbar"),
 cardSlider = document.querySelector(".carousel"),
 navIcon = document.querySelector(".bar-icon"),
