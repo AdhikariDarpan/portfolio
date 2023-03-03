@@ -187,16 +187,9 @@ const carousel = document.querySelector(".projects .carousel"),
  },1500);
 }
  
- let id = cardCount;
-for (var i = 0; i < cardCount - 1; i++) {
-  var element = document.querySelector(".indicator");
-  var clone = element.cloneNode(true);
-  clone.href = `#project${id--}`;
-  element.after(clone);
-}
 carousel.addEventListener("wheel",(evt)=>{
   evt.preventDefault();
-  carousel.scrollLeft += evt.deltaY;
+  carousel.scrollLeft += evt.deltaY+20;
 });
  // image carousel script------------------------------------------------------------------------------------
    
