@@ -291,6 +291,22 @@ p{
   border-top: 5px solid #8888b8;
   border-bottom: 5px solid #8888b8;
 }
+.navbar #scrollLenth {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 8px;
+  background: #DAA520;
+  visibility: hidden;
+  opacity: 0;
+  border-bottom-right-radius: 30px;
+  transition: all 0.5s linear;
+  text-align: center;
+}
+.navbar #scrollLenth.active{
+  visibility: visible;
+  opacity: 1;
+}
 section{
   padding: 70px 30px;
 }
