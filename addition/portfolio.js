@@ -11,7 +11,8 @@ navIcon = document.querySelector(".bar-icon"),
 toggleNav = document.querySelector(".navbar .navbar-nav"),
 closeNav = document.querySelector(".navbar-nav .close-btn"),
 barIcon = document.querySelector(".navbar .bar-icon"),
-scrollBtn = document.querySelector(".scroll-top");
+scrollBtn = document.querySelector(".scroll-top"),
+scrolledNav = document.querySelector(".navbar #scrollLenth");
 
 var typed = new Typed(".home .home-content .text-3 span",{
   strings : ['Freelancer','Full-Stack Developer','Digital editor'],
@@ -25,17 +26,25 @@ var typed = new Typed(".about .about-content .right .text span",{
   backSpeed: 150,
   loop : true
 });
-window.addEventListener('scroll', ()=>{
+let totalScrollHeight = document.body.scrollHeight - window.innerHeight;
+window.addEventListener("resize", () => {
+  totalScrollHeight = document.body.scrollHeight - window.innerHeight;
+});
+window.addEventListener('scroll', () => {
   let scroLL = this.scrollY;
-  if(scroLL > 20){
+  if (scroLL > 20) {
     navBar.classList.add("sticky");
     scrollBtn.classList.add("active");
     document.querySelector(".dark-mode-btn").classList.add("active");
-  }else{
+    scrolledNav.classList.add("active");
+  } else {
     navBar.classList.remove("sticky");
-    scrollBtn.classList.remove("active");
     document.querySelector(".dark-mode-btn").classList.remove("active");
+    scrollBtn.classList.remove("active");
+    scrolledNav.classList.remove("active");
   }
+ let progress = (window.pageYOffset / totalScrollHeight) *  99.5;
+ scrolledNav.style.width = progress+"%";
 });
 window.onload=()=>{
   if(scrollY>20) {navBar.classList.add("sticky");}
