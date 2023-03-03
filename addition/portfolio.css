@@ -679,22 +679,39 @@ div .text{
 .projects .carousel-btn span:hover{
   background: #888;
 }
-.projects .carousel-btn span.prev{
+.projects .carousel-btn span.prev {
   left: 1rem;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
 }
-.projects .carousel-btn span.next{
+
+.projects .carousel-btn span.next {
   right: 1rem;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
 }
-.projects .carousel{
+.projects .carousel {
   display: flex;
   gap: 10px;
-  padding: 0 25px;
+  padding: 20px 25px;
   overflow-x: auto;
   scroll-behavior: smooth;
   transition: all 0.4s ease-in-out;
 }
-.projects .carousel::-webkit-scrollbar{
-  display: none;
+
+.carousel::-webkit-scrollbar {
+   height: 12px;
+}
+
+.carousel::-webkit-scrollbar-track {
+  background: none;
+}
+
+.carousel::-webkit-scrollbar-thumb {
+  background: linear-gradient(266deg,#b40498,#d3c29b,#94bc0d);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0px 0px 21px 10px rgba(211,192,192,.5);
 }
 .projects .carousel .card {
   width: calc(33% -20px);
