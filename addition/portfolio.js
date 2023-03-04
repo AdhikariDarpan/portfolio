@@ -462,6 +462,9 @@ var msgCount = 0;
 window.addEventListener('mouseover', () => {
   speak();
 });
+window.addEventListener('mousemove', () => {
+  speak();
+});
 window.addEventListener('wheel', () => {
   speak();
 });
@@ -476,7 +479,7 @@ function speak(){
     if (speechSynthesis.speaking !== true) {
       if ('speechSynthesis' in window) {
         const msg = new SpeechSynthesisUtterance();
-        msg.text = `${greet[greetIng].slice(0, -1)}Friends, I'm Darpan Adhikari and welcome to my portfolio`;
+        msg.text = `${greet[greetIng].slice(0, -1)}Friend, I'm Darpan Adhikari and welcome to my portfolio`;
         msg.lang = "hi-IN";
         window.speechSynthesis.speak(msg);
       }
