@@ -353,8 +353,7 @@ section .title::after{
   transition: all 0.3s ease;
     text-shadow: 2px 2px 4px rgba(255, 255, 255,0.3);
 }
-.home img,
-.home canvas {
+.home img {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -365,13 +364,29 @@ section .title::after{
   user-select: none;
   transition: all 0.5s ease;
 }
-.home canvas{
-  z-index: -11;
-  opacity: 0.5;
-}
+
 .home .content{
   margin: auto 0 auto 40px;
 }
+
+.home  .heart{
+  position: absolute;
+  top: -10px;
+  font-size: 25px;
+  font-weight: 900;
+  animation: scaleAnim 3s ease-in-out infinite;
+  transform: translateY(0%);
+  margin-top: 3px;
+}
+@keyframes scaleAnim {
+  to{
+    transform: translateY(250vh);
+  }
+}
+.home .heart {
+  z-index: -11;
+}
+
 .home .home-content .text-1{
   font-size: 27px;
   letter-spacing: 2px;
