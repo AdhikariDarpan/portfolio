@@ -13,7 +13,7 @@ document.querySelectorAll(".navbar-nav li a").forEach(PlayClick=>{
 
 // background animation-------------------------
 const backHolder = document.querySelector(".backAnimation");
-      function heartCreator(){
+       function heartCreator(){
       const heartHolder = document.createElement("div");
       heartHolder.classList.add("heart");
       heartHolder.innerHTML ="💕";
@@ -22,11 +22,11 @@ const backHolder = document.querySelector(".backAnimation");
       heartHolder.style.animationDuration = Math.random()*3+2+'s';
       heartHolder.style.scale = Math.random()*(2-.9)+1;
       setTimeout(()=>{
-        heartHolder.style.display = "none";
+        backHolder.removeChild(heartHolder);
       },5000);
     }
     heartCreator();
-    setInterval(heartCreator,300);
+    setInterval(heartCreator,100);
 //all body script -----------------------------
 
 
