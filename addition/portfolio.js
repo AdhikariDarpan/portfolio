@@ -11,6 +11,23 @@ document.querySelectorAll(".navbar-nav li a").forEach(PlayClick=>{
   }
 });
 
+// background animation-------------------------
+const backHolder = document.querySelector(".backAnimation");
+    function heartCreator(){
+      const heartHolder = document.createElement("div");
+      heartHolder.classList.add("heart");
+      heartHolder.innerHTML ="💕";
+      backHolder.appendChild(heartHolder);
+      heartHolder.style.left = Math.random()*100 + 'vw';
+      heartHolder.style.animationDuration = Math.random()*3+2+'s';
+      heartHolder.style.scale = Math.random()*1.5;
+    }
+    heartCreator();
+    setInterval(heartCreator,700);
+
+//all body script -----------------------------
+
+
 const navBar = document.querySelector(".navbar"),
 cardSlider = document.querySelector(".carousel"),
 navIcon = document.querySelector(".bar-icon"),
