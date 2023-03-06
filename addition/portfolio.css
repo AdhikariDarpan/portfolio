@@ -768,7 +768,6 @@ div .text{
   visibility: hidden;
   color: #DAA520;
   opacity: 0;
-/*   font-size: 15px; */
   transition: all 0.8s ease;
   font-weight: 600;
   transform: translate(-50px,-50px);
@@ -1343,7 +1342,8 @@ footer span a:hover{
     left: 40%;
     top: 27%;
   }
-   .projects .projectLink li a{
+   .projects .projectLink li a,
+    .projects .carousel .card .box p{
     font-size: 10px;
   }
 }
