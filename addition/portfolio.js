@@ -92,6 +92,13 @@ document.querySelector(".logo").onclick = ()=>{
   document.body.scrollTop = 0;
   document.documentElement.scrollTop=0;
 }
+document.addEventListener("click",(event)=>{
+  if(!toggleNav.contains(event.target) && !barIcon.contains(event.target))
+  {
+    toggleNav.classList.remove("active");
+    barIcon.classList.remove("deactive");
+  }
+});
 navIcon.onclick = () =>{
   toggleNav.classList.add("active");
   barIcon.classList.add("deactive");
