@@ -16,11 +16,11 @@ const backHolder = document.querySelector(".backAnimation");
 function heartCreator() {
   const heartHolder = document.createElement("div");
   heartHolder.classList.add("heart");
-  let emojiContainer = ["<html>", "@import", 'Coder', "developer", "💕", "/* */", "//", "#", "{}", "🙏"];
-  heartHolder.innerHTML = emojiContainer[Math.floor(Math.random() * (emojiContainer.length))];
+  let emojiContainer = ["<html>", "@import", '<style>', "<script>", "💕", "/* */", "//", "{}", "<></>"];
+  heartHolder.textContent = emojiContainer[Math.floor(Math.random() * (emojiContainer.length))];
   backHolder.appendChild(heartHolder);
   heartHolder.style.left = Math.random() * 100 + 'vw';
-  heartHolder.style.animationDuration = Math.random() * 3 + 5 + 's';
+  heartHolder.style.animationDuration = Math.random() * 3 + 3 + 's';
   heartHolder.style.scale = Math.random() * 2;
   setTimeout(() => {
     backHolder.removeChild(heartHolder);
@@ -35,6 +35,7 @@ function heartCreator() {
 }
 heartCreator();
 setInterval(heartCreator, 100);
+
 
 //all body script -----------------------------
 
