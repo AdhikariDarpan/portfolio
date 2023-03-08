@@ -392,13 +392,15 @@ section .title::after{
   transform: translateY(-50%);
   z-index: -11;
   opacity: .9;
+  height: max-content;
 }
+
 @keyframes animateImg {
   from{ transform: scale(.7);}
 }
 .imgContainer img{
   position: absolute;
-  bottom: 5px;
+  bottom: 0;
   height:500px; width:700px;
   z-index: 10;
   transform: scale(1);
