@@ -13,20 +13,29 @@ document.querySelectorAll(".navbar-nav li a").forEach(PlayClick=>{
 
 // background animation-------------------------
 const backHolder = document.querySelector(".backAnimation");
-     function heartCreator(){
-      const heartHolder = document.createElement("div");
-      heartHolder.classList.add("heart");
-      heartHolder.innerHTML ="💕";
-      backHolder.appendChild(heartHolder);
-      heartHolder.style.left = Math.random()*100 + 'vw';
-      heartHolder.style.animationDuration = Math.random()*3+2+'s';
-      heartHolder.style.scale = Math.random()*2;
-      setTimeout(()=>{
-        backHolder.removeChild(heartHolder);
-      },3000);
-    }
-    heartCreator();
-    setInterval(heartCreator,100);
+function heartCreator() {
+  const heartHolder = document.createElement("div");
+  heartHolder.classList.add("heart");
+  let emojiContainer = ["<html>", "@import", 'Coder', "developer", "💕", "/* */", "//", "#", "{}", "🙏"];
+  heartHolder.innerHTML = emojiContainer[Math.floor(Math.random() * (emojiContainer.length))];
+  backHolder.appendChild(heartHolder);
+  heartHolder.style.left = Math.random() * 100 + 'vw';
+  heartHolder.style.animationDuration = Math.random() * 3 + 5 + 's';
+  heartHolder.style.scale = Math.random() * 2;
+  setTimeout(() => {
+    backHolder.removeChild(heartHolder);
+  }, 3000);
+
+  let hexStringCode = "0123456789abcdef";
+  let ColorCode = "#";
+  for (let i = 0; i < 6; i++) {
+    ColorCode += hexStringCode[Math.floor(Math.random() * hexStringCode.length)];
+  }
+  heartHolder.style.color = ColorCode;
+}
+heartCreator();
+setInterval(heartCreator, 100);
+
 //all body script -----------------------------
 
 
