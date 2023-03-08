@@ -356,7 +356,10 @@ section .title::after{
 }
 
 
-.home .content{
+.home .home-content{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   margin: auto 0 auto 40px;
 }
 
