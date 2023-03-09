@@ -5,18 +5,11 @@ const loader = document.querySelector(".preloader-container");
     });
 
 //navbar script --------------------------------------------------------------
-document.querySelectorAll(".navbar-nav li a").forEach(PlayClick=>{
-  PlayClick.onclick=()=>{
-    document.querySelector("#click").play();
-  }
-});
-
-// background animation-------------------------
 const backHolder = document.querySelector(".backAnimation");
 function heartCreator() {
   const heartHolder = document.createElement("div");
   heartHolder.classList.add("heart");
-  let emojiContainer = ["<html>", "@import", '<style>', "<script>", "💕", "/* */", "//", "{}", "<></>"];
+  let emojiContainer = ["<html>", "@import", '<style>', "<script>", "💕", "/* */", "//", "{}", "<></>","<?php ?>"];
   heartHolder.textContent = emojiContainer[Math.floor(Math.random() * (emojiContainer.length))];
   backHolder.appendChild(heartHolder);
   heartHolder.style.left = Math.random() * 100 + 'vw';
@@ -34,9 +27,7 @@ function heartCreator() {
   heartHolder.style.color = ColorCode;
 }
 heartCreator();
-setInterval(heartCreator, 100);
-
-
+setInterval(heartCreator, 500);
 //all body script -----------------------------
 
 
