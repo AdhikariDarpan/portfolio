@@ -337,9 +337,10 @@ p{
   filter: opacity(0.8);
   transition:all 0.3s ease-in-out;
   animation: rightToLeft 1s linear;
+  animation-delay: calc(.2s * var(--i));
 }
 @keyframes rightToLeft {
-  from{ transform: translate(50px,50px);}
+  from{ transform: translate(150px,150px);}
 }
 
 .navbar li a {
