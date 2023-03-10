@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;1,100&family=Ubuntu:wght@400;500;700&display=swap');
 
 
-
 * {
   margin: 0;
   padding: 0;
@@ -1429,6 +1428,20 @@ footer span a:hover {
   border-radius: 10px;
 }
 
+.watch-container {
+  user-select: none;
+  position: fixed;
+  bottom: 20px;
+  left: 10px;
+  width: max-content;
+  border-radius: 9px;
+  font-size: 25px;
+  font-weight: 600;
+  padding: 0 3px 0 3px;
+  box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.2);
+  z-index: 120;
+  color: #daa520;
+}
 @media (max-width:905px) {
   .preloader-container p {
     margin: 48% auto;
@@ -1623,17 +1636,3 @@ footer span a:hover {
   }
 }
 
-.watch-container {
-  user-select: none;
-  position: fixed;
-  bottom: 20px;
-  left: 10px;
-  width: max-content;
-  border-radius: 9px;
-  font-size: 25px;
-  font-weight: 600;
-  padding: 0 3px 0 3px;
-  box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.2);
-  z-index: 120;
-  color: #532c05;
-}
