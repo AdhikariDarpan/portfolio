@@ -1,15 +1,10 @@
-import * as THREE from 'three';
-import { CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 import { CONFIG } from '../config.js';
 
 export class DialogueManager {
-  constructor(avatar, camera) {
-    this.avatar = avatar;
-    this.camera = camera;
+  constructor() {
     this.dialogueQueue = [];
     this.currentDialogue = null;
     this.isSpeaking = false;
-    this.speechBubble = null;
     this.subtitleBar = null;
     this.typewriterIndex = 0;
     this.typewriterTimer = 0;
@@ -23,19 +18,7 @@ export class DialogueManager {
   init(onDialogueStart, onDialogueEnd) {
     this.onDialogueStart = onDialogueStart;
     this.onDialogueEnd = onDialogueEnd;
-    this.createSpeechBubble();
     this.createSubtitleBar();
-  }
-
-  createSpeechBubble() {
-    const bubbleDiv = document.createElement('div');
-    bubbleDiv.className = 'speech-bubble-3d';
-    bubbleDiv.innerHTML = `
-      <div class="bubble-content"></div>
-      <div class="bubble-tail"></div>
-    `;
-    this.speechBubble = new CSS2DObject(bubbleDiv);
-    this.speechBubble.visible = false;
   }
 
   createSubtitleBar() {
@@ -65,7 +48,6 @@ export class DialogueManager {
     this.typewriterIndex = 0;
     this.typewriterTimer = 0;
 
-    this.showBubble(this.currentDialogue);
     this.showSubtitle(this.currentDialogue);
 
     const advanceDelay = options.advanceDelay || this.autoAdvanceDelay;
@@ -79,7 +61,6 @@ export class DialogueManager {
 
       if (this.typewriterIndex < this.currentDialogue.length) {
         this.typewriterIndex = Math.min(this.currentDialogue.length, Math.floor(elapsed / this.typewriterSpeed));
-        this.updateBubbleText(this.currentDialogue.substring(0, this.typewriterIndex));
         this.updateSubtitleText(this.currentDialogue.substring(0, this.typewriterIndex));
         requestAnimationFrame(animateTypewriter);
       } else {
@@ -89,25 +70,10 @@ export class DialogueManager {
     animateTypewriter();
   }
 
-  showBubble(text) {
-    if (!this.speechBubble || !this.avatar.avatar) return;
-    this.avatar.avatar.add(this.speechBubble);
-    this.speechBubble.position.set(0, 2.2, 1);
-    this.speechBubble.visible = true;
-    this.updateBubbleText(text);
-  }
-
   showSubtitle(text) {
     if (this.subtitleBar) {
       this.subtitleBar.classList.add('visible');
       this.updateSubtitleText(text);
-    }
-  }
-
-  updateBubbleText(text) {
-    if (this.speechBubble && this.speechBubble.element) {
-      const content = this.speechBubble.element.querySelector('.bubble-content');
-      if (content) content.textContent = text;
     }
   }
 
@@ -122,10 +88,6 @@ export class DialogueManager {
     this.isSpeaking = false;
     this.currentDialogue = null;
 
-    if (this.speechBubble) {
-      this.speechBubble.visible = false;
-      if (this.speechBubble.parent) this.speechBubble.parent.remove(this.speechBubble);
-    }
     if (this.subtitleBar) {
       this.subtitleBar.classList.remove('visible');
     }
@@ -136,15 +98,12 @@ export class DialogueManager {
   skip() {
     if (this.isSpeaking && this.currentDialogue) {
       this.typewriterIndex = this.currentDialogue.length;
-      this.updateBubbleText(this.currentDialogue);
       this.updateSubtitleText(this.currentDialogue);
     }
   }
 
   update(delta, time) {
-    if (this.speechBubble && this.speechBubble.visible && this.avatar.avatar) {
-      this.speechBubble.quaternion.copy(this.camera.quaternion);
-    }
+    // subtitle bar is static, no update needed
   }
 
   sayWelcome() {
@@ -172,9 +131,6 @@ export class DialogueManager {
   }
 
   dispose() {
-    if (this.speechBubble && this.speechBubble.parent) {
-      this.speechBubble.parent.remove(this.speechBubble);
-    }
     if (this.subtitleBar && this.subtitleBar.parentNode) {
       this.subtitleBar.parentNode.removeChild(this.subtitleBar);
     }

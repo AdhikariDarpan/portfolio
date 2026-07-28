@@ -1,9 +1,6 @@
 export const CONFIG = {
   avatar: {
-    glbUrl: '', // Set a GLB URL for a realistic avatar. Free options:
-               //   - https://sketchfab.com/3d-models/... (download and place in assets/)
-               //   - https://avaturn.me/ (export as GLB)
-               //   - Search "free male character glb" on Sketchfab
+    glbUrl: 'images/mine-avatar.glb',
     usePhotoTexture: true, // Falls back to photo-textured character if no GLB
     faceImage: 'images/front-img.webp',
     coatImage: 'images/coat-img.webp',
@@ -53,9 +50,8 @@ export const CONFIG = {
   },
   dialogue: {
     welcome: [
-      "Hey! I'm Darpan. Welcome to my world.",
-      "This is my interactive portfolio — feel free to explore.",
-      "Click any floating panel to learn more about me.",
+      "Welcome to my interactive portfolio — feel free to explore.",
+      "Click any billboard to learn more about my work.",
     ],
     about: [
       "Let me tell you what I do.",

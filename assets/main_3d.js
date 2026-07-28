@@ -15,8 +15,8 @@ class Portfolio3D {
     this.loader = document.getElementById('loader');
     this.loaderText = document.getElementById('lpct');
     this.hint = document.getElementById('hint');
-    this.uiContainer = document.getElementById('ui-container');
-    this.nameBadge = document.getElementById('name-badge');
+    this.loader = document.getElementById('loader');
+    this.loaderText = document.querySelector('.loader-pct');
     this.navDots = document.getElementById('nav-dots');
 
     this.sceneManager = null;
@@ -30,6 +30,8 @@ class Portfolio3D {
     this.clock = new THREE.Clock();
     this.isLoaded = false;
     this.loadProgress = 0;
+    this.freeRoamEnabled = false;
+    this.cameraMode = 'orbit';
   }
 
   async init() {
@@ -39,6 +41,9 @@ class Portfolio3D {
       this.setupLabelRenderer();
       await this.setupScene();
       await this.setupAvatar();
+      if (this.sceneManager.getColliders()) {
+        this.avatarManager.setColliders(this.sceneManager.getColliders());
+      }
       this.setupPanels();
       this.setupDialogue();
       this.setupCinematic();
@@ -82,7 +87,6 @@ class Portfolio3D {
   async setupAvatar() {
     this.avatarManager = new AvatarManager(this.sceneManager.getScene(), this.sceneManager.getCamera());
     await this.avatarManager.load(CONFIG.avatar.glbUrl);
-    this.avatarManager.wave();
   }
 
   setupPanels() {
@@ -91,7 +95,7 @@ class Portfolio3D {
   }
 
   setupDialogue() {
-    this.dialogueManager = new DialogueManager(this.avatarManager, this.sceneManager.getCamera());
+    this.dialogueManager = new DialogueManager();
     this.dialogueManager.init(
       () => { this.isDialogueActive = true; },
       () => { this.isDialogueActive = false; }
@@ -135,6 +139,21 @@ class Portfolio3D {
         document.body.style.overflow = '';
       }
     });
+
+    this.setupCameraToggle();
+  }
+
+  setupCameraToggle() {
+    const toggle = document.getElementById('cam-toggle');
+    if (!toggle) return;
+    toggle.addEventListener('click', () => {
+      const newMode = this.cameraMode === 'orbit' ? 'shoulder' : 'orbit';
+      this.cameraMode = newMode;
+      toggle.classList.toggle('shoulder', newMode === 'shoulder');
+      if (this.interactionManager) {
+        this.interactionManager.setCameraMode(newMode);
+      }
+    });
   }
 
   onPanelClick(key) {
@@ -150,30 +169,44 @@ class Portfolio3D {
       contact: 'contact',
     };
     const key = map[target];
+    const districtPositions = {
+      about: new THREE.Vector3(-4, 0, -18),
+      skills: new THREE.Vector3(-18, 0, -2),
+      projects: new THREE.Vector3(-2, 0, 18),
+      contact: new THREE.Vector3(18, 0, 0),
+    };
+
     if (key) {
       this.panelManager.openPanelContent(key);
       this.highlightNavDot(key);
+      const pos = districtPositions[key];
+      if (pos && this.avatarManager && this.interactionManager) {
+        this.avatarManager.walkTo(pos);
+        this.interactionManager.controls.target.copy(pos.clone().setY(1.5));
+      }
     } else {
+      // Hero — return to center
       this.panelManager.closePanelContent();
-      this.cinematicCamera.transitionTo(
-        new THREE.Vector3(0, 3, 15),
-        new THREE.Vector3(0, 1.5, 0),
-        1.5
-      );
+      this.highlightNavDot(null);
+      if (this.avatarManager) {
+        this.avatarManager.walkTo(new THREE.Vector3(0, 0, 0));
+      }
+      if (this.interactionManager) {
+        this.interactionManager.controls.target.set(0, 1.5, 0);
+      }
     }
   }
 
   highlightNavDot(key) {
     this.navDots.querySelectorAll('.nav-dot').forEach(dot => {
-      dot.classList.toggle('active', dot.dataset.target === key);
+      const match = key ? dot.dataset.target === key : dot.dataset.target === 'hero';
+      dot.classList.toggle('active', match);
     });
   }
 
   startWelcomeSequence() {
     setTimeout(() => {
       this.dialogueManager.sayWelcome();
-      this.avatarManager.wave();
-      this.nameBadge.classList.remove('ui-hidden');
     }, 1000);
 
     setTimeout(() => {
@@ -183,6 +216,25 @@ class Portfolio3D {
     setTimeout(() => {
       this.hint.classList.remove('visible');
     }, 10000);
+
+    this.dialogueManager.onDialogueEnd = () => {
+      if (!this.freeRoamEnabled) {
+        this.freeRoamEnabled = true;
+        this.interactionManager.setFreeRoam(true);
+        this.avatarManager.startProceduralIdle();
+        this.showFreeRoamHint();
+      }
+      this.isDialogueActive = false;
+    };
+  }
+
+  showFreeRoamHint() {
+    const hint = document.getElementById('hint');
+    if (hint) {
+      hint.querySelector('span').textContent = 'Click billboards to read · Arrow keys to walk · WASD to strafe';
+      hint.classList.add('visible');
+      setTimeout(() => hint.classList.remove('visible'), 6000);
+    }
   }
 
   showLoader() {
@@ -220,22 +272,11 @@ class Portfolio3D {
     const time = this.clock.getElapsedTime();
 
     this.sceneManager.update();
+    this.sceneManager.updateFountain(time);
     this.avatarManager.update(delta, time);
     this.panelManager.update(delta);
     this.dialogueManager.update(delta, time);
     this.interactionManager.update(delta);
-    this.updateNameBadge();
-  }
-
-  updateNameBadge() {
-    if (this.avatarManager.avatar && this.nameBadge) {
-      const pos = this.avatarManager.getPosition();
-      const vector = pos.clone().project(this.sceneManager.getCamera());
-      const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
-      const y = (-vector.y * 0.5 + 0.5) * window.innerHeight;
-      this.nameBadge.style.left = `${x - this.nameBadge.offsetWidth / 2}px`;
-      this.nameBadge.style.top = `${y - 60}px`;
-    }
   }
 
   render() {

@@ -102,18 +102,19 @@
 
 <!-- INSTRUCTION HINT -->
 <div id="hint">
-  <span>🖱️ Drag to orbit · Scroll to zoom · Click objects to explore</span>
+  <span>WASD to walk · Explore the city · Click buildings</span>
   <div class="hint-fade"></div>
 </div>
 
 <!-- GLOSSY OVERLAY PANELS -->
 <div id="ui-container">
-  <div id="panel-content" class="glass-panel ui-hidden"></div>
-  <div id="name-badge" class="glass-panel ui-hidden">
-    <div class="badge-dot-pulse"></div>
-    Darpan Adhikari
-    <span class="badge-sub">Full Stack Developer</span>
-  </div>
+  <div id="panel-content" class="glass-panel ui-hidden">  </div>
+</div>
+
+<!-- VIRTUAL JOYSTICK (mobile) -->
+<div id="joystick">
+  <div class="joystick-ring"></div>
+  <div class="joystick-knob"></div>
 </div>
 
 <!-- PROJECT DETAIL MODAL -->
@@ -122,6 +123,14 @@
     <button class="modal-close" id="modal-close">✕</button>
     <div class="modal-body" id="modal-body"></div>
   </div>
+</div>
+
+<!-- CAMERA TOGGLE -->
+<div id="cam-toggle" title="Toggle camera view">
+  <svg class="cam-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M23 7l-7 5 7 5V7z"/>
+    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+  </svg>
 </div>
 
 <!-- NAV DOTS -->

@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 import { CONFIG } from '../config.js';
-import { SKILLS, PROJECTS } from '../data.js';
+import { SKILLS, EXP, PROJECTS } from '../data.js';
 
 export class PanelManager {
   constructor(scene, camera, renderer) {
@@ -19,13 +19,7 @@ export class PanelManager {
   init(labelRenderer, onPanelClick) {
     this.labelRenderer = labelRenderer;
     this.onPanelClick = onPanelClick;
-    this.createAllPanels();
-  }
-
-  createAllPanels() {
-    Object.entries(CONFIG.panels).forEach(([key, config]) => {
-      this.createPanel(key, config);
-    });
+    // City buildings replace the 3D panels — content overlay system is kept
   }
 
   createPanel(key, config) {
@@ -165,6 +159,7 @@ export class PanelManager {
     }
 
     contentDiv.innerHTML = html;
+    contentDiv.classList.remove('ui-hidden');
     contentDiv.classList.add('open');
     this.setupPanelInteractions(key);
   }
@@ -189,6 +184,21 @@ export class PanelManager {
         <p>${config.content}</p>
         <div class="panel-stats">
           ${config.stats.map(s => `<div class="pstat"><span class="pstat-n">${s.value}</span><span class="pstat-l">${s.label}</span></div>`).join('')}
+        </div>
+        <div style="margin-top:1.5rem">
+          ${EXP.map(e => `
+            <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;margin-bottom:.8rem">
+              <div style="font-size:.85rem;font-weight:600;color:var(--cyan)">${e.role}</div>
+              <div style="font-size:.75rem;color:var(--muted);margin:.2rem 0 .6rem">${e.company} · ${e.period}</div>
+              <p style="font-size:.8rem;color:var(--white);line-height:1.6;margin-bottom:.6rem">${e.desc}</p>
+              <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:.3rem">
+                ${e.achievements.slice(0, 4).map(a => `<li style="font-size:.75rem;color:var(--muted);display:flex;gap:.5rem"><span style="color:var(--cyan);flex-shrink:0">▸</span>${a}</li>`).join('')}
+              </ul>
+              <div style="display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.6rem">
+                ${e.tags.slice(0, 4).map(t => `<span style="font-size:.6rem;padding:.15rem .5rem;border-radius:3px;background:rgba(0,245,212,.08);border:1px solid rgba(0,245,212,.15);color:var(--cyan)">${t}</span>`).join('')}
+              </div>
+            </div>
+          `).join('')}
         </div>
       </div>
     `;
@@ -215,7 +225,6 @@ export class PanelManager {
   }
 
   getProjectsHTML(config) {
-    const featured = PROJECTS.filter(p => p.cats.includes('fullstack') || p.cats.includes('frontend')).slice(0, 6);
     return `
       <div class="panel-content-3d">
         <div class="panel-header">
@@ -224,14 +233,14 @@ export class PanelManager {
           <div class="panel-divider"></div>
         </div>
         <div class="proj-scroll" id="proj-scroll-3d">
-          ${featured.map((p, idx) => `
+          ${PROJECTS.map((p, idx) => `
             <div class="proj-card-3d" data-proj-idx="${idx}">
               <div class="proj-img-3d">
-                <div class="proj-img-bg-3d" style="background:${p.gradient}"></div>
-                ${p.image ? `<img src="${p.image}" alt="${p.name} — ${p.desc.split('.')[0]}" class="proj-img-thumb-3d" loading="lazy">` : `<div class="proj-emoji-3d">${p.emoji}</div>`}
+                <div class="proj-img-bg-3d" style="background:${p.gradient || 'var(--bg2)'}"></div>
+                ${p.image ? `<img src="${p.image}" alt="${p.name}" class="proj-img-thumb-3d" loading="lazy">` : `<div class="proj-emoji-3d">${p.emoji}</div>`}
               </div>
               <div class="proj-body-3d">
-                <div class="proj-tags-3d">${p.tags.slice(0,4).map(t => `<span class="ptag-3d">${t}</span>`).join('')}</div>
+                <div class="proj-tags-3d">${(p.tags||[]).slice(0,4).map(t => `<span class="ptag-3d">${t}</span>`).join('')}</div>
                 <div class="proj-name-3d">${p.name}</div>
                 <div class="proj-desc-3d">${p.desc}</div>
               </div>
@@ -284,7 +293,7 @@ export class PanelManager {
       document.querySelectorAll('.proj-card-3d').forEach(card => {
         card.addEventListener('click', () => {
           const idx = parseInt(card.dataset.projIdx);
-          const proj = PROJECTS.filter(p => p.cats.includes('fullstack') || p.cats.includes('frontend'))[idx];
+          const proj = PROJECTS[idx];
           if (proj) this.showProjectModal(proj);
         });
       });
