@@ -81,6 +81,28 @@ export const CONFIG = {
       "I'll be here if you need anything.",
     ],
   },
+  gestures: {
+    waveDuration: 2.0,
+    pointDuration: 2.0,
+    gestureFadeTime: 0.3,
+    armBoneNames: ['RightArm', 'rightArm', 'RightArmBone', 'upperarm_R', 'UpperArm_R', 'UpperArm', 'RightUpperArm', 'mixamorigRightArm', 'mixamorigRightArmBone'],
+  },
+  movement: {
+    walkSpeed: 4.0,
+    freeRoamMaxSpeed: 4.0,
+    acceleration: 8.0,
+    deceleration: 12.0,
+    rotateSpeed: 2.5,
+    firstPersonSpeed: 5.0,
+    shoulderOffsetBack: 4.5,
+    shoulderOffsetUp: 2.6,
+    orbitMinDist: 3,
+    orbitMaxDist: 25,
+    orbitMinDistFree: 4,
+    orbitMaxDistFree: 16,
+    firstPersonBounds: 35,
+    collisionPad: 0.25,
+  },
   performance: {
     high: {
       bloom: true,

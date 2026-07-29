@@ -224,7 +224,43 @@ export class PanelManager {
     `;
   }
 
+  getCategoryLabel(cat) {
+    const map = {
+      web: 'Web', frontend: 'Web', backend: 'Web', fullstack: 'Web',
+      ai: 'AI', nlp: 'AI', 'computer-vision': 'AI', ocr: 'AI', 'image-processing': 'AI',
+      translation: 'AI', 'local-ai': 'AI', security: 'AI',
+      mobile: 'Mobile',
+      desktop: 'Desktop',
+      tools: 'Tools', package: 'Tools', pwa: 'Tools', productivity: 'Tools',
+      'developer-tools': 'Tools', canvas: 'Tools', firebase: 'Tools',
+    };
+    return map[cat] || 'Other';
+  }
+
+  getUniqueCategories() {
+    const cats = new Set();
+    PROJECTS.forEach(p => {
+      if (p.cats) p.cats.forEach(c => cats.add(this.getCategoryLabel(c)));
+    });
+    return ['All', ...Array.from(cats).sort()];
+  }
+
   getProjectsHTML(config) {
+    const categories = this.getUniqueCategories();
+    const projHTML = PROJECTS.map((p, idx) => `
+      <div class="proj-card-3d" data-proj-idx="${idx}" data-proj-cats="${(p.cats||[]).map(c => this.getCategoryLabel(c)).join(',')}" style="display:${idx === 0 ? '' : 'none'}">
+        <div class="proj-img-3d">
+          <div class="proj-img-bg-3d" style="background:${p.gradient || 'var(--bg2)'}"></div>
+          ${p.image ? `<img src="${p.image}" alt="${p.name}" class="proj-img-thumb-3d" loading="lazy">` : `<div class="proj-emoji-3d">${p.emoji}</div>`}
+        </div>
+        <div class="proj-body-3d">
+          <div class="proj-tags-3d">${(p.tags||[]).slice(0,4).map(t => `<span class="ptag-3d">${t}</span>`).join('')}</div>
+          <div class="proj-name-3d">${p.name}</div>
+          <div class="proj-desc-3d">${p.desc}</div>
+        </div>
+      </div>
+    `).join('');
+
     return `
       <div class="panel-content-3d">
         <div class="panel-header">
@@ -232,20 +268,19 @@ export class PanelManager {
           <h2>${config.title}</h2>
           <div class="panel-divider"></div>
         </div>
+        <div class="proj-categories-3d" id="proj-categories-3d">
+          ${categories.map(c => `<button class="proj-cat-btn ${c === 'All' ? 'active' : ''}" data-cat="${c}">${c}</button>`).join('')}
+        </div>
         <div class="proj-scroll" id="proj-scroll-3d">
-          ${PROJECTS.map((p, idx) => `
-            <div class="proj-card-3d" data-proj-idx="${idx}">
-              <div class="proj-img-3d">
-                <div class="proj-img-bg-3d" style="background:${p.gradient || 'var(--bg2)'}"></div>
-                ${p.image ? `<img src="${p.image}" alt="${p.name}" class="proj-img-thumb-3d" loading="lazy">` : `<div class="proj-emoji-3d">${p.emoji}</div>`}
-              </div>
-              <div class="proj-body-3d">
-                <div class="proj-tags-3d">${(p.tags||[]).slice(0,4).map(t => `<span class="ptag-3d">${t}</span>`).join('')}</div>
-                <div class="proj-name-3d">${p.name}</div>
-                <div class="proj-desc-3d">${p.desc}</div>
-              </div>
-            </div>
-          `).join('')}
+          <button class="carousel-btn carousel-prev" id="carousel-prev">‹</button>
+          <div class="carousel-viewport" id="carousel-viewport">
+            ${projHTML}
+          </div>
+          <button class="carousel-btn carousel-next" id="carousel-next">›</button>
+          <div class="carousel-footer" id="carousel-footer">
+            <span class="carousel-counter" id="carousel-counter">1 / ${PROJECTS.length}</span>
+          </div>
+          <div class="carousel-dots" id="carousel-dots"></div>
         </div>
       </div>
     `;
@@ -290,6 +325,78 @@ export class PanelManager {
     }
 
     if (key === 'projects') {
+      const viewport = document.getElementById('carousel-viewport');
+      const prevBtn = document.getElementById('carousel-prev');
+      const nextBtn = document.getElementById('carousel-next');
+      const counter = document.getElementById('carousel-counter');
+
+      const getVisibleCards = () => {
+        const all = viewport ? Array.from(viewport.querySelectorAll('.proj-card-3d')) : [];
+        return all.filter(c => !c.classList.contains('cat-hidden'));
+      };
+
+      const getActiveIndex = (cards) => {
+        const idx = cards.findIndex(c => c.classList.contains('carousel-active'));
+        return idx >= 0 ? idx : 0;
+      };
+
+      const showCard = (cards, idx) => {
+        cards.forEach((c, i) => {
+          c.classList.toggle('carousel-active', i === idx);
+          c.style.display = i === idx ? '' : 'none';
+        });
+        if (counter) {
+          const total = cards.length;
+          const shownIdx = cards.findIndex(c => c.classList.contains('carousel-active'));
+          counter.textContent = `${shownIdx + 1} / ${total}`;
+        }
+      };
+
+      const navigateCarousel = (dir) => {
+        const cards = getVisibleCards();
+        if (cards.length === 0) return;
+        const cur = getActiveIndex(cards);
+        let next = cur + dir;
+        if (next < 0) next = cards.length - 1;
+        if (next >= cards.length) next = 0;
+        showCard(cards, next);
+      };
+
+      // Category tabs
+      document.querySelectorAll('#proj-categories-3d .proj-cat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#proj-categories-3d .proj-cat-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const cat = btn.dataset.cat;
+          const allCards = viewport ? Array.from(viewport.querySelectorAll('.proj-card-3d')) : [];
+          let firstVisible = null;
+          allCards.forEach(card => {
+            const match = cat === 'All' || (card.dataset.projCats || '').split(',').includes(cat);
+            card.classList.toggle('cat-hidden', !match);
+            if (match && !firstVisible) firstVisible = card;
+          });
+          const visible = allCards.filter(c => !c.classList.contains('cat-hidden'));
+          visible.forEach(c => c.classList.remove('carousel-active'));
+          if (visible.length > 0) {
+            visible[0].classList.add('carousel-active');
+          }
+          showCard(visible, 0);
+        });
+      });
+
+      // Arrow navigation
+      if (prevBtn) prevBtn.addEventListener('click', () => navigateCarousel(-1));
+      if (nextBtn) nextBtn.addEventListener('click', () => navigateCarousel(1));
+
+      // Keyboard navigation
+      const onKey = (e) => {
+        if (this.openPanel !== 'projects') return;
+        if (e.key === 'ArrowLeft') navigateCarousel(-1);
+        if (e.key === 'ArrowRight') navigateCarousel(1);
+      };
+      document.addEventListener('keydown', onKey);
+
+      // Project card clicks
       document.querySelectorAll('.proj-card-3d').forEach(card => {
         card.addEventListener('click', () => {
           const idx = parseInt(card.dataset.projIdx);
@@ -297,6 +404,13 @@ export class PanelManager {
           if (proj) this.showProjectModal(proj);
         });
       });
+
+      // Init first card
+      const initCards = viewport ? Array.from(viewport.querySelectorAll('.proj-card-3d')) : [];
+      initCards.forEach(c => c.classList.remove('carousel-active'));
+      const firstCard = initCards.find(c => c.style.display !== 'none');
+      if (firstCard) firstCard.classList.add('carousel-active');
+      if (counter) counter.textContent = `1 / ${initCards.length}`;
     }
   }
 

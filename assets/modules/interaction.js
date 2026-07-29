@@ -4,7 +4,7 @@ import { CONFIG } from '../config.js';
 import { PROJECTS } from '../data.js';
 
 export class InteractionManager {
-  constructor(camera, renderer, scene, avatar, panels, dialogue, cinematic, perfSettings) {
+  constructor(camera, renderer, scene, avatar, panels, dialogue, cinematic, perfSettings, cityBuilder) {
     this.camera = camera;
     this.renderer = renderer;
     this.scene = scene;
@@ -13,14 +13,14 @@ export class InteractionManager {
     this.dialogue = dialogue;
     this.cinematic = cinematic;
     this.perfSettings = perfSettings;
+    this.cityBuilder = cityBuilder;
 
     this.controls = null;
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
     this.keys = {};
-    this.moveSpeed = 5.0;
     this.isPointerLocked = false;
-    this.useFirstPerson = !perfSettings.isMobile && navigator.hardwareConcurrency > 4;
+    this.useFirstPerson = false;
     this.lastPanelClick = 0;
     this.idleTimer = 0;
     this.lastInteraction = Date.now();
@@ -31,6 +31,18 @@ export class InteractionManager {
     this.joystickVector = { x: 0, y: 0 };
     this.cameraMode = 'orbit';
     this.shoulderSmoothPos = new THREE.Vector3();
+
+    this.touchStartPos = null;
+    this.touchStartTime = 0;
+    this.touchHoldTimer = null;
+
+    this.kioskPosition = new THREE.Vector3(0, 0, 20);
+    this.kioskProximityRange = 7;
+    this.isNearKiosk = false;
+    this.kioskBrowsingMode = false;
+
+    this.lookTouchStart = null;
+    this.headIdleTimer = 0;
   }
 
   init() {
@@ -38,6 +50,8 @@ export class InteractionManager {
     this.setupEvents();
     this.setupPointerLock();
     this.setupJoystick();
+    this.setupTouchGesture();
+    this.setupLookControl();
   }
 
   setupControls() {
@@ -46,8 +60,8 @@ export class InteractionManager {
     this.controls.dampingFactor = 0.05;
     this.controls.enableRotate = true;
     this.controls.rotateSpeed = 0.8;
-    this.controls.minDistance = 3;
-    this.controls.maxDistance = 25;
+    this.controls.minDistance = CONFIG.movement.orbitMinDist;
+    this.controls.maxDistance = CONFIG.movement.orbitMaxDist;
     this.controls.maxPolarAngle = Math.PI / 2 - 0.05;
     this.controls.minPolarAngle = 0.1;
     this.controls.enablePan = true;
@@ -66,16 +80,6 @@ export class InteractionManager {
   }
 
   setupPointerLock() {
-    this.renderer.domElement.addEventListener('click', async () => {
-      if (this.useFirstPerson && !this.isPointerLocked) {
-        try {
-          await this.renderer.domElement.requestPointerLock();
-        } catch (e) {
-          console.log('Pointer lock failed');
-        }
-      }
-    });
-
     document.addEventListener('pointerlockchange', () => {
       this.isPointerLocked = document.pointerLockElement === this.renderer.domElement;
       if (this.isPointerLocked) {
@@ -149,30 +153,141 @@ export class InteractionManager {
     });
   }
 
+  setupTouchGesture() {
+    const canvas = this.renderer.domElement;
+    const holdMs = 800;
+    const moveThreshold = 20;
+
+    canvas.addEventListener('touchstart', (e) => {
+      if (e.touches.length !== 1) return;
+      const t = e.touches[0];
+      this.touchStartPos = { x: t.clientX, y: t.clientY };
+      this.touchStartTime = Date.now();
+      this.touchHoldTimer = setTimeout(() => {
+        if (this.avatar && this.avatar.wave && this.freeRoam) {
+          this.avatar.wave();
+        }
+        this.touchHoldTimer = null;
+      }, holdMs);
+    }, { passive: true });
+
+    canvas.addEventListener('touchmove', (e) => {
+      if (!this.touchStartPos || e.touches.length !== 1) return;
+      const t = e.touches[0];
+      const dx = t.clientX - this.touchStartPos.x;
+      const dy = t.clientY - this.touchStartPos.y;
+      if (Math.sqrt(dx * dx + dy * dy) > moveThreshold) {
+        if (this.touchHoldTimer) {
+          clearTimeout(this.touchHoldTimer);
+          this.touchHoldTimer = null;
+        }
+      }
+    }, { passive: true });
+
+    canvas.addEventListener('touchend', () => {
+      if (this.touchHoldTimer) {
+        clearTimeout(this.touchHoldTimer);
+        this.touchHoldTimer = null;
+      }
+      this.touchStartPos = null;
+    });
+
+    canvas.addEventListener('touchcancel', () => {
+      if (this.touchHoldTimer) {
+        clearTimeout(this.touchHoldTimer);
+        this.touchHoldTimer = null;
+      }
+      this.touchStartPos = null;
+    });
+  }
+
+  setupLookControl() {
+    const lookBtn = document.getElementById('look-btn');
+    if (!lookBtn) return;
+
+    const onStart = (e) => {
+      const touch = e.touches[0];
+      if (!touch) return;
+      this.lookTouchStart = { x: touch.clientX, y: touch.clientY };
+      this.lastInteraction = Date.now();
+      e.preventDefault();
+    };
+
+    const onMove = (e) => {
+      if (!this.lookTouchStart) return;
+      const touch = e.touches[0];
+      if (!touch) return;
+      this.lastInteraction = Date.now();
+
+      const dx = touch.clientX - this.lookTouchStart.x;
+      const dy = touch.clientY - this.lookTouchStart.y;
+      this.lookTouchStart = { x: touch.clientX, y: touch.clientY };
+
+      const sens = 0.005;
+
+      if (this.cameraMode === 'orbit') {
+        this.controls.azimuthalAngle -= dx * sens;
+        this.controls.polarAngle = Math.max(0.1, Math.min(Math.PI - 0.1, this.controls.polarAngle + dy * sens));
+      } else if (this.avatar) {
+        this.avatar.rotateYaw(-dx * sens * 2);
+      }
+
+      this.headIdleTimer = 0;
+      this.updateHeadFollow();
+      e.preventDefault();
+    };
+
+    const onEnd = () => {
+      this.lookTouchStart = null;
+    };
+
+    lookBtn.addEventListener('touchstart', onStart, { passive: false });
+    lookBtn.addEventListener('touchmove', onMove, { passive: false });
+    lookBtn.addEventListener('touchend', onEnd);
+    lookBtn.addEventListener('touchcancel', onEnd);
+  }
+
+  updateHeadFollow() {
+    if (!this.avatar) return;
+    const avatarPos = this.avatar.getPosition();
+    const camPos = this.camera.position;
+    const dirToCam = new THREE.Vector3().subVectors(camPos, avatarPos);
+    dirToCam.y = 0;
+    const distToCam = dirToCam.length();
+    if (distToCam < 0.01) return;
+    dirToCam.divideScalar(distToCam);
+
+    const facing = this.avatar.getFacingDirection();
+    const yaw = Math.atan2(
+      dirToCam.x * facing.z - dirToCam.z * facing.x,
+      dirToCam.x * facing.x + dirToCam.z * facing.z
+    );
+
+    const direct = new THREE.Vector3().subVectors(camPos, avatarPos).normalize();
+    const pitch = -Math.asin(Math.max(-1, Math.min(1, direct.y)));
+
+    this.avatar.setHeadLook(yaw, pitch);
+  }
+
   handleJoystickMovement() {
     if (!this.freeRoam || !this.joystickActive) return;
     const jv = this.joystickVector;
-
-    // Pure rotation (horizontal only, no forward/back)
-    if (Math.abs(jv.y) < 0.1 && Math.abs(jv.x) > 0.1) {
-      this.avatar.rotateYaw(jv.x * 0.04);
-      this.avatar.setFreeRoamDirection(new THREE.Vector3());
-      const avatarPos = this.avatar.getPosition();
-      this.controls.target.copy(avatarPos.clone().setY(1.5));
-      return;
-    }
 
     if (Math.abs(jv.x) < 0.05 && Math.abs(jv.y) < 0.05) {
       this.avatar.setFreeRoamDirection(new THREE.Vector3());
       return;
     }
 
-    // Avatar-relative: forward = avatar facing direction
-    const fwd = this.avatar.getFacingDirection();
-    const right = new THREE.Vector3().crossVectors(fwd, new THREE.Vector3(0, 1, 0)).normalize();
+    // Camera-relative movement (same as WASD convention)
+    const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(this.camera.quaternion);
+    forward.y = 0;
+    forward.normalize();
+    const right = new THREE.Vector3(1, 0, 0).applyQuaternion(this.camera.quaternion);
+    right.y = 0;
+    right.normalize();
 
     const dir = new THREE.Vector3()
-      .addScaledVector(fwd, jv.y)
+      .addScaledVector(forward, jv.y)
       .addScaledVector(right, jv.x * 0.6);
     this.avatar.setFreeRoamDirection(dir.length() > 0.01 ? dir : new THREE.Vector3());
 
@@ -220,6 +335,29 @@ export class InteractionManager {
   onKeyDown(e) {
     this.keys[e.code] = true;
 
+    // Kiosk browsing mode: left/right to navigate, escape to exit
+    if (this.kioskBrowsingMode && this.cityBuilder) {
+      if (e.code === 'ArrowLeft') {
+        const total = this.cityBuilder.getProjectCount();
+        const cur = this.cityBuilder.getKioskProjectIndex();
+        this.cityBuilder.showKioskProject((cur - 1 + total) % total);
+        e.preventDefault();
+        return;
+      }
+      if (e.code === 'ArrowRight') {
+        const total = this.cityBuilder.getProjectCount();
+        const cur = this.cityBuilder.getKioskProjectIndex();
+        this.cityBuilder.showKioskProject((cur + 1) % total);
+        e.preventDefault();
+        return;
+      }
+      if (e.code === 'Escape') {
+        this.exitKioskBrowsingMode();
+        e.preventDefault();
+        return;
+      }
+    }
+
     if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code)) {
       e.preventDefault();
     }
@@ -262,6 +400,54 @@ export class InteractionManager {
 
   handleWorldClick(clientX, clientY) {
     this.raycaster.setFromCamera(this.mouse, this.camera);
+
+    // Check kiosk hit (when near)
+    if (this.isNearKiosk) {
+      const kioskGroup = this.scene.getObjectByName('kiosk');
+      if (kioskGroup) {
+        const kioskMeshes = [];
+        kioskGroup.traverse(m => { if (m.isMesh) kioskMeshes.push(m); });
+        const kioskHits = this.raycaster.intersectObjects(kioskMeshes);
+        if (kioskHits.length > 0) {
+          const hit = kioskHits[0];
+
+          if (!this.kioskBrowsingMode) {
+            this.kioskBrowsingMode = true;
+            if (this.cityBuilder) this.cityBuilder.showKioskProject(0);
+            this.updateKioskHint();
+            return;
+          }
+
+          // Browsing mode — check UV for arrow regions
+          if (hit.uv && hit.object.name === 'kiosk-screen') {
+            const ux = hit.uv.x;
+            if (ux < 0.15) {
+              const total = this.cityBuilder ? this.cityBuilder.getProjectCount() : PROJECTS.length;
+              const cur = this.cityBuilder ? this.cityBuilder.getKioskProjectIndex() : 0;
+              if (this.cityBuilder) this.cityBuilder.showKioskProject((cur - 1 + total) % total);
+              return;
+            }
+            if (ux > 0.85) {
+              const total = this.cityBuilder ? this.cityBuilder.getProjectCount() : PROJECTS.length;
+              const cur = this.cityBuilder ? this.cityBuilder.getKioskProjectIndex() : 0;
+              if (this.cityBuilder) this.cityBuilder.showKioskProject((cur + 1) % total);
+              return;
+            }
+          }
+
+          // Center region — open panel overlay
+          this.exitKioskBrowsingMode();
+          this.handlePanelClick('projects');
+          this.playDialogueForPanel('projects');
+          return;
+        }
+      }
+    }
+
+    // Clicked outside kiosk while browsing → exit browsing mode
+    if (this.kioskBrowsingMode) {
+      this.exitKioskBrowsingMode();
+    }
 
     // Check building hits
     const buildingMeshes = [];
@@ -356,10 +542,10 @@ export class InteractionManager {
 
     const avatarPos = this.avatar.getPosition();
     const facing = this.avatar.getFacingDirection();
-    const behind = facing.clone().negate().multiplyScalar(4.5);
+    const behind = facing.clone().negate().multiplyScalar(CONFIG.movement.shoulderOffsetBack);
     const targetPos = new THREE.Vector3(
       avatarPos.x + behind.x,
-      avatarPos.y + 2.6,
+      avatarPos.y + CONFIG.movement.shoulderOffsetUp,
       avatarPos.z + behind.z
     );
 
@@ -401,6 +587,18 @@ export class InteractionManager {
 
     this.controls.update();
 
+    this.updateKioskProximity(delta);
+
+    // Head follows camera in orbit mode, recovers after 2s idle
+    if (this.cameraMode === 'orbit' && this.avatar && !this.lookTouchStart) {
+      this.headIdleTimer += delta;
+      if (this.headIdleTimer < 2) {
+        this.updateHeadFollow();
+      } else if (this.headIdleTimer > 2.5) {
+        this.avatar.clearHeadLook();
+      }
+    }
+
     this.idleTimer += delta;
     if (this.idleTimer > 15 && !this.panels.openPanel && !this.dialogue.isSpeaking) {
       this.dialogue.sayIdle();
@@ -409,30 +607,30 @@ export class InteractionManager {
   }
 
   handleFreeRoamMovement(delta) {
-    const rotateSpeed = 2.5;
-    if (this.keys['ArrowLeft']) this.avatar.rotateYaw(rotateSpeed * delta);
-    if (this.keys['ArrowRight']) this.avatar.rotateYaw(-rotateSpeed * delta);
+    const rotateSpeed = CONFIG.movement.rotateSpeed;
+    const useArrows = this.keys['ArrowUp'] || this.keys['ArrowDown'] || this.keys['ArrowLeft'] || this.keys['ArrowRight'];
+    const useWASD = this.keys['KeyW'] || this.keys['KeyS'] || this.keys['KeyA'] || this.keys['KeyD'];
 
     const moveDir = new THREE.Vector3();
 
-    // Arrow keys: avatar-relative (forward/back in facing direction)
-    if (this.keys['ArrowUp']) {
-      const fwd = this.avatar.getFacingDirection();
-      moveDir.add(fwd);
-    }
-    if (this.keys['ArrowDown']) {
-      const fwd = this.avatar.getFacingDirection();
-      moveDir.sub(fwd);
-    }
+    if (useArrows) {
+      if (this.keys['ArrowLeft']) this.avatar.rotateYaw(rotateSpeed * delta);
+      if (this.keys['ArrowRight']) this.avatar.rotateYaw(-rotateSpeed * delta);
+      if (this.keys['ArrowUp']) {
+        const fwd = this.avatar.getFacingDirection();
+        moveDir.add(fwd);
+      }
+      if (this.keys['ArrowDown']) {
+        const fwd = this.avatar.getFacingDirection();
+        moveDir.sub(fwd);
+      }
+    } else if (useWASD) {
+      const wasd = new THREE.Vector3();
+      if (this.keys['KeyW']) wasd.z -= 1;
+      if (this.keys['KeyS']) wasd.z += 1;
+      if (this.keys['KeyA']) wasd.x -= 1;
+      if (this.keys['KeyD']) wasd.x += 1;
 
-    // WASD: camera-relative strafe
-    const wasd = new THREE.Vector3();
-    if (this.keys['KeyW']) wasd.z -= 1;
-    if (this.keys['KeyS']) wasd.z += 1;
-    if (this.keys['KeyA']) wasd.x -= 1;
-    if (this.keys['KeyD']) wasd.x += 1;
-
-    if (wasd.length() > 0) {
       wasd.normalize();
       const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(this.camera.quaternion);
       forward.y = 0;
@@ -446,13 +644,12 @@ export class InteractionManager {
 
     this.avatar.setFreeRoamDirection(moveDir.length() > 0.01 ? moveDir : new THREE.Vector3());
 
-    // OTS: orbit controls target follows avatar directly
     const avatarPos = this.avatar.getPosition();
     this.controls.target.copy(avatarPos.clone().setY(1.5));
     if (this.cameraMode !== 'shoulder') {
       this.controls.enabled = true;
-      this.controls.minDistance = 4;
-      this.controls.maxDistance = 16;
+      this.controls.minDistance = CONFIG.movement.orbitMinDistFree;
+      this.controls.maxDistance = CONFIG.movement.orbitMaxDistFree;
     }
   }
 
@@ -464,8 +661,8 @@ export class InteractionManager {
       if (this.isPointerLocked) document.exitPointerLock();
       if (this.cameraMode !== 'shoulder') {
         this.controls.enabled = true;
-        this.controls.minDistance = 4;
-        this.controls.maxDistance = 16;
+        this.controls.minDistance = CONFIG.movement.orbitMinDistFree;
+        this.controls.maxDistance = CONFIG.movement.orbitMaxDistFree;
         this.controls.target.set(0, 1.5, 0);
         this.camera.position.set(5, 3.5, 8);
         this.camera.lookAt(0, 1.5, 0);
@@ -475,7 +672,8 @@ export class InteractionManager {
 
   handleFirstPersonMovement(delta) {
     const direction = new THREE.Vector3();
-    const speed = this.moveSpeed * delta;
+    const speed = CONFIG.movement.firstPersonSpeed * delta;
+    const bound = CONFIG.movement.firstPersonBounds;
 
     if (this.keys['KeyW'] || this.keys['ArrowUp']) direction.z -= 1;
     if (this.keys['KeyS'] || this.keys['ArrowDown']) direction.z += 1;
@@ -488,18 +686,87 @@ export class InteractionManager {
       direction.y = 0;
 
       const newPos = this.camera.position.clone().addScaledVector(direction, speed);
+      if (this.avatar && this.avatar.checkCollision) {
+        this.avatar.checkCollision(newPos);
+      }
       newPos.y = 1.6;
-      newPos.x = THREE.MathUtils.clamp(newPos.x, -35, 35);
-      newPos.z = THREE.MathUtils.clamp(newPos.z, -35, 35);
+      newPos.x = THREE.MathUtils.clamp(newPos.x, -bound, bound);
+      newPos.z = THREE.MathUtils.clamp(newPos.z, -bound, bound);
 
       this.camera.position.copy(newPos);
       this.controls.target.copy(newPos).add(new THREE.Vector3(0, 0, -1).applyQuaternion(this.camera.quaternion));
     }
   }
 
+  updateKioskProximity(delta) {
+    if (!this.avatar || !this.avatar.getPosition || this.panels.openPanel) {
+      if (this.kioskBrowsingMode) this.exitKioskBrowsingMode();
+      if (this.isNearKiosk) {
+        this.isNearKiosk = false;
+        this.hideKioskHint();
+      }
+      return;
+    }
+
+    const avatarPos = this.avatar.getPosition();
+    const dist = avatarPos.distanceTo(this.kioskPosition);
+    const wasNear = this.isNearKiosk;
+    this.isNearKiosk = dist < this.kioskProximityRange;
+
+    // Exit browsing mode if walked away
+    if (this.kioskBrowsingMode && !this.isNearKiosk) {
+      this.exitKioskBrowsingMode();
+    }
+
+    if (this.isNearKiosk) {
+      this.updateKioskHint();
+    } else if (!this.isNearKiosk && wasNear) {
+      this.hideKioskHint();
+    }
+  }
+
+  showKioskHint() {
+    this.updateKioskHint();
+  }
+
+  hideKioskHint() {
+    const hint = document.getElementById('hint');
+    if (hint && this._kioskHintVisible) {
+      hint.classList.remove('visible');
+      this._kioskHintVisible = false;
+    }
+  }
+
+  updateKioskHint() {
+    const hint = document.getElementById('hint');
+    if (!hint) return;
+    const span = hint.querySelector('span');
+    if (this.kioskBrowsingMode) {
+      span.textContent = '◀ ▶ Click arrows to browse  ·  Center for details  ·  Click outside to exit';
+      hint.classList.add('visible');
+      this._kioskHintVisible = true;
+    } else if (this.isNearKiosk) {
+      span.textContent = 'Click the kiosk screen to browse projects';
+      hint.classList.add('visible');
+      this._kioskHintVisible = true;
+    } else {
+      hint.classList.remove('visible');
+      this._kioskHintVisible = false;
+    }
+  }
+
+  exitKioskBrowsingMode() {
+    if (!this.kioskBrowsingMode) return;
+    this.kioskBrowsingMode = false;
+    if (this.cityBuilder) this.cityBuilder.showKioskWelcome();
+    this.updateKioskHint();
+  }
+
   setFirstPerson(enabled) {
     this.useFirstPerson = enabled;
-    if (!enabled && this.isPointerLocked) {
+    if (enabled) {
+      this.renderer.domElement.requestPointerLock();
+    } else if (this.isPointerLocked) {
       document.exitPointerLock();
     }
   }

@@ -13,6 +13,8 @@ export class SceneManager {
     this.city = null;
     this.clock = new THREE.Clock();
     this.time = 0;
+    this.ambientParticles = null;
+    this.ambientVelocities = [];
   }
 
   init() {
@@ -21,6 +23,7 @@ export class SceneManager {
     this.setupSky();
     this.setupLights();
     this.setupCity();
+    this.setupAmbientParticles();
     this.setupResize();
   }
 
@@ -52,24 +55,24 @@ export class SceneManager {
     canvas.height = 512;
     const ctx = canvas.getContext('2d');
     const grad = ctx.createLinearGradient(0, 0, 0, 512);
-    grad.addColorStop(0, '#4a90d9');
-    grad.addColorStop(0.4, '#87ceeb');
-    grad.addColorStop(0.7, '#b8d8f0');
-    grad.addColorStop(0.85, '#d4e4e8');
-    grad.addColorStop(1, '#e8e8e0');
+    grad.addColorStop(0, '#3a7abd');
+    grad.addColorStop(0.3, '#6ab0e8');
+    grad.addColorStop(0.6, '#a0cce8');
+    grad.addColorStop(0.8, '#c8d8e0');
+    grad.addColorStop(1, '#d8d8d0');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 2, 512);
     const texture = new THREE.CanvasTexture(canvas);
     this.scene.background = texture;
-    this.scene.fog = new THREE.FogExp2(0xb8d8f0, 0.005);
+    this.scene.fog = new THREE.FogExp2(0xa0cce8, 0.004);
   }
 
   setupLights() {
-    const hemi = new THREE.HemisphereLight(0x87ceeb, 0x908050, 0.9);
+    const hemi = new THREE.HemisphereLight(0x87ceeb, 0x605040, 0.7);
     this.scene.add(hemi);
 
-    const sun = new THREE.DirectionalLight(0xfff0dd, 1.5);
-    sun.position.set(30, 25, 10);
+    const sun = new THREE.DirectionalLight(0xffeedd, 1.2);
+    sun.position.set(25, 20, 8);
     sun.castShadow = this.perfSettings.shadows;
     if (this.perfSettings.shadows) {
       sun.shadow.mapSize.width = 2048;
@@ -84,14 +87,52 @@ export class SceneManager {
     }
     this.scene.add(sun);
 
-    const fill = new THREE.DirectionalLight(0x8899ff, 0.3);
-    fill.position.set(-20, 10, -20);
+    const fill = new THREE.DirectionalLight(0x7799cc, 0.25);
+    fill.position.set(-15, 8, -15);
     this.scene.add(fill);
+
+    const rim = new THREE.DirectionalLight(0xaaccff, 0.15);
+    rim.position.set(-10, 5, 20);
+    this.scene.add(rim);
   }
 
   setupCity() {
     this.city = new CityBuilder(this.scene);
     this.city.build();
+  }
+
+  setupAmbientParticles() {
+    const count = this.perfSettings.particles ? 300 : 100;
+    const geo = new THREE.BufferGeometry();
+    const positions = new Float32Array(count * 3);
+    const velocities = [];
+    const spread = 40;
+    const heightMin = 2, heightMax = 7;
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const radius = 5 + Math.random() * (spread / 2);
+      positions[i * 3] = Math.cos(angle) * radius;
+      positions[i * 3 + 1] = heightMin + Math.random() * (heightMax - heightMin);
+      positions[i * 3 + 2] = Math.sin(angle) * radius;
+      velocities.push({
+        x: (Math.random() - 0.5) * 0.3,
+        y: 0.05 + Math.random() * 0.1,
+        z: (Math.random() - 0.5) * 0.3,
+      });
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const mat = new THREE.PointsMaterial({
+      color: 0xfff5d6,
+      size: 0.08,
+      transparent: true,
+      opacity: 0.5,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    this.ambientParticles = new THREE.Points(geo, mat);
+    this.ambientParticles.position.y = 0;
+    this.scene.add(this.ambientParticles);
+    this.ambientVelocities = velocities;
   }
 
   setupResize() {
@@ -106,6 +147,26 @@ export class SceneManager {
 
   update() {
     this.time = this.clock.getElapsedTime();
+    this.updateAmbientParticles();
+  }
+
+  updateAmbientParticles() {
+    if (!this.ambientParticles) return;
+    const pos = this.ambientParticles.geometry.attributes.position;
+    const delta = this.clock.getDelta();
+    const bound = 25;
+    const vel = this.ambientVelocities;
+    for (let i = 0; i < pos.count; i++) {
+      pos.array[i * 3] += vel[i].x * delta;
+      pos.array[i * 3 + 1] += vel[i].y * delta;
+      pos.array[i * 3 + 2] += vel[i].z * delta;
+      if (pos.array[i * 3 + 1] > 8) pos.array[i * 3 + 1] = 2;
+      if (pos.array[i * 3] > bound) pos.array[i * 3] = -bound;
+      if (pos.array[i * 3] < -bound) pos.array[i * 3] = bound;
+      if (pos.array[i * 3 + 2] > bound) pos.array[i * 3 + 2] = -bound;
+      if (pos.array[i * 3 + 2] < -bound) pos.array[i * 3 + 2] = bound;
+    }
+    pos.needsUpdate = true;
   }
 
   render() {
@@ -121,10 +182,15 @@ export class SceneManager {
   getScene() { return this.scene; }
   getRenderer() { return this.renderer; }
   getColliders() { return this.city ? this.city.getColliders() : []; }
-  updateFountain(time) { if (this.city && this.city.updateFountain) this.city.updateFountain(time); }
+  updateFountain(time) { if (this.city && this.city.update) this.city.update(time); }
 
   dispose() {
     if (this.city) this.city.dispose();
+    if (this.ambientParticles) {
+      this.ambientParticles.geometry.dispose();
+      this.ambientParticles.material.dispose();
+      this.scene.remove(this.ambientParticles);
+    }
     this.renderer.dispose();
     this.scene.traverse(obj => {
       if (obj.geometry) obj.geometry.dispose();

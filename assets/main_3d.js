@@ -41,6 +41,7 @@ class Portfolio3D {
       this.setupLabelRenderer();
       await this.setupScene();
       await this.setupAvatar();
+      this.avatarManager.setPosition(new THREE.Vector3(0, 0, 5));
       if (this.sceneManager.getColliders()) {
         this.avatarManager.setColliders(this.sceneManager.getColliders());
       }
@@ -49,7 +50,8 @@ class Portfolio3D {
       this.setupCinematic();
       this.setupInteraction();
       this.setupUI();
-      this.hideLoader();
+      this.enableFreeRoam();
+      this.hideLoader(() => this.startIntroFlythrough());
       this.startRenderLoop();
       this.startWelcomeSequence();
     } catch (e) {
@@ -115,7 +117,8 @@ class Portfolio3D {
       this.panelManager,
       this.dialogueManager,
       this.cinematicCamera,
-      this.perfSettings
+      this.perfSettings,
+      this.sceneManager.city
     );
     this.interactionManager.init();
   }
@@ -172,7 +175,7 @@ class Portfolio3D {
     const districtPositions = {
       about: new THREE.Vector3(-4, 0, -18),
       skills: new THREE.Vector3(-18, 0, -2),
-      projects: new THREE.Vector3(-2, 0, 18),
+      projects: new THREE.Vector3(0, 0, 16),
       contact: new THREE.Vector3(18, 0, 0),
     };
 
@@ -204,37 +207,27 @@ class Portfolio3D {
     });
   }
 
-  startWelcomeSequence() {
-    setTimeout(() => {
-      this.dialogueManager.sayWelcome();
-    }, 1000);
+  enableFreeRoam() {
+    this.freeRoamEnabled = true;
+    this.interactionManager.setFreeRoam(true);
+    this.avatarManager.startProceduralIdle();
 
-    setTimeout(() => {
-      this.hint.classList.add('visible');
-    }, 2000);
-
-    setTimeout(() => {
-      this.hint.classList.remove('visible');
-    }, 10000);
-
-    this.dialogueManager.onDialogueEnd = () => {
-      if (!this.freeRoamEnabled) {
-        this.freeRoamEnabled = true;
-        this.interactionManager.setFreeRoam(true);
-        this.avatarManager.startProceduralIdle();
-        this.showFreeRoamHint();
-      }
-      this.isDialogueActive = false;
-    };
-  }
-
-  showFreeRoamHint() {
     const hint = document.getElementById('hint');
     if (hint) {
       hint.querySelector('span').textContent = 'Click billboards to read · Arrow keys to walk · WASD to strafe';
-      hint.classList.add('visible');
-      setTimeout(() => hint.classList.remove('visible'), 6000);
+      setTimeout(() => hint.classList.add('visible'), 500);
+      setTimeout(() => hint.classList.remove('visible'), 8000);
     }
+  }
+
+  startWelcomeSequence() {
+    setTimeout(() => {
+      this.dialogueManager.sayWelcome();
+    }, 1500);
+
+    this.dialogueManager.onDialogueEnd = () => {
+      this.isDialogueActive = false;
+    };
   }
 
   showLoader() {
@@ -249,11 +242,24 @@ class Portfolio3D {
     }, 100);
   }
 
-  hideLoader() {
+  hideLoader(callback) {
     setTimeout(() => {
       this.loader.classList.add('out');
       this.isLoaded = true;
+      if (callback) callback();
     }, 500);
+  }
+
+  startIntroFlythrough() {
+    const cam = this.sceneManager.getCamera();
+    cam.position.set(12, 18, 22);
+    cam.lookAt(0, 0, 0);
+
+    this.cinematicCamera.transitionTo(
+      new THREE.Vector3(10, 6, 14),
+      new THREE.Vector3(0, 1.5, 0),
+      3.5
+    );
   }
 
   startRenderLoop() {
