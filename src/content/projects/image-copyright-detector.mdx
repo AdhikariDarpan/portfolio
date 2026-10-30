@@ -1,0 +1,36 @@
+---
+title: "Image Copyright Detector"
+seoTitle: "Image Copyright Risk Detector"
+description: "A Python image-analysis experiment for estimating copyright risk using metadata, perceptual hashing, and visual similarity."
+summary: "A Python image-analysis experiment for estimating copyright risk using metadata, perceptual hashing, and visual similarity."
+category: "ai"
+status: "shipped"
+year: "2025"
+role: "Designer & Developer"
+timeline: "Research build"
+stack: ["Python", "Pillow", "OpenCV", "ImageHash", "EXIF"]
+tags: ["Computer Vision", "Copyright", "Image Analysis", "Python", "Research"]
+order: 29
+accent: "#b9a5ff"
+highlights:
+  - "Combined EXIF metadata, perceptual hashing, and visual comparison into one risk-scoring workflow."
+  - "Detected resized or edited copies of known images using multiple hashing strategies."
+  - "Returned a transparent score with the signals behind it instead of a single unexplained verdict."
+capabilities:
+  - "EXIF metadata inspection"
+  - "Perceptual hash comparison"
+  - "Near-duplicate image detection"
+  - "Edited and resized copy detection"
+  - "Risk scoring with signal breakdown"
+  - "Extensible Python pipeline"
+---
+
+## A risk signal, not a legal verdict
+
+Image copyright detection is not something a small pipeline can answer definitively. This project takes a more honest approach: collect several weak signals, combine them into a risk score, and show the reasoning.
+
+The pipeline inspects EXIF metadata, generates perceptual hashes, and compares visual features to detect duplicates or edited variants. Missing metadata, unusual camera information, and strong similarity to known images all contribute to the score.
+
+## Keep the uncertainty visible
+
+The most useful part of the interface is the signal breakdown. A user can see why an image was flagged and decide what to do next, rather than trusting a black-box percentage.

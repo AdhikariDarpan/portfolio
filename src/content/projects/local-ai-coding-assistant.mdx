@@ -1,0 +1,36 @@
+---
+title: "Local AI Coding Assistant"
+seoTitle: "Local AI Coding Assistant with Ollama"
+description: "A Node.js package that connects to Ollama for local coding help, debugging, and reasoning without sending data to a cloud API."
+summary: "A Node.js package that connects to Ollama for local coding help, debugging, and reasoning without sending data to a cloud API."
+category: "ai"
+status: "shipped"
+year: "2024"
+role: "Designer & Developer"
+timeline: "Open-source experiment"
+stack: ["Node.js", "JavaScript", "Ollama", "Local LLM"]
+tags: ["Local AI", "Ollama", "Developer Tools", "Privacy", "LLM"]
+repo: "https://github.com/DarpanAdhikari/local-ai"
+order: 25
+accent: "#b9a5ff"
+highlights:
+  - "Built a small Node.js interface to local Ollama models for coding and debugging assistance."
+  - "Supported model selection through environment configuration, including coder-focused models."
+  - "Kept the workflow fully local so source code and prompts did not leave the machine."
+capabilities:
+  - "Local model inference"
+  - "Coding and debugging prompts"
+  - "Configurable model selection"
+  - "Simple package API"
+  - "No external API dependency"
+---
+
+## Local models for everyday code
+
+This project explores a practical local alternative to cloud coding assistants. It wraps Ollama in a small Node.js package that can answer coding questions, help debug an error, or reason through an implementation without sending code to a third-party API.
+
+The package is intentionally thin. It does not try to hide the model: users choose a local model, provide context, and get a response. That makes the trade-off between quality, speed, and privacy explicit.
+
+## A useful constraint
+
+Running locally means accepting hardware limits. The project is designed around that reality: small prompts, configurable models, and a workflow that works well for focused questions rather than giant repository-wide transformations.

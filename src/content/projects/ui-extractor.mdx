@@ -1,0 +1,39 @@
+---
+title: "UI Extractor"
+seoTitle: "Screenshot to Code UI Extractor"
+description: "A screenshot-to-code system that detects interface structure and generates Flutter, React, HTML, Tailwind, Figma, and Markdown output."
+summary: "A screenshot-to-code system that detects interface structure and generates Flutter, React, HTML, Tailwind, Figma, and Markdown output."
+category: "ai"
+status: "private"
+year: "2025"
+role: "Designer & Developer"
+timeline: "Research build"
+stack: ["Python", "EasyOCR", "scikit-image", "YOLO", "OpenCV", "Flutter", "React", "Tailwind CSS"]
+tags: ["Computer Vision", "UI", "Code Generation", "OCR", "YOLO"]
+private: true
+order: 7
+accent: "#b9a5ff"
+highlights:
+  - "Combined OCR, image segmentation, and YOLO-style element detection to recover layout and text from interface screenshots."
+  - "Produced multiple output targets, including Flutter, React, HTML/CSS, Tailwind, Figma, and Markdown."
+  - "Treated generated code as a starting point that still needs review, not as a guaranteed pixel-perfect conversion."
+capabilities:
+  - "Screenshot preprocessing and segmentation"
+  - "Text extraction with EasyOCR"
+  - "Element and layout detection"
+  - "Multi-target code generation"
+  - "Responsive structure reconstruction"
+  - "Markdown and design-oriented exports"
+---
+
+## Turning pixels into structure
+
+UI Extractor explores a difficult version of screenshot-to-code: not just identifying text, but recovering enough layout structure to generate something a developer can edit. The pipeline combines OCR with image analysis and element detection, then maps the result into several output formats.
+
+The output targets reflect different workflows: Flutter for mobile prototypes, React and HTML/CSS for web, Tailwind for utility-first styling, and Markdown or Figma-oriented structures for design handoff. Each target has different assumptions, which forced the intermediate representation to stay relatively abstract.
+
+## Honest limits
+
+Screenshot-to-code is often presented as a one-click solution. In practice, the generated result is a scaffold: spacing, semantic structure, and component boundaries still need human judgment. This project was built with that limitation in mind, focusing on useful structure and editable output rather than claiming perfect reconstruction.
+
+The code is private, but the case study captures the approach: detect what can be detected, preserve uncertainty where it exists, and make the generated artifact easy to correct.

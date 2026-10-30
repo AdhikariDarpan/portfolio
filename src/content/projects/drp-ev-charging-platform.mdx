@@ -1,0 +1,62 @@
+---
+title: "DRP Dynamic Recharge Platform"
+seoTitle: "OCPP EV Charging Management Platform"
+description: "A local-first OCPP charging station management system for EV chargers, with automatic discovery, live sessions, billing, and optional cloud sync."
+summary: "A local-first OCPP charging station platform that keeps charging, billing, and records running even when the network is not."
+outcome: "Local-first OCPP charging control with live session state."
+category: "desktop"
+status: "in-progress"
+year: "2026"
+role: "Designer & Developer"
+timeline: "In development"
+stack:
+  ["Electron", "TypeScript", "React", "SQLite", "OCPP 1.6", "OCPP 2.0.1", "WebSocket"]
+tags: ["EV Charging", "OCPP", "CSMS", "Billing", "Offline-first", "Desktop"]
+private: true
+order: 3
+accent: "#f5b544"
+highlights:
+  - "Built a local-first CSMS that automatically discovers OCPP 1.6 and 2.0.1 chargers over WebSocket and tracks charger, connector, heartbeat, and session state."
+  - "Implemented the full charging and billing path: meter samples, shift-aware rate cards, tax and service fees, printable A4 invoices, reprints, and CSV export."
+  - "Added optional company-server sync through a durable outbox, while keeping charging and records fully usable from the local SQLite store during outages."
+capabilities:
+  - "OCPP 1.6 and 2.0.1 charger discovery"
+  - "Connector status and heartbeat monitoring"
+  - "Transaction lifecycle with meter samples"
+  - "Energy, power, SoC, current, and voltage tracking"
+  - "Rate cards, taxes, service fees, and billing"
+  - "A4 invoices, reprints, and CSV export"
+  - "Customer book and idTag lookup"
+  - "Local SQLite operation with optional sync"
+  - "Durable outbox with retry and backoff"
+  - "Server-managed usage modes and access status"
+metrics:
+  - value: "2"
+    label: "OCPP versions"
+  - value: "Local"
+    label: "first data path"
+  - value: "SQLite"
+    label: "local record store"
+---
+
+## Charging software that cannot depend on the cloud
+
+The platform is built around a simple operational constraint: a charging session must continue even when the network or company server does not. Chargers connect directly to the desktop application over OCPP, and the local application owns discovery, session state, metering, and billing. The server is useful for synchronization and fleet configuration, not as a dependency for every charge.
+
+This is a private product build. The case study focuses on the architecture and the problems the system solves rather than client or deployment details.
+
+## From a connected charger to a bill
+
+When a charger connects, the platform reads its identity from the WebSocket path and creates or updates the charger record automatically. Boot, status, heartbeat, transaction, and meter messages then feed the same local state that the operator sees in the interface.
+
+The billing layer sits directly on top of that state. Rate cards can vary by time window, with tax and service fees applied to the final invoice. Sessions produce printable A4 invoices, repricing and CSV export stay local, and customer records and idTags support both walk-in and remote-start flows.
+
+## Offline-first without giving up sync
+
+The application supports two server-decided modes: fully local operation, or local plus server sync. In sync mode, a durable outbox pushes customers, chargers, connectors, bills, transactions, meter samples, and logs with retries and exponential backoff. Pulls are tolerant of both camelCase and snake_case contracts, and local operational fields such as live charger status are protected from being overwritten by stale server data.
+
+The desktop main process also owns the fixed OCPP port with a lockfile and process guard, so a second instance cannot silently take over the endpoint while a real charger is connected.
+
+## Still being refined
+
+The core OCPP server, database model, billing path, sync worker, and desktop UI are in place. The remaining work is a focused usability and interaction-quality pass across the operator screens, along with continued hardening around the real charger lifecycle.

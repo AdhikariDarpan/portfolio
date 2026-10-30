@@ -1,0 +1,60 @@
+---
+title: "Watch Together"
+seoTitle: "Local First Watch Party App"
+description: "A local-first watch-party app with synchronized playback, peer-to-peer streaming, chat, screen sharing, and room-wide audio/video calls."
+summary: "A local-first watch party where the host's browser streams the movie directly to friends, with synchronized playback, chat, and calls."
+category: "web"
+status: "live"
+year: "2026"
+role: "Designer & Developer"
+timeline: "2026 · Live"
+stack:
+  ["Flask", "Flask-SocketIO", "Socket.IO", "WebRTC", "JavaScript", "mediabunny", "FFmpeg.wasm"]
+tags: ["Watch Party", "Peer-to-Peer", "WebRTC", "Streaming", "Real-Time", "Flask"]
+image: "/images/projects/stream-room-with-call.png"
+imageAlt: "Watch Together room with synchronized video playback and a video call active"
+repo: "https://github.com/DarpanAdhikari/streamer"
+live: "https://streamer-m26o.onrender.com/"
+order: 8
+accent: "#5eead4"
+highlights:
+  - "Built a local-first watch party where the host's browser streams the video directly to viewers, so the server never stores or relays the media."
+  - "Kept playback, playlists, subtitles, picture settings, permissions, and live participant state synchronized through Socket.IO."
+  - "Added a separate peer-to-peer mesh for room-wide audio and video calls, including mute, camera controls, and host moderation."
+capabilities:
+  - "Room creation with shareable invite links"
+  - "Synchronized host-led playback"
+  - "Peer-to-peer video streaming over WebRTC"
+  - "Native, remux, and FFmpeg.wasm playback tiers"
+  - "Embedded and external subtitle support"
+  - "Custom player, gestures, and keyboard shortcuts"
+  - "Screen sharing with tab audio"
+  - "In-room chat and participant roster"
+  - "Audio and video calls"
+  - "Kick, ban, approval, and playback permissions"
+metrics:
+  - value: "0"
+    label: "video bytes stored"
+  - value: "P2P"
+    label: "media transport"
+  - value: "10"
+    label: "comfortable room size"
+---
+
+## Watch together without uploading the file
+
+Watch parties usually force a trade-off: upload a large video somewhere, or share a screen and accept degraded audio and a desktop that is locked into the job. Watch Together takes a third path. The host opens a local file in their browser, and the browser captures the playing video and sends it directly to each viewer over WebRTC. The server only coordinates rooms, participants, and signaling.
+
+The result is intentionally local-first. There are no accounts, the video never lands in server storage, and the host remains in control of playback. Late joiners pick up the current position instead of starting from the beginning.
+
+## The player is part of the product
+
+A watch party is only as good as its player. The custom player covers the expected controls, but also handles multiple audio tracks, embedded and external subtitles, picture adjustments, screenshots, picture-in-picture, theater mode, and a stats overlay. It supports mouse, touch, and keyboard interactions, and it keeps those controls operable when the player enters fullscreen.
+
+The playback engine chooses the cheapest path it can: native playback first, lossless remux for containers the browser cannot read directly, and FFmpeg.wasm as the fallback for everything else. Audio tracks the browser cannot decode are converted in the browser rather than silently dropped.
+
+## Calls, chat, and moderation
+
+The room is not just a video surface. A separate peer-to-peer mesh powers audio and video calls, with a call that survives the host leaving. A text chat, participant roster, screen sharing, and host moderation tools make it usable for a small group rather than a one-way stream.
+
+Kicks and bans are handled through a waiting-room flow, while playback permissions remain a host decision. Everything is designed around rooms of roughly two to ten people; the README is explicit that larger audiences would need an SFU instead of the current mesh.

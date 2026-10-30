@@ -1,0 +1,114 @@
+---
+import { NAV, SITE } from "../data/site";
+import Icon from "./Icon.astro";
+
+const pathname = Astro.url.pathname;
+
+function isActive(href: string) {
+  if (href === "/") return pathname === "/";
+  return pathname.startsWith(href);
+}
+---
+
+<header class="site-header" data-site-header>
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label={`${SITE.name} home`}>
+      <span class="brand-mark" aria-hidden="true">DA</span>
+      <span class="brand-copy">
+        <span class="brand-name">{SITE.name}</span>
+        <span class="brand-role">Full-stack developer</span>
+      </span>
+    </a>
+
+    <nav class="site-nav" aria-label="Primary navigation">
+      {NAV.map((item) => (
+        <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="header-actions">
+      <button
+        class="command-button"
+        type="button"
+        data-command-trigger
+        aria-label="Search the site"
+      >
+        <Icon name="search" class="icon" />
+        <span>Search</span>
+        <kbd>⌘K</kbd>
+      </button>
+      <span class="header-status">
+        <span class="status-dot"></span>
+        Available for work
+      </span>
+      <a class="btn btn--primary btn--small" href="/contact/">Start a project</a>
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        aria-controls="mobile-navigation"
+        data-nav-toggle
+      >
+        <Icon name="menu" class="icon" data-menu-icon />
+      </button>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation" data-mobile-nav>
+    {NAV.map((item) => (
+      <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>
+        {item.label}
+        <Icon name="arrow-up-right" class="icon" />
+      </a>
+    ))}
+    <a href="/resume/">
+      Résumé
+      <Icon name="file" class="icon" />
+    </a>
+  </nav>
+</header>
+
+<script is:inline>
+  const header = document.querySelector("[data-site-header]");
+  const toggle = document.querySelector("[data-nav-toggle]");
+  const mobileNav = document.querySelector("[data-mobile-nav]");
+  const commandTrigger = document.querySelector("[data-command-trigger]");
+
+  const setHeaderState = () => {
+    if (!header) return;
+    header.classList.toggle("is-scrolled", window.scrollY > 12);
+  };
+
+  const setMenu = (open) => {
+    if (!toggle || !mobileNav) return;
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    toggle.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
+    mobileNav.classList.toggle("is-open", open);
+    const icon = toggle.querySelector("svg");
+    if (icon) icon.innerHTML = open
+      ? '<path d="m6 6 12 12M18 6 6 18" />'
+      : '<path d="M4 7h16M4 12h16M4 17h16" />';
+  };
+
+  setHeaderState();
+  window.addEventListener("scroll", setHeaderState, { passive: true });
+
+  toggle?.addEventListener("click", () => {
+    setMenu(toggle.getAttribute("aria-expanded") !== "true");
+  });
+
+  mobileNav?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => setMenu(false));
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setMenu(false);
+  });
+
+  commandTrigger?.addEventListener("click", () => {
+    window.dispatchEvent(new CustomEvent("open-command-palette"));
+  });
+</script>

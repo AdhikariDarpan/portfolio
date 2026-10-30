@@ -1,0 +1,379 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Icon from "../components/Icon.astro";
+import ProofCard from "../components/ProofCard.astro";
+import ProcessSteps from "../components/ProcessSteps.astro";
+import ServiceOfferCard from "../components/ServiceOfferCard.astro";
+import {
+  PROCESS_STEPS,
+  PROOF_CARDS,
+  PROOF_STRIP,
+  SERVICE_OFFERS,
+} from "../data/services";
+import {
+  EXPERIENCE,
+  SITE,
+  SKILL_GROUPS,
+  STATS,
+} from "../data/site";
+
+const projects = await getCollection("projects", ({ data }) => !data.draft);
+const ordered = projects.sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
+const featured = ordered.filter((project) => project.data.featured).slice(0, 3);
+const marqueeSkills = [
+  "Python",
+  "Laravel",
+  "Django",
+  "Flask",
+  "React",
+  "Astro",
+  "Flutter",
+  "Go",
+  "WebSockets",
+  "PaddleOCR",
+  "WhisperX",
+  "Docker",
+  "PostgreSQL",
+  "TypeScript",
+  "Electron",
+  "YOLO",
+];
+const featuredExperience = EXPERIENCE.filter(
+  (item) =>
+    item.role === "Senior Full-Stack Developer" ||
+    item.role === "Freelance Full-Stack Laravel Developer",
+);
+---
+
+<BaseLayout pageType="ProfilePage">
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="hero-kicker reveal">
+            <span>Web / AI / Products</span>
+            <span class="line"></span>
+            <span>{SITE.location}</span>
+          </div>
+
+          <h1 class="hero-title reveal reveal-delay-1">
+            Full-stack
+            <span class="accent-line">developer</span>
+            <span class="outline-line">in Kathmandu.</span>
+          </h1>
+
+          <p class="hero-sub reveal reveal-delay-2">
+            I build production software end to end: web platforms, AI pipelines, and cross-platform products,
+            then stay for the deployment, integrations, and edge cases that make them real.
+          </p>
+
+          <div class="hero-actions reveal reveal-delay-2">
+            <a class="btn btn--primary" href="/contact/">
+              Start a project
+              <Icon name="arrow-up-right" />
+            </a>
+            <a class="btn btn--secondary" href="/projects/">
+              See selected work
+              <Icon name="arrow-right" />
+            </a>
+          </div>
+
+          <a class="hero-role-link reveal reveal-delay-2" href="/experience/">
+            Hiring for a role? View experience
+            <Icon name="arrow-right" />
+          </a>
+
+          <div class="hero-availability reveal reveal-delay-3">
+            <span class="status-dot"></span>
+            <span>{SITE.availability}</span>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal reveal-delay-2">
+          <div class="portrait-shell">
+            <img
+              src={SITE.portrait}
+              alt="Portrait of Darpan Adhikari"
+              width="1513"
+              height="1365"
+              loading="eager"
+              decoding="async"
+            />
+            <div class="portrait-grain"></div>
+            <div class="portrait-label">
+              <div>
+                <strong>{SITE.name}</strong>
+                <span>Full-stack · AI · Products</span>
+              </div>
+              <span class="portrait-index">01 / 04</span>
+            </div>
+          </div>
+
+          <div class="float-card float-card--code" aria-hidden="true">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="float-code">
+              <span><b>const</b> work = &#123;</span>
+              <span>&nbsp;&nbsp;scope: <em>'end-to-end'</em>,</span>
+              <span>&nbsp;&nbsp;constraint: <em>'real-world'</em>,</span>
+              <span>&nbsp;&nbsp;status: <em>'shipped'</em></span>
+              <span>&#125;;</span>
+            </div>
+          </div>
+
+          <div class="float-card float-card--status">
+            <span class="status-dot"></span>
+            <span>
+              <strong>Available for work</strong>
+              <small>Full-time · Freelance</small>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-strip reveal">
+        {STATS.map((stat) => (
+          <div class="stat">
+            <span class="stat-value">{stat.value}</span>
+            <span class="stat-label">{stat.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-label="Core technologies">
+    <div class="marquee-track">
+      <div class="marquee-group">
+        {marqueeSkills.map((skill) => <span class="marquee-item">{skill}</span>)}
+      </div>
+      <div class="marquee-group" aria-hidden="true">
+        {marqueeSkills.map((skill) => <span class="marquee-item">{skill}</span>)}
+      </div>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">What you can hire me for</span>
+          <h2 class="section-title text-balance">Start with the problem, not the stack.</h2>
+        </div>
+        <p class="lede reveal reveal-delay-1" style="max-width: 27rem">
+          I work on four kinds of builds where software has to survive real operations, not just a polished demo.
+        </p>
+      </div>
+
+      <div class="offer-grid">
+        {SERVICE_OFFERS.map((offer) => (
+          <ServiceOfferCard offer={offer} compact />
+        ))}
+      </div>
+
+      <div class="panel reveal" style="margin-top: 1rem; padding: 1.1rem 1.2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+        <p class="mono" style="color: var(--muted); max-width: 46rem;">
+          Need the full scope, engagement models, and answers to common questions?
+        </p>
+        <a class="link-arrow" href="/services/">
+          See services
+          <Icon name="arrow-up-right" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--rule">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">Selected work</span>
+          <h2 class="section-title text-balance">Proof, not a wall of logos.</h2>
+        </div>
+        <a class="link-arrow reveal reveal-delay-1" href="/projects/">
+          View all {ordered.length} projects
+          <Icon name="arrow-up-right" />
+        </a>
+      </div>
+
+      <div class="project-grid">
+        {featured.map((project, index) => (
+          <ProjectCard project={project} index={index} featured={index === 0} />
+        ))}
+      </div>
+
+      <div class="panel reveal" style="margin-top: 1rem; padding: 1.1rem 1.2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+        <p class="mono" style="color: var(--muted); max-width: 44rem;">
+          Also in the archive: LLM tooling, OCR experiments, Flutter apps, Electron utilities, and npm packages.
+        </p>
+        <a class="link-arrow" href="/projects/">
+          Browse the archive
+          <Icon name="arrow-right" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--rule">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">Technical proof</span>
+          <h2 class="section-title text-balance">Decisions that survive constraints.</h2>
+        </div>
+        <p class="lede reveal reveal-delay-1" style="max-width: 27rem">
+          A few decisions from production systems. Each one solved a constraint that a quick demo would have skipped.
+        </p>
+      </div>
+
+      <div class="proof-grid">
+        {PROOF_CARDS.map((proof) => <ProofCard proof={proof} />)}
+      </div>
+
+      <div class="proof-strip reveal">
+        {PROOF_STRIP.map((item) => <span>{item}</span>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container about-grid">
+      <div class="about-copy reveal">
+        <span class="eyebrow">About</span>
+        <h2 class="section-title">I like the part where it has to actually work.</h2>
+        <p>
+          I’m Darpan, a full-stack developer based in Kathmandu. My work spans
+          <strong>ERP platforms, AI/OCR pipelines, mobile apps, desktop tools, and device integrations</strong>.
+          I tend to be most useful when a project needs someone who can move between architecture, backend
+          behavior, interface details, and the awkward last mile of deployment.
+        </p>
+        <p>
+          I’ve worked with shared hosting that has no root access, networks that drop, integrations that
+          disagree about time, and OCR that is almost right. Those constraints are usually where the real
+          design decisions live.
+        </p>
+        <a class="link-arrow" href="/about/">
+          Read the longer version
+          <Icon name="arrow-up-right" />
+        </a>
+      </div>
+
+      <div class="about-card reveal reveal-delay-1">
+        <div class="about-card__portrait">
+          <img src={SITE.portrait} alt="Darpan Adhikari" loading="lazy" decoding="async" />
+        </div>
+        <dl class="about-facts">
+          <div class="about-fact">
+            <dt>Based in</dt>
+            <dd>{SITE.location}</dd>
+          </div>
+          <div class="about-fact">
+            <dt>Focus</dt>
+            <dd>Full-stack · AI · Products</dd>
+          </div>
+          <div class="about-fact">
+            <dt>Availability</dt>
+            <dd>Full-time · Freelance</dd>
+          </div>
+          <div class="about-fact">
+            <dt>Currently</dt>
+            <dd>Building AI systems</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--rule">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">Experience</span>
+          <h2 class="section-title">Selected roles</h2>
+        </div>
+        <a class="link-arrow reveal reveal-delay-1" href="/experience/">
+          Full experience
+          <Icon name="arrow-up-right" />
+        </a>
+      </div>
+
+      <div class="timeline">
+        {featuredExperience.map((item) => (
+          <article class:list={["timeline-item", { "timeline-item--current": item.current }]}>
+            <div class="timeline-top">
+              <h3 class="timeline-role">{item.role}</h3>
+              <span class="timeline-period">{item.period}</span>
+            </div>
+            <span class="timeline-company">{item.company} · {item.location}</span>
+            <p class="timeline-summary">{item.summary}</p>
+            <div class="chip-row">
+              {item.stack.slice(0, 5).map((tag) => <span class="chip">{tag}</span>)}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">Toolkit</span>
+          <h2 class="section-title">Tools I reach for</h2>
+        </div>
+        <p class="lede reveal reveal-delay-1" style="max-width: 26rem">
+          Not a list of everything I have touched. A map of the tools that show up repeatedly in production work.
+        </p>
+      </div>
+
+      <div class="skill-board">
+        {SKILL_GROUPS.map((group) => (
+          <div class="skill-row reveal">
+            <span class="skill-label">{group.label}</span>
+            <div class="skill-items">
+              {group.items.map((item) => <span class="skill-pill">{item}</span>)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--rule">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">How I work with clients</span>
+          <h2 class="section-title text-balance">A short path from problem to working system.</h2>
+        </div>
+        <p class="lede reveal reveal-delay-1" style="max-width: 27rem">
+          You work directly with me from scope through handover. No account layer, no handoff gap.
+        </p>
+      </div>
+
+      <ProcessSteps steps={PROCESS_STEPS} />
+
+      <div class="panel reveal" style="margin-top: 1rem; padding: 1.1rem 1.2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+        <p class="mono" style="color: var(--muted); max-width: 48rem;">
+          Project builds, audits, ongoing support, and full-time roles are all on the table.
+        </p>
+        <a class="link-arrow" href="/services/#engagement">
+          Engagement models
+          <Icon name="arrow-up-right" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="Next step"
+    title="Tell me what is stuck."
+    body="Share the workflow, the constraint, and what a good outcome looks like. I reply within one business day."
+    primaryLabel="Start a project"
+    secondaryLabel="See services"
+    secondaryHref="/services/"
+  />
+</BaseLayout>

@@ -1,0 +1,84 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Icon from "../components/Icon.astro";
+import { EDUCATION, EXPERIENCE, LANGUAGES } from "../data/site";
+---
+
+<BaseLayout
+  title="Full-Stack Developer Experience in Nepal"
+  description="Full-stack developer experience in Nepal: senior Laravel, Django, Go, and AI/OCR work, device integrations, and freelance delivery by Darpan Adhikari."
+>
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">Experience</span>
+          <h1 class="display-xl text-balance">Full-stack work behind the portfolio.</h1>
+        </div>
+        <p class="lede reveal reveal-delay-1" style="max-width: 28rem">
+          A timeline of roles where I owned features, systems, and the awkward integration work between them.
+        </p>
+      </div>
+
+      <div class="timeline">
+        {EXPERIENCE.map((item) => (
+          <article class:list={["timeline-item reveal", { "timeline-item--current": item.current }]}>
+            <div class="timeline-top">
+              <h2 class="timeline-role">{item.role}</h2>
+              <span class="timeline-period">{item.period}</span>
+            </div>
+            <span class="timeline-company">{item.company} · {item.location}</span>
+            <p class="timeline-summary">{item.summary}</p>
+            <ul class="timeline-list">
+              {item.highlights.map((highlight) => <li>{highlight}</li>)}
+            </ul>
+            <div class="chip-row">
+              {item.stack.map((tag) => <span class="chip">{tag}</span>)}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--rule">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">Education</span>
+          <h2 class="section-title">Foundations</h2>
+        </div>
+        <a class="link-arrow reveal reveal-delay-1" href="/resume/">
+          View résumé
+          <Icon name="file" />
+        </a>
+      </div>
+
+      <div class="education-grid">
+        {EDUCATION.map((item) => (
+          <article class="education-card reveal">
+            <small>{item.period} · {item.location}</small>
+            <strong>{item.degree}</strong>
+            <span>{item.school}</span>
+          </article>
+        ))}
+      </div>
+
+      <div class="skill-row reveal" style="margin-top: 0.8rem; border-bottom: 0">
+        <span class="skill-label">Languages</span>
+        <div class="skill-items">
+          {LANGUAGES.map((language) => (
+            <span class="skill-pill">{language.name} · {language.level}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="Next"
+    title="Want the detailed version?"
+    body="The web résumé groups the same experience by role and technology. You can also request a role-specific résumé by email."
+  />
+</BaseLayout>

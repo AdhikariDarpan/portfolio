@@ -1,0 +1,71 @@
+---
+title: "Nepali Number Converter"
+seoTitle: "Nepali Number Converter for Words and Numerals"
+description: "A zero-dependency npm package for converting numbers into Nepali numerals and Nepali words, including very large values."
+summary: "A zero-dependency npm package for converting numbers into Nepali numerals and Nepali words, including very large values."
+category: "open-source"
+status: "live"
+year: "2024"
+role: "Author"
+timeline: "Published package"
+stack: ["JavaScript", "npm", "Localization"]
+tags: ["Nepali", "Numbers", "Localization", "npm", "Open Source"]
+repo: "https://github.com/DarpanAdhikari/nepali-typing"
+packageUrl: "https://www.npmjs.com/package/nepali-number-word"
+usage:
+  intro: "Install the package and call either converter. Both functions are asynchronous and accept ordinary JavaScript numbers."
+  installs:
+    - label: "npm"
+      lang: "bash"
+      code: |
+        npm install nepali-number-word
+    - label: "CDN (ES module)"
+      lang: "html"
+      code: |
+        <script type="module">
+          import { convertIntoNepaliNumber } from "https://unpkg.com/nepali-number-word@latest/index.js";
+
+          console.log(await convertIntoNepaliNumber(15500055));
+        </script>
+  examples:
+    - title: "Convert numerals and words"
+      lang: "js"
+      code: |
+        import {
+          convertIntoNepaliNumber,
+          convertNumberIntoNpNumWord,
+        } from "nepali-number-word";
+
+        const numerals = await convertIntoNepaliNumber(15500055);
+        const words = await convertNumberIntoNpNumWord(15500055);
+
+        console.log(numerals); // १,५५,००,०५५
+        console.log(words); // एक करोड पचपन्न लाख पचपन्न
+  notes:
+    - "Both conversion functions return promises."
+    - "Values up to 10^39 are supported."
+    - "The package is ESM and can also be loaded from a CDN."
+    - "Use the CDN module in plain HTML when you do not want npm, React, or a bundler."
+order: 28
+accent: "#c8ff5e"
+highlights:
+  - "Published a package that converts numbers to Nepali numerals and to words in the Nepali numbering system."
+  - "Handled large values and the lakh/crore grouping used in Nepali rather than assuming Western grouping."
+  - "Kept the package dependency-free for easy use in finance, education, and localization projects."
+capabilities:
+  - "Nepali numeral conversion (०१२३४५६७८९)"
+  - "Number-to-Nepali-words conversion"
+  - "Large-number support"
+  - "Lakh and crore grouping"
+  - "Zero dependencies"
+---
+
+## Localization at the number level
+
+Number formatting is one of those details that immediately reveals whether a product was designed for a language or merely translated into it. Nepali uses its own numeral glyphs and a lakh/crore grouping system, and both need to be handled explicitly.
+
+This package converts numeric values into Nepali numerals and into Nepali words, including very large numbers. It is intentionally dependency-free so it can be used in a browser, a Node.js script, or an educational tool without adding weight.
+
+## Small utility, high leverage
+
+The package is now used as a reusable local utility for finance and localization work. The most valuable part is the testable boundary: one clear conversion API instead of ad-hoc formatting scattered across an application.

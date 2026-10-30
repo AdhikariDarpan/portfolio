@@ -1,0 +1,47 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  body?: string;
+  primaryLabel?: string;
+  primaryHref?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+  secondaryIcon?: "file" | "arrow-right" | "arrow-up-right";
+}
+
+const {
+  eyebrow = "Next step",
+  title = "Have a system that needs to exist?",
+  body = "I’m open to full-time roles and freelance projects involving web platforms, AI automation, cross-platform products, or difficult integrations.",
+  primaryLabel = "Start a project",
+  primaryHref = "/contact/",
+  secondaryLabel = "View résumé",
+  secondaryHref = "/resume/",
+  secondaryIcon = "file",
+} = Astro.props;
+---
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="cta-band reveal">
+      <div class="cta-inner">
+        <span class="eyebrow">{eyebrow}</span>
+        <h2>{title}</h2>
+        <p>{body}</p>
+        <div class="cta-actions">
+          <a class="btn btn--primary" href={primaryHref}>
+            {primaryLabel}
+            <Icon name="arrow-up-right" />
+          </a>
+          <a class="btn btn--secondary" href={secondaryHref}>
+            {secondaryLabel}
+            <Icon name={secondaryIcon} />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

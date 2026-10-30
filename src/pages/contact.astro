@@ -1,0 +1,207 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import { SITE } from "../data/site";
+
+---
+
+<BaseLayout
+  title="Hire a Full-Stack Developer in Nepal"
+  description="Hire Darpan Adhikari, a full-stack developer in Kathmandu, Nepal, for full-time roles, freelance work, AI automation, web platforms, and device integrations."
+  pageType="ContactPage"
+>
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">Contact / Hire</span>
+          <h1 class="display-xl text-balance">Let’s talk about the part that is hard.</h1>
+        </div>
+        <p class="lede reveal reveal-delay-1" style="max-width: 28rem">
+          Full-time role, freelance project, or a technical problem that needs an extra brain. Email is the
+          fastest way to reach me.
+        </p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-copy reveal">
+          <p>
+            Tell me what you are building, what is stuck, and what a good outcome looks like. I’ll reply with
+            whether I’m the right fit and, if so, the next practical step.
+          </p>
+
+          <div class="contact-direct">
+            <a class="contact-link" href={`mailto:${SITE.email}`}>
+              <Icon name="mail" class="icon" />
+              <span>
+                {SITE.email}
+                <small>Email</small>
+              </span>
+            </a>
+            <a class="contact-link" href={SITE.linkedin} target="_blank" rel="noreferrer">
+              <Icon name="linkedin" class="icon" />
+              <span>
+                LinkedIn
+                <small>Professional</small>
+              </span>
+            </a>
+            <a class="contact-link" href={SITE.github} target="_blank" rel="noreferrer">
+              <Icon name="github" class="icon" />
+              <span>
+                GitHub
+                <small>Code</small>
+              </span>
+            </a>
+          </div>
+
+          <div class="availability-card">
+            <div class="availability-card__top">
+              <span class="status-dot"></span>
+              {SITE.availability}
+            </div>
+            <p>
+              Based in {SITE.location} ({SITE.timezone}). I work remotely with teams across time zones and am
+              comfortable with async written communication.
+            </p>
+          </div>
+
+          <div class="next-steps">
+            <span class="eyebrow eyebrow--plain">What happens next</span>
+            <ol>
+              <li>
+                <strong>I read the brief and reply within one business day.</strong> If the fit is unclear, I
+                will ask one or two focused questions before quoting anything.
+              </li>
+              <li>
+                <strong>If it fits, we scope the first milestone.</strong> You get a written sequence,
+                deliverable, and the constraint that matters most.
+              </li>
+              <li>
+                <strong>If it does not fit, I tell you early.</strong> Where I can, I point to a better
+                direction instead of stretching the scope.
+              </li>
+            </ol>
+          </div>
+
+          <div>
+            <span class="eyebrow eyebrow--plain" style="margin-bottom: 0.8rem">Useful context</span>
+            <ul class="timeline-list">
+              <li>The product or system and who uses it.</li>
+              <li>What is already built, if anything.</li>
+              <li>The constraint that matters most: time, budget, hosting, hardware, or accuracy.</li>
+              <li>Whether you are hiring for a role or scoping a project.</li>
+            </ul>
+          </div>
+        </div>
+
+        <form
+          class="contact-form reveal reveal-delay-1"
+          action={`mailto:${SITE.email}`}
+          method="post"
+          enctype="text/plain"
+          data-contact-form
+        >
+          <div class="form-row">
+            <div class="field">
+              <label for="contact-name">Name</label>
+              <input id="contact-name" name="name" type="text" placeholder="Your name" autocomplete="name" required />
+            </div>
+            <div class="field">
+              <label for="contact-email">Email</label>
+              <input
+                id="contact-email"
+                name="email"
+                type="email"
+                placeholder="you@company.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="contact-topic">What is this about?</label>
+            <select id="contact-topic" name="topic">
+              <option value="Full-time role">Full-time role</option>
+              <option value="Freelance project">Freelance project</option>
+              <option value="AI / OCR project">AI / OCR project</option>
+              <option value="Web platform">Web platform</option>
+              <option value="Desktop or mobile product">Desktop or mobile product</option>
+              <option value="Something else">Something else</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="contact-message">Message</label>
+            <textarea
+              id="contact-message"
+              name="message"
+              placeholder="A few sentences about the work, the constraint, and what you need…"
+              required
+            ></textarea>
+          </div>
+
+          <button class="btn btn--primary" type="submit">
+            Open email draft
+            <Icon name="arrow-up-right" />
+          </button>
+
+          <p class="form-note">
+            This form opens a prefilled draft in your email app. Nothing is sent to a third-party form service.
+            You can also copy the address:
+            <button
+              type="button"
+              class="btn btn--ghost btn--small"
+              data-copy-email
+              data-email={SITE.email}
+              style="padding: 0; min-height: 0; text-decoration: underline; text-underline-offset: 3px"
+            >
+              {SITE.email}
+            </button>
+          </p>
+          <p class="form-status" role="status" data-form-status></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    const form = document.querySelector("[data-contact-form]");
+    const status = document.querySelector("[data-form-status]");
+    const copyButton = document.querySelector("[data-copy-email]");
+
+    const showStatus = (message) => {
+      if (!status) return;
+      status.textContent = message;
+      status.classList.add("is-visible");
+    };
+
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      const name = String(data.get("name") || "").trim();
+      const email = String(data.get("email") || "").trim();
+      const topic = String(data.get("topic") || "").trim();
+      const message = String(data.get("message") || "").trim();
+
+      const subject = encodeURIComponent(`${topic} | ${name}`);
+      const body = encodeURIComponent(
+        `Hi Darpan,\n\n${message}\n\nName: ${name}\nEmail: ${email}\nTopic: ${topic}\n`,
+      );
+      const href = `mailto:darpand263@gmail.com?subject=${subject}&body=${body}`;
+
+      showStatus("Opening your email app with a prefilled draft…");
+      window.location.assign(href);
+    });
+
+    copyButton?.addEventListener("click", async () => {
+      const email = copyButton.getAttribute("data-email") || "darpand263@gmail.com";
+      try {
+        await navigator.clipboard.writeText(email);
+        showStatus(`Copied ${email} to the clipboard.`);
+      } catch {
+        showStatus(`Email: ${email}`);
+      }
+    });
+  </script>
+</BaseLayout>

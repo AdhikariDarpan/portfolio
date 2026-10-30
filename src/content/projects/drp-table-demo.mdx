@@ -1,0 +1,60 @@
+---
+title: "DRP Table Demo"
+seoTitle: "High Performance Data Table Library"
+description: "An under-development browser demo for a CDN-style data table library with 100,000 rows, worker mode, themes, and CSV, Excel, and PDF export."
+summary: "A consumer-style demo that exercises a large data table, worker processing, theming, and export bundles exactly as a CDN user would."
+outcome: "100,000 rows with worker-backed sorting and filtering."
+category: "product"
+status: "in-progress"
+year: "2026"
+role: "Author"
+timeline: "In development"
+stack: ["JavaScript", "CSS", "HTML", "Web Workers", "CDN"]
+tags: ["Data Table", "Web Workers", "Large Datasets", "Export", "Frontend"]
+private: true
+order: 37
+accent: "#7dd3fc"
+highlights:
+  - "Built a standalone consumer demo that loads the table, UI helper, and export bundles exactly as a CDN user would, without a build step."
+  - "Exercised 100,000 generated rows and a worker mode that keeps sorting and filtering work off the main thread."
+  - "Covered theme loading, CSV, Excel, and PDF export, and an export preview flow from the vendored browser bundles."
+decisions:
+  - title: "Worker mode for scale"
+    body: "Row generation and processing run in a worker to keep the UI responsive with 100,000 rows."
+  - title: "CDN-first packaging"
+    body: "The table is designed to be consumed without a bundler or build step."
+  - title: "Export is part of the product"
+    body: "CSV, Excel, and PDF export are included in the demo."
+capabilities:
+  - "100,000 row dataset"
+  - "Worker-backed table processing"
+  - "CDN-style bundle loading"
+  - "Theme stylesheet integration"
+  - "CSV, Excel, and PDF export"
+  - "Export preview"
+  - "Classic script setup without a bundler"
+  - "Static demo server"
+metrics:
+  - value: "100k"
+    label: "generated rows"
+  - value: "Worker"
+    label: "processing mode"
+  - value: "3"
+    label: "export formats"
+---
+
+## A demo that treats the library like a consumer
+
+DRP Table is being packaged for direct browser use, so the demo cannot rely on a bundler, a framework wrapper, or a special build step. It loads the main bundle, UI helper, theme stylesheet, export bundle, and worker script as separate files, then wires them through the globals a CDN consumer would actually receive.
+
+That constraint is the point. A library can look clean inside its own monorepo and still be awkward when someone includes a script tag and tries to use it. The demo exposes those integration details early, including load order, theme setup, and the difference between the browser and worker bundles.
+
+## Large data without blocking the page
+
+The demo generates 100,000 fake rows to test the table under a workload that a small example would never reveal. Worker mode moves sorting and filtering into a separate classic worker script, keeping the interface responsive while the dataset is processed.
+
+Basic table behavior can run from `file://`, but browsers block worker scripts from local files. The included static server exists so the worker path can be tested the same way it would run on a real site.
+
+## Still under development
+
+The table, theming, export, and worker paths are functional, but the project is not finished. It is being used to find integration gaps and rough edges before the library is treated as complete. The repository is private while that work continues, so there is no public demo link yet.

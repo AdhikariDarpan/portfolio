@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+---
+
+<BaseLayout title="Page not found" description="The requested page could not be found." noindex>
+  <section class="error-page">
+    <div class="container error-copy">
+      <span class="error-code">404</span>
+      <h1 class="display-md">This page has gone missing.</h1>
+      <p>
+        The URL may be outdated, or the project may have moved. The work archive and the rest of the site are
+        still here.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn--primary" href="/">
+          Back home
+          <Icon name="arrow-left" />
+        </a>
+        <a class="btn btn--secondary" href="/projects/">
+          Browse work
+          <Icon name="arrow-up-right" />
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,58 @@
+---
+import { SITE } from "../data/site";
+import Icon from "./Icon.astro";
+
+const year = new Date().getFullYear();
+const links = [
+  { href: "/projects/", label: "Work" },
+  { href: "/services/", label: "Services" },
+  { href: "/about/", label: "About" },
+  { href: "/experience/", label: "Experience" },
+  { href: "/resume/", label: "Résumé" },
+  { href: "/contact/", label: "Contact" },
+];
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <p class="footer-statement">
+        Thoughtful software, <span>from schema to screen.</span>
+      </p>
+
+      <div class="footer-links">
+        <div class="footer-group">
+          <h2>Explore</h2>
+          {links.map((link) => <a href={link.href}>{link.label}</a>)}
+        </div>
+        <div class="footer-group">
+          <h2>Elsewhere</h2>
+          <a href={SITE.github} target="_blank" rel="noreferrer">GitHub</a>
+          <a href={SITE.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href={SITE.npm} target="_blank" rel="noreferrer">npm</a>
+          <a href={SITE.x} target="_blank" rel="noreferrer">X / Twitter</a>
+        </div>
+        <div class="footer-group">
+          <h2>Contact</h2>
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+          <a href="/contact/">Project enquiry</a>
+          <a href="/projects/">Selected work</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© <span data-current-year>{year}</span> {SITE.name}.</span>
+      <span class="footer-coords">
+        <Icon name="map-pin" class="icon" />
+        {SITE.location} · {SITE.timezone}
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script is:inline>
+  document.querySelectorAll("[data-current-year]").forEach((element) => {
+    element.textContent = String(new Date().getFullYear());
+  });
+</script>

@@ -1,0 +1,40 @@
+---
+title: "drpStudio"
+seoTitle: "Visual HTML CSS Layout Studio"
+description: "A canvas-based layout studio for arranging text and code blocks visually and exporting structured HTML, CSS, and JavaScript."
+summary: "A canvas-based layout studio for arranging text and code blocks visually and exporting structured HTML, CSS, and JavaScript."
+category: "product"
+status: "shipped"
+year: "2024"
+role: "Designer & Developer"
+timeline: "Personal build"
+stack: ["HTML", "CSS", "JavaScript", "Canvas API", "Drag & Drop"]
+tags: ["Canvas", "UI Builder", "Drag & Drop", "Export", "Design"]
+image: "/images/projects/drpstudio.webp"
+imageAlt: "drpStudio canvas layout editor"
+order: 16
+accent: "#b9a5ff"
+highlights:
+  - "Built an interactive canvas for placing, moving, and resizing text and code blocks."
+  - "Added drag-and-drop layout editing, snap-to-grid alignment, and project import/export."
+  - "Generated clean HTML/CSS/JS output instead of locking designs inside the editor."
+capabilities:
+  - "Canvas-based layout editing"
+  - "Drag-and-drop blocks"
+  - "Snap-to-grid alignment"
+  - "Resizable and movable elements"
+  - "Project save and restore"
+  - "HTML/CSS/JS export"
+---
+
+## A visual layer over the browser
+
+drpStudio explores a simple idea: let people arrange interface blocks visually, then give them code they can actually edit. The canvas is the workspace, not the final format.
+
+Blocks can be moved, resized, aligned to a grid, and exported as a structured project. Importing an existing layout back into the editor keeps the tool useful beyond the first export.
+
+## The exit path matters
+
+Many visual builders are easy to enter and difficult to leave. This project treats export as a first-class feature: the result should be readable HTML, CSS, and JavaScript that another developer can take over.
+
+The implementation is intentionally browser-native, using the Canvas API and plain JavaScript rather than a large application framework.

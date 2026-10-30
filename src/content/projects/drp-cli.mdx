@@ -1,0 +1,53 @@
+---
+title: "DRP CLI"
+seoTitle: "Go Developer CLI Toolkit"
+description: "A Go developer toolkit for scaffolding, migrations, hot reload, Swagger generation, and container-friendly delivery."
+summary: "A Go developer toolkit for scaffolding, migrations, hot reload, Swagger generation, and container-friendly delivery."
+outcome: "37 tests in CI and a single Go binary for repeatable project setup."
+category: "open-source"
+status: "shipped"
+year: "2025"
+role: "Designer & Developer"
+timeline: "Open-source tool"
+stack: ["Go", "CLI", "Migrations", "Swagger", "Docker", "GitHub Actions"]
+tags: ["Go", "Developer Tools", "CLI", "CI/CD", "Open Source"]
+repo: "https://github.com/DarpanAdhikari/drp-go-cli"
+order: 12
+accent: "#c8ff5e"
+highlights:
+  - "Built a Go CLI covering project scaffolding, database migrations, hot reload, and Swagger generation."
+  - "Added Docker packaging and a 37-test suite running in CI, with deployment paths for Render and Koyeb."
+  - "Focused on removing repetitive setup work without hiding the generated project structure."
+decisions:
+  - title: "Single binary delivery"
+    body: "Go compiles to one binary, with Docker packaging for container-friendly delivery."
+  - title: "Tests in CI"
+    body: "A 37-test suite runs in CI before release."
+  - title: "Generate instead of duplicate"
+    body: "Scaffolding, migrations, hot reload, and Swagger generation are built into the tool."
+capabilities:
+  - "Project scaffolding"
+  - "Migration commands"
+  - "Hot-reload development"
+  - "Swagger generation"
+  - "Docker packaging"
+  - "CI test suite"
+  - "Render and Koyeb deployment"
+metrics:
+  - value: "37"
+    label: "tests in CI"
+  - value: "Go"
+    label: "single binary"
+  - value: "Docker"
+    label: "delivery"
+---
+
+## Make the boring parts repeatable
+
+DRP CLI is a Go toolkit for starting and maintaining backend projects. Instead of a magical framework, it focuses on repeatable chores: scaffold a project, generate a migration, run the app with reload, produce API documentation, and package the result for deployment.
+
+The tool is designed to leave a project that a developer can still understand. Generated code is visible and conventional; the CLI removes setup friction without taking ownership away from the application.
+
+## Tested like a real tool
+
+A CLI is easy to demo and harder to trust. The project includes a 37-test suite that runs in CI, along with Docker packaging and deployment paths for Render and Koyeb. That work turned it from a collection of scripts into something that can be installed and used with reasonable confidence.

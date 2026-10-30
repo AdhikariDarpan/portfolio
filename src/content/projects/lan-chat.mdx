@@ -1,0 +1,41 @@
+---
+title: "LAN Chat"
+seoTitle: "Electron LAN Chat and File Transfer"
+description: "An Electron LAN messenger with real-time messaging, file transfer, group chat, and peer-to-peer calling without internet."
+summary: "An Electron LAN messenger with real-time messaging, file transfer, group chat, and peer-to-peer calling without internet."
+category: "desktop"
+status: "shipped"
+year: "2024"
+role: "Designer & Developer"
+timeline: "Personal build"
+stack: ["Electron", "Node.js", "WebRTC", "Socket.io", "IndexedDB"]
+tags: ["LAN", "Chat", "Electron", "WebRTC", "File Sharing"]
+image: "/images/projects/lanchat.webp"
+imageAlt: "LAN Chat desktop application"
+repo: "https://github.com/DarpanAdhikari/lan-chat-desktop"
+order: 20
+accent: "#5eead4"
+highlights:
+  - "Built local-network messaging and group chat without requiring an internet connection."
+  - "Added lossless file transfer, presence, friend management, and profile customization."
+  - "Used WebRTC for peer-to-peer audio, video, and screen sharing, with LAN signaling over Socket.io."
+capabilities:
+  - "LAN-only messaging"
+  - "Group chat and presence"
+  - "Peer-to-peer file transfer"
+  - "Audio and video calls"
+  - "Screen sharing"
+  - "Friend and profile management"
+---
+
+## Communication without the cloud
+
+LAN Chat is built for environments where devices share a local network but should not depend on an external messaging service. It uses Electron for the desktop shell, Socket.io for local discovery and signaling, and WebRTC for direct peer-to-peer media and file transfer.
+
+The product includes the unglamorous features that make a chat app usable: presence, notifications, friends, profiles, group conversations, and a file transfer flow that reports progress.
+
+## Local-first networking is its own problem
+
+Without a central server, discovery, connection state, and recovery become application concerns. The app has to handle devices joining and leaving, peers that cannot connect directly, and the difference between a message that was sent and one that was actually delivered.
+
+The public repository captures the approach and the trade-offs of building a useful local communication tool.

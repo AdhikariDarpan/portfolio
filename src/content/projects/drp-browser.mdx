@@ -1,0 +1,66 @@
+---
+title: "DRP Browser"
+seoTitle: "Silent Printing Desktop Browser"
+description: "A desktop browser that turns web print requests into reliable silent printing across Bluetooth, network, USB, and native printers."
+summary: "A browser built for printing: silent jobs, a persistent queue, POS and label printer support, LAN sharing, and backend webhooks."
+outcome: "Silent printing across 4 connection types from one desktop app."
+category: "desktop"
+status: "shipped"
+year: "2026"
+role: "Creator & Developer"
+timeline: "2026 · Personal product"
+stack: ["Electron", "TypeScript", "React", "Tailwind CSS", "SQLite", "ESC/POS", "WebContentsView"]
+tags: ["Printing", "Browser", "POS", "Bluetooth", "Network Printers", "Electron", "Desktop"]
+image: "/images/projects/drp-browser.jpeg"
+imageAlt: "DRP Browser desktop interface with print controls"
+repo: "https://github.com/DarpanAdhikari/drp-browser"
+order: 11
+accent: "#5eead4"
+highlights:
+  - "Built an Electron browser that intercepts print requests and routes them through a persistent queue instead of stopping at the operating system print dialog."
+  - "Added silent printing to USB, Bluetooth, network, and native printers, including ESC/POS thermal and label devices, with automatic retries when a job fails."
+  - "Implemented LAN printer sharing, webhook notifications, kiosk controls, fleet settings, and a local job history for every print request."
+capabilities:
+  - "Chrome-style tabs and address bar"
+  - "Silent print interception"
+  - "Persistent print queue with retries"
+  - "USB, Bluetooth, network, and native printers"
+  - "ESC/POS thermal and label printing"
+  - "Host-approved LAN printer sharing"
+  - "Webhook and API notifications"
+  - "Print job history and status"
+  - "Kiosk mode and fleet settings"
+  - "Cross-platform desktop support"
+  - "Secure local storage for credentials"
+metrics:
+  - value: "4"
+    label: "printer connection types"
+  - value: "3"
+    label: "retries before failure"
+  - value: "LAN"
+    label: "printer sharing"
+---
+
+## Printing should not be the weak point
+
+Web applications can handle orders, invoices, labels, and tickets until it is time to print them. Then the workflow falls apart: an operating system dialog interrupts the operator, a browser refuses to talk to a POS printer, a driver is missing on one machine, or a job disappears without a trace.
+
+DRP Browser exists to remove that failure point. It looks and behaves like a normal browser, but it treats printing as a first-class part of the product. The full name is DRP, Dynamic Rendering & Print Browser, and the product is built around one promise: a web print request should reach the right printer reliably, with a record of what happened.
+
+## A browser with a print queue
+
+DRP intercepts print requests instead of handing them to the operating system and walking away. Every request becomes a queued job with a status, source domain, selected printer, and optional webhook. The queue is backed by SQLite, so jobs survive tab crashes, application restarts, and short network interruptions. Failed jobs expose an error and retry with backoff before they are marked as failed.
+
+The browser supports native office printers, USB and serial ESC/POS devices, Bluetooth printers, and network printers over raw TCP. That covers the mix of receipt printers, label makers, barcode printers, and shared office hardware that real point-of-sale and warehouse systems have to support.
+
+## Sharing, tracking, and control
+
+Printers can be shared between DRP instances on the same network. A nearby device requests access, the host approves or remembers it, and the shared printer appears with its live status. There is no central print server and no second driver installation for the receiving machine.
+
+Backend integration is handled through webhooks. A site can send the job ID, document, and custom metadata, then receive a completion or failure notification at its own endpoint. The browser also provides a job history, success and failure visibility, kiosk mode, and exportable settings for deploying the same configuration across multiple machines.
+
+## A direct API for web apps
+
+Sites can continue to use `window.print()` or call the `window.drpPrint` API directly. The API accepts custom HTML, an optional job ID, and arbitrary fields that are merged into the webhook payload. A site can therefore print a receipt, label, kitchen ticket, or report without opening a dialog or asking the operator to choose a printer.
+
+The application is built with Electron, React, TypeScript, and SQLite, with a custom browser shell around `WebContentsView`. Tabs run with context isolation and sandboxing enabled, and credentials are stored through the operating system keychain rather than in plain settings files.

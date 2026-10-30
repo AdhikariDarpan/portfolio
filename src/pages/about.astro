@@ -1,0 +1,173 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Icon from "../components/Icon.astro";
+import { EDUCATION, LANGUAGES, PRINCIPLES, SITE, SKILL_GROUPS, STATS } from "../data/site";
+
+---
+
+<BaseLayout
+  title="About a Full-Stack Developer in Kathmandu"
+  description="About Darpan Adhikari, a full-stack developer in Kathmandu, Nepal, building web platforms, AI/OCR pipelines, mobile apps, desktop tools, and integrations."
+  pageType="ProfilePage"
+>
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">About / {SITE.location}</span>
+          <h1 class="display-xl text-balance">I build full-stack systems for the messy middle.</h1>
+        </div>
+        <p class="lede reveal reveal-delay-1" style="max-width: 28rem">
+          The interesting work is rarely the isolated feature. It is the place where data, interface,
+          infrastructure, and human workflow all have to agree.
+        </p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-copy reveal">
+          <p>
+            I’m <strong>Darpan Adhikari</strong>, a full-stack developer based in Kathmandu, Nepal. I’ve built
+            production systems across PHP, Python, JavaScript, Go, and Dart: ERP modules, newsroom platforms,
+            AI/OCR pipelines, mobile apps, desktop utilities, CLI tooling, and device integrations.
+          </p>
+          <p>
+            My default mode is end-to-end ownership. That means understanding the schema, writing the API,
+            shaping the interface, and staying around for deployment and the first round of real-world failures.
+            It also means being comfortable with constraints that do not appear in tutorials: shared hosting with
+            no root access, legacy hardware, intermittent networks, and operators who need the system to explain
+            itself.
+          </p>
+          <p>
+            A lot of my recent work has been in AI systems that have to be useful rather than theatrical:
+            <strong>OCR pipelines that reconcile uncertain values</strong>, a RAG support bot grounded in an Excel
+            knowledge base, transcription and diarization jobs that run outside the request cycle, and computer
+            vision that finds the right region before asking OCR to read it.
+          </p>
+          <p>
+            I care about systems that remain understandable after the launch. Clear boundaries, predictable
+            failure states, useful documentation, and code that another person can change without fear are not
+            polish; they are part of the product.
+          </p>
+        </div>
+
+        <aside class="about-card reveal reveal-delay-1">
+          <div class="about-card__portrait">
+            <img src={SITE.portrait} alt="Portrait of Darpan Adhikari" loading="lazy" decoding="async" />
+          </div>
+          <dl class="about-facts">
+            <div class="about-fact">
+              <dt>Role</dt>
+              <dd>{SITE.title}</dd>
+            </div>
+            <div class="about-fact">
+              <dt>Location</dt>
+              <dd>{SITE.location}</dd>
+            </div>
+            <div class="about-fact">
+              <dt>Experience</dt>
+              <dd>5+ years building</dd>
+            </div>
+            <div class="about-fact">
+              <dt>Availability</dt>
+              <dd>Full-time · Freelance</dd>
+            </div>
+            <div class="about-fact">
+              <dt>Email</dt>
+              <dd><a href={`mailto:${SITE.email}`} style="color: var(--accent)">{SITE.email}</a></dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+
+      <div class="stats-strip reveal" style="margin-top: 3.5rem">
+        {STATS.map((stat) => (
+          <div class="stat">
+            <span class="stat-value">{stat.value}</span>
+            <span class="stat-label">{stat.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--rule">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">Principles</span>
+          <h2 class="section-title text-balance">How I approach the work.</h2>
+        </div>
+      </div>
+      <div class="principle-grid">
+        {PRINCIPLES.map((principle) => (
+          <article class="principle reveal">
+            <h3>{principle.title}</h3>
+            <p>{principle.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">Capabilities</span>
+          <h2 class="section-title">The toolkit, grouped by job.</h2>
+        </div>
+        <a class="link-arrow reveal reveal-delay-1" href="/projects/">
+          See it applied
+          <Icon name="arrow-up-right" />
+        </a>
+      </div>
+      <div class="skill-board">
+        {SKILL_GROUPS.map((group) => (
+          <div class="skill-row reveal">
+            <span class="skill-label">{group.label}</span>
+            <div class="skill-items">
+              {group.items.map((item) => <span class="skill-pill">{item}</span>)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--rule">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">Education & languages</span>
+          <h2 class="section-title">The formal bits.</h2>
+        </div>
+      </div>
+
+      <div class="education-grid">
+        {EDUCATION.map((item) => (
+          <article class="education-card reveal">
+            <small>{item.period} · {item.location}</small>
+            <strong>{item.degree}</strong>
+            <span>{item.school}</span>
+          </article>
+        ))}
+      </div>
+
+      <div class="skill-row reveal" style="margin-top: 0.8rem; border-bottom: 0">
+        <span class="skill-label">Languages</span>
+        <div class="skill-items">
+          {LANGUAGES.map((language) => (
+            <span class="skill-pill">{language.name} · {language.level}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="Say hello"
+    title="If the problem is cross-functional, we should talk."
+    body="I’m open to full-time roles and freelance projects where the work spans product, backend, integrations, and delivery."
+  />
+</BaseLayout>

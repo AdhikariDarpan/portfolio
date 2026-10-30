@@ -1,0 +1,46 @@
+---
+title: "Dynamic Data Agent"
+seoTitle: "Natural Language SQL Agent"
+description: "An in-progress SQL agent that ingests a raw database or .sql file, infers structure, and answers natural-language questions against it."
+summary: "An in-progress SQL agent that ingests a raw database or .sql file, infers structure, and answers natural-language questions against it."
+category: "ai"
+status: "in-progress"
+year: "2026"
+role: "Designer & Developer"
+timeline: "In development"
+stack: ["Python", "SQLAlchemy", "LLM", "SQLite", "MySQL", "Flask"]
+tags: ["LLM", "SQL", "Agents", "Schema Inference", "Data"]
+private: true
+order: 9
+accent: "#5eead4"
+highlights:
+  - "Working on a pipeline that accepts a raw database or SQL dump, infers relationships, and builds a queryable schema context."
+  - "Exploring guardrails for generated SQL, including schema grounding, query validation, and bounded execution."
+  - "Designed around real, messy schemas rather than a hand-curated demo database."
+capabilities:
+  - "Schema ingestion and relationship inference"
+  - "Natural-language to SQL planning"
+  - "Query validation and execution boundaries"
+  - "Result summarization"
+  - "Support for SQLite and MySQL sources"
+  - "Explainable query traces"
+metrics:
+  - value: "Raw"
+    label: "database input"
+  - value: "SQL"
+    label: "agent output"
+  - value: "Guardrails"
+    label: "execution model"
+---
+
+## The hard part is the schema
+
+Most text-to-SQL demos assume a small, clean database with obvious column names. Dynamic Data Agent is being built for the opposite situation: an unfamiliar database dump where relationships are implied, naming is inconsistent, and nobody has time to write a semantic layer by hand.
+
+The agent ingests the schema, infers relationships, and builds the context needed to translate a question into a query. The work is as much about validation as generation: deciding what the model is allowed to assume, how to detect an unsafe query, and when to ask for clarification.
+
+## A deliberate work in progress
+
+This project is still in development. The goal is not an unbounded agent that can execute anything. It is a bounded assistant that can explain what it found, show the query it wants to run, and return a result that a user can verify.
+
+The private case study will be updated as the execution model and interface mature. The current implementation is a Python backend with SQLAlchemy and support for SQLite and MySQL sources.

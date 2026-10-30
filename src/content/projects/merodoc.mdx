@@ -1,0 +1,51 @@
+---
+title: "MeroDoc"
+seoTitle: "Nepali Writing Workspace with Speech to Text"
+description: "A Nepali-first writing workspace with document editing, speech-to-text, spelling assistance, and offline PWA support."
+summary: "A Nepali-first writing workspace with document editing, speech-to-text, spelling assistance, and offline PWA support."
+outcome: "Nepali-first offline document toolkit distributed as a PWA."
+category: "product"
+status: "live"
+year: "2024"
+role: "Designer & Developer"
+timeline: "Live product"
+stack: ["HTML", "CSS", "JavaScript", "PWA", "Web Workers", "Web Speech API"]
+tags: ["Nepali", "Writing", "PWA", "Speech", "Productivity"]
+image: "/images/projects/doceditor.webp"
+imageAlt: "MeroDoc document editor interface"
+live: "https://merodoc.darpanadhikari.com.np"
+featured: true
+order: 4
+accent: "#5eead4"
+highlights:
+  - "Built a browser-based editor focused on Nepali writing rather than translating an English-first workflow."
+  - "Combined speech-to-text, Nepali spelling suggestions, a dictionary, and document export in one offline-capable PWA."
+  - "Moved heavier processing into Web Workers so the editing experience stayed responsive."
+capabilities:
+  - "Nepali spelling checker and suggestions"
+  - "Speech-to-text input"
+  - "Integrated Nepali dictionary"
+  - "Offline-ready PWA"
+  - "Document editing and formatting"
+  - "Background processing with Web Workers"
+  - "Email and export workflows"
+metrics:
+  - value: "Nepali"
+    label: "first language"
+  - value: "PWA"
+    label: "offline support"
+  - value: "Live"
+    label: "public product"
+---
+
+## Writing should feel native
+
+MeroDoc started from a simple frustration: most writing tools treat Nepali as an afterthought. The product is built around the language, with spelling assistance, a dictionary, and voice input that are part of the writing flow rather than separate utilities.
+
+The editor runs in the browser and is designed to work offline. That constraint shaped the architecture: local storage, service-worker caching, and background processing are part of the product, not optional extras.
+
+## Keeping the interaction light
+
+Speech recognition and dictionary lookups can easily make a text editor feel sluggish. Heavy work is moved into Web Workers, while the interface keeps a clear separation between writing, checking, and exporting.
+
+MeroDoc is a useful example of a small product where the value comes from many small decisions fitting together: language support, offline behavior, privacy, and a UI that does not get in the way.

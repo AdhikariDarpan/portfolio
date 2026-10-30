@@ -1,0 +1,65 @@
+---
+title: "Doc Extractor"
+seoTitle: "Invoice OCR Extraction API"
+description: "A self-contained invoice extraction API using PaddleOCR and spatial parsing to return fields, tables, and context without Tesseract, Docker, or an LLM."
+summary: "A deterministic invoice extraction pipeline built on PaddleOCR, EasyOCR fallback, OpenCV enhancement, and spatial parsing."
+outcome: "Deterministic OCR with confidence flags and no required LLM."
+category: "ai"
+status: "shipped"
+year: "2026"
+role: "Designer & Developer"
+timeline: "v3 · Rule-based pipeline"
+stack:
+  ["Python", "Flask", "PaddleOCR", "EasyOCR", "OpenCV", "PyMuPDF", "RapidFuzz", "Pydantic"]
+tags: ["OCR", "Invoice Extraction", "Document AI", "PaddleOCR", "Tables", "Automation"]
+private: true
+order: 36
+accent: "#b9a5ff"
+highlights:
+  - "Built a five-stage image enhancement and OCR pipeline with PaddleOCR as the primary engine and EasyOCR as an automatic fallback for difficult scans."
+  - "Added spatial parsing that resolves labels to values by row and column relationships, with multi-table detection, label aliases, and fuzzy context queries."
+  - "Kept extraction deterministic and dependency-light: no Tesseract, Docker, or mandatory LLM, with optional model refinement disabled by default."
+decisions:
+  - title: "Deterministic core first"
+    body: "Rule-based parsing always runs. The optional LLM can fill gaps, but it cannot silently replace the deterministic result."
+  - title: "Fallback instead of a single engine"
+    body: "PaddleOCR is the primary engine and EasyOCR is the automatic fallback for difficult scans."
+  - title: "Confidence is part of the contract"
+    body: "Every response includes engine, confidence, word count, and warnings so callers can decide whether to trust it."
+capabilities:
+  - "Image enhancement and deskewing"
+  - "PaddleOCR extraction with EasyOCR fallback"
+  - "PDF input through PyMuPDF"
+  - "Single-value field extraction"
+  - "Multi-table row reconstruction"
+  - "Label alias matching"
+  - "Fuzzy context queries"
+  - "Confidence scores and warnings"
+  - "Optional LLM refinement layer"
+  - "Drag-and-drop test interface"
+metrics:
+  - value: "2"
+    label: "OCR engines"
+  - value: "5"
+    label: "preprocessing stages"
+  - value: "No"
+    label: "required LLM"
+---
+
+## Extraction without a model dependency
+
+Doc Extractor is an invoice and document extraction API designed to run from a plain Python environment. It accepts an image or PDF, applies a fixed preprocessing pipeline, reads the text, and returns structured fields and tables through a simple Flask endpoint.
+
+The primary OCR engine is PaddleOCR, with EasyOCR as a fallback when the first pass fails. That choice avoids Tesseract binaries and Docker while still giving the pipeline a second engine for difficult scans. PyMuPDF handles PDF pages directly, so no external PDF renderer is required.
+
+## Rule-based parsing for messy invoices
+
+OCR alone returns a crowd of words. The useful work happens after recognition: line grouping, spatial relationships, alias matching, and table reconstruction. The parser can find a value to the right of a label, below it, or through a fuzzy context query when the layout is less predictable.
+
+A five-stage OpenCV and Pillow pipeline improves contrast and geometry before recognition. Table headers are detected again mid-document when a new table begins, and common label variants such as `inv no`, `bill no`, `sub-total`, and `grand total` map into stable field names. Every response includes the OCR engine, confidence, word count, and warnings so a caller can decide whether to trust the result.
+
+## Optional intelligence, predictable core
+
+The rule-based extractor always runs first. An optional LLM layer can fill gaps when enabled, but it is not part of the default path and cannot silently replace the deterministic output. That makes the service easier to test, cheaper to run, and safer for documents that should not leave the local environment.
+
+The repository is private because it contains extraction logic tuned around real invoice layouts. The case study focuses on the pipeline and response contract without publishing sample documents or client data.

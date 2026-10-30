@@ -1,0 +1,48 @@
+---
+title: "Document Extraction API"
+seoTitle: "Document Extraction API with OCR and LLM"
+description: "A containerized Flask service that combines OCR, image preprocessing, and a cloud-hosted language model for structured document extraction."
+summary: "A containerized Flask service that combines OCR, image preprocessing, and a cloud-hosted language model for structured document extraction."
+outcome: "An 8-stage preprocessing pipeline delivered with Docker."
+category: "ai"
+status: "private"
+year: "2026"
+role: "Designer & Developer"
+timeline: "Internal production"
+stack: ["Python", "Flask", "Tesseract", "OpenCV", "Pillow", "Ollama Cloud", "Pydantic", "Docker"]
+tags: ["OCR", "Document AI", "Flask", "LLM", "Docker"]
+private: true
+order: 5
+accent: "#b9a5ff"
+highlights:
+  - "Built a document pipeline that preprocesses difficult scans, extracts text with Tesseract, and sends structured prompts to a cloud-hosted Ollama model."
+  - "Used Pydantic response models to keep extracted fields predictable for downstream systems."
+  - "Packaged the service with Docker so the same pipeline could run consistently across environments."
+capabilities:
+  - "Multi-stage image preprocessing"
+  - "Tesseract OCR extraction"
+  - "LLM-assisted field interpretation"
+  - "Structured Pydantic responses"
+  - "Configurable document prompts"
+  - "Containerized Flask API"
+  - "Error handling for low-quality scans"
+metrics:
+  - value: "8"
+    label: "preprocessing stages"
+  - value: "JSON"
+    label: "structured output"
+  - value: "Docker"
+    label: "delivery"
+---
+
+## From messy scan to usable fields
+
+Document extraction fails at the edges: skewed phone photos, uneven lighting, stamps, handwriting, and layouts that vary between branches. This service was built to make that input usable before asking a model to interpret it.
+
+The pipeline applies a sequence of OpenCV and Pillow preprocessing steps, extracts text with Tesseract, and then uses a cloud-hosted Ollama model to map the text into a requested schema. Pydantic models define the expected output so callers get a stable contract rather than free-form prose.
+
+## Designed for integration
+
+The service is a Flask API with a Docker-based delivery path. Configuration is externalized, prompts are kept explicit, and failures are returned in a form the calling application can reason about. This is intentionally a component, not a monolith: it can be dropped into an existing document workflow without dictating how that workflow is built.
+
+The project is private because it contains client-specific extraction logic. The case study documents the engineering approach without exposing prompts, endpoints, or sample documents.

@@ -1,0 +1,37 @@
+---
+title: "Dynamic Image Info Extractor"
+seoTitle: "Offline Multimodal Image Q&A Pipeline"
+description: "An offline multimodal pipeline combining OCR, vision understanding, and local language models to answer questions about images."
+summary: "An offline multimodal pipeline combining OCR, vision understanding, and local language models to answer questions about images."
+category: "ai"
+status: "private"
+year: "2025"
+role: "Designer & Developer"
+timeline: "Research build"
+stack: ["Python", "PaddleOCR", "OpenCV", "Ollama", "Qwen2.5-VL", "Qwen2.5"]
+tags: ["Multimodal", "OCR", "Local AI", "Ollama", "Computer Vision"]
+private: true
+order: 30
+accent: "#b9a5ff"
+highlights:
+  - "Combined PaddleOCR text extraction, vision-model understanding, and a text model for contextual answers."
+  - "Built the workflow to run fully offline with local Ollama models."
+  - "Supported documents, screenshots, charts, and natural images with structured output."
+capabilities:
+  - "Image preprocessing with OpenCV"
+  - "Text extraction with PaddleOCR"
+  - "Vision understanding with Qwen2.5-VL"
+  - "Reasoning with a local text model"
+  - "Dynamic prompts based on image content"
+  - "Structured summaries and insights"
+---
+
+## Ask the image, not just OCR it
+
+Extracting text is only part of understanding an image. This project combines OCR with a vision model and a text model so a user can ask a question about a screenshot, document, chart, or photo and get an answer grounded in both the text and the visual context.
+
+The workflow preprocesses the image, extracts text with PaddleOCR, runs a vision-model pass, and then uses a local language model to reason over the combined output. Everything runs through Ollama, so the pipeline can operate without sending images to an external service.
+
+## Local multimodal systems
+
+The challenge is orchestration: passing the right context between OCR, vision, and reasoning without losing the source. The output is structured so the user can see the extracted text, a summary, and the model's answer separately.

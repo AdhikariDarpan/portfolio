@@ -1,0 +1,39 @@
+---
+import Icon from "./Icon.astro";
+import type { TechnicalProof } from "../data/services";
+
+interface Props {
+  proof: TechnicalProof;
+}
+
+const { proof } = Astro.props;
+---
+
+<article class="proof-card" style={`--proof-accent: ${proof.accent}`}>
+  <span class="proof-kicker">Technical proof / {proof.project}</span>
+  <h3 class="proof-title">{proof.title}</h3>
+
+  <dl class="proof-points">
+    <div>
+      <dt>Constraint</dt>
+      <dd>{proof.constraint}</dd>
+    </div>
+    <div>
+      <dt>Decision</dt>
+      <dd>{proof.decision}</dd>
+    </div>
+    <div>
+      <dt>Result</dt>
+      <dd>{proof.result}</dd>
+    </div>
+  </dl>
+
+  <div class="chip-row proof-chips">
+    {proof.proof.map((item) => <span class="chip">{item}</span>)}
+  </div>
+
+  <a class="link-arrow" href={proof.href}>
+    Read the case study
+    <Icon name="arrow-up-right" />
+  </a>
+</article>

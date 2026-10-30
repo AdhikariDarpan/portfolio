@@ -1,0 +1,146 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import { EDUCATION, EXPERIENCE, LANGUAGES, SITE, SKILL_GROUPS } from "../data/site";
+
+const requestSubject = encodeURIComponent("Résumé request | Darpan Adhikari");
+const requestBody = encodeURIComponent(
+  "Hi Darpan,\n\nI’d like to request a role-specific résumé.\n\nRole / company:\nWhat you’d like emphasized:\n\nThanks,",
+);
+const requestHref = `mailto:${SITE.email}?subject=${requestSubject}&body=${requestBody}`;
+---
+
+<BaseLayout
+  title="Full-Stack Developer Resume Nepal"
+  description="Web résumé for Darpan Adhikari, a full-stack developer in Kathmandu, Nepal, working across web platforms, AI/OCR, mobile, desktop, and hardware integrations."
+  pageType="ProfilePage"
+>
+  <section class="section section--tight">
+    <div class="container">
+      <div class="resume-header">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">Résumé / Web version</span>
+          <h1 class="display-lg">Darpan Adhikari</h1>
+          <p class="lede" style="max-width: 34rem">
+            Full-stack developer: web, mobile, AI/ML, and backend systems. Kathmandu, Nepal.
+          </p>
+        </div>
+        <div class="resume-actions reveal reveal-delay-1">
+          <button class="btn btn--secondary" type="button" data-print>
+            <Icon name="printer" />
+            Print page
+          </button>
+          <a class="btn btn--primary" href={requestHref}>
+            Request tailored résumé
+            <Icon name="mail" />
+          </a>
+        </div>
+      </div>
+
+      <div class="resume-sheet reveal">
+        <section class="resume-block">
+          <h2>Profile</h2>
+          <p class="timeline-summary" style="max-width: none">
+            Full-stack developer with production experience across PHP, Python, JavaScript, Go, and Flutter,
+            spanning ERP systems, AI/ML pipelines, mobile apps, CLI tooling, and device integrations. Comfortable
+            owning a project end-to-end: architecture, backend, interface, integrations, deployment, and the
+            operational details that follow.
+          </p>
+          <div class="resume-inline-list">
+            <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+            <li><a href={SITE.github} target="_blank" rel="noreferrer">github.com/DarpanAdhikari</a></li>
+            <li><a href={SITE.linkedin} target="_blank" rel="noreferrer">LinkedIn</a></li>
+            <li>{SITE.location}</li>
+          </div>
+        </section>
+
+        <section class="resume-block">
+          <h2>Core skills</h2>
+          {SKILL_GROUPS.map((group) => (
+            <div class="resume-role">
+              <div class="resume-role__top">
+                <h3>{group.label}</h3>
+              </div>
+              <div class="resume-inline-list">
+                {group.items.map((item) => <li>{item}</li>)}
+              </div>
+            </div>
+          ))}
+        </section>
+
+        <section class="resume-block">
+          <h2>Professional experience</h2>
+          {EXPERIENCE.map((item) => (
+            <div class="resume-role">
+              <div class="resume-role__top">
+                <h3>{item.role}</h3>
+                <time>{item.period}</time>
+              </div>
+              <span class="resume-role__company">{item.company} · {item.location}</span>
+              <ul>
+                {item.highlights.map((highlight) => <li>{highlight}</li>)}
+              </ul>
+            </div>
+          ))}
+        </section>
+
+        <section class="resume-block">
+          <h2>Selected technical work</h2>
+          <div class="resume-role">
+            <div class="resume-role__top">
+              <h3>AI / document systems</h3>
+              <time>Ongoing</time>
+            </div>
+            <ul>
+              <li>Built OCR and computer-vision pipelines for billing and document-heavy extraction workflows.</li>
+              <li>Built a RAG support chatbot, transcription and diarization workflows, and local AI tooling.</li>
+              <li>Worked across PaddleOCR, EasyOCR, Tesseract, YOLO, OpenCV, Ollama, WhisperX, pyannote, and Docker.</li>
+            </ul>
+          </div>
+          <div class="resume-role">
+            <div class="resume-role__top">
+              <h3>Web, mobile, and desktop</h3>
+              <time>Ongoing</time>
+            </div>
+            <ul>
+              <li>Built Laravel and Django platforms for news, education, clinics, gyms, and business operations.</li>
+              <li>Built Flutter apps for billing, attendance, media, and browsing; Electron and Tauri desktop tools.</li>
+              <li>Built Go CLI tooling, npm packages, browser utilities, and hardware integrations.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="resume-block">
+          <h2>Education</h2>
+          {EDUCATION.map((item) => (
+            <div class="resume-role">
+              <div class="resume-role__top">
+                <h3>{item.degree}</h3>
+                <time>{item.period}</time>
+              </div>
+              <span class="resume-role__company">{item.school} · {item.location}</span>
+            </div>
+          ))}
+        </section>
+
+        <section class="resume-block">
+          <h2>Languages</h2>
+          <div class="resume-inline-list">
+            {LANGUAGES.map((language) => (
+              <li>{language.name} · {language.level}</li>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <p class="form-note reveal" style="margin-top: 1rem; max-width: 760px;">
+        A PDF is not published here. Use “Print page” for your own copy, or request a résumé tailored to a
+        specific role. References and detailed project documentation are available on request.
+      </p>
+    </div>
+  </section>
+
+  <script is:inline>
+    document.querySelector("[data-print]")?.addEventListener("click", () => window.print());
+  </script>
+</BaseLayout>

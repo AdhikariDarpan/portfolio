@@ -1,0 +1,71 @@
+---
+import { Code } from "astro-expressive-code/components";
+
+interface InstallBlock {
+  label: string;
+  lang: string;
+  code: string;
+}
+
+interface UsageExample {
+  title: string;
+  description?: string;
+  lang: string;
+  code: string;
+}
+
+interface Props {
+  usage: {
+    intro: string;
+    installs: InstallBlock[];
+    examples: UsageExample[];
+    notes: string[];
+  };
+}
+
+const { usage } = Astro.props;
+---
+
+<section class="case-block usage-guide" id="how-to-use" aria-labelledby="usage-heading">
+  <div class="usage-guide__head">
+    <span class="eyebrow">Quick start</span>
+    <h2 id="usage-heading">How to use</h2>
+    <p>{usage.intro}</p>
+  </div>
+
+  {
+    usage.installs.length > 0 && (
+      <div class="usage-group">
+        <h3>Install</h3>
+        <div class="usage-installs">
+          {usage.installs.map((install) => (
+            <div class="usage-install">
+              <span class="usage-label">{install.label}</span>
+              <Code code={install.code} lang={install.lang} />
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  {
+    usage.examples.map((example) => (
+      <div class="usage-group">
+        <h3>{example.title}</h3>
+        {example.description && <p>{example.description}</p>}
+        <Code code={example.code} lang={example.lang} />
+      </div>
+    ))
+  }
+
+  {
+    usage.notes.length > 0 && (
+      <ul class="usage-notes">
+        {usage.notes.map((note) => (
+          <li>{note}</li>
+        ))}
+      </ul>
+    )
+  }
+</section>

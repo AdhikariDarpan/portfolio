@@ -1,0 +1,33 @@
+---
+import { CATEGORY_LABELS, type ProjectCategory } from "../data/site";
+import { projectMark } from "../lib/utils";
+
+interface Props {
+  title: string;
+  category: Exclude<ProjectCategory, "all">;
+  accent?: string;
+  image?: string;
+  imageAlt?: string;
+  label?: string;
+}
+
+const { title, category, accent = "#c8ff5e", image, imageAlt, label } = Astro.props;
+---
+
+{
+  image ? (
+    <img
+      src={image}
+      alt={imageAlt ?? `${title} project preview`}
+      loading="lazy"
+      decoding="async"
+    />
+  ) : (
+    <div class="project-fallback" style={`--card-accent: ${accent}`} aria-hidden="true">
+      <span class="project-fallback__mark">{projectMark(title)}</span>
+      <span class="project-fallback__label">
+        {label ?? `${CATEGORY_LABELS[category]} / ${title}`}
+      </span>
+    </div>
+  )
+}

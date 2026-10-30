@@ -1,0 +1,67 @@
+---
+title: "Sajilo Invoice"
+seoTitle: "Go and React Invoice ERP System"
+description: "A full-stack invoice and ERP system with a Go API, React admin workspace, role-based permissions, inventory, purchases, and branch-aware records."
+summary: "A Go and React ERP for invoicing, inventory, purchasing, payments, and branch operations."
+outcome: "Typed Go and React ERP contract with shared authentication and branch permissions."
+category: "web"
+status: "shipped"
+year: "2026"
+role: "Full-Stack Developer"
+timeline: "Product build · API deployed"
+stack:
+  ["Go", "Gin", "MySQL", "PostgreSQL", "Docker", "JWT", "Swagger", "React", "TypeScript", "TanStack Query", "Zustand", "Tailwind CSS", "Vite"]
+tags: ["ERP", "Invoicing", "Inventory", "Purchases", "Go", "React", "Role-Based Access"]
+private: true
+order: 33
+accent: "#ff9b6a"
+highlights:
+  - "Built the Go API around handler, service, and repository layers, with JWT access and refresh tokens, bcrypt passwords, embedded migrations, idempotent seeders, and Swagger documentation."
+  - "Modeled company, branch, warehouse, user, role, product, stock, supplier, purchase, sales, payment, and fiscal-year data so the system can support multiple locations and permissions."
+  - "Built the React workspace against typed contracts generated from the backend Swagger spec, with TanStack Query caching, Zustand session state, route guards, and permission-aware UI."
+decisions:
+  - title: "Typed contract from Swagger"
+    body: "A sync script converts the Swagger snapshot to OpenAPI 3 and regenerates TypeScript types."
+  - title: "Authentication in one place"
+    body: "Concurrent 401 responses share one refresh request and retry the original calls."
+  - title: "Migrations travel with the binary"
+    body: "Embedded migrations and idempotent seeders make startup predictable across environments."
+capabilities:
+  - "Company, branch, and warehouse management"
+  - "Users, roles, and permission gates"
+  - "JWT authentication with refresh tokens"
+  - "Products, brands, categories, units, and tax groups"
+  - "Suppliers, purchases, sales, and payments"
+  - "Stock tracking and reports"
+  - "Fiscal year and payment method settings"
+  - "Embedded database migrations and seed data"
+  - "Swagger and generated TypeScript types"
+  - "Docker, GitHub Actions, and Railway deployment"
+metrics:
+  - value: "Go + React"
+    label: "full-stack build"
+  - value: "2"
+    label: "database engines"
+  - value: "JWT"
+    label: "auth model"
+---
+
+## An ERP built from the API outward
+
+Sajilo Invoice is a web-based invoice and ERP system for businesses that need more than a single invoice form. Company records sit at the top, with branches, warehouses, users, products, stock, suppliers, purchases, sales, and payments arranged around them.
+
+The backend is a Go service built with Gin and a deliberate handler, service, repository split. Business rules stay out of HTTP handlers, SQL stays in repositories, and request and response types stay separate from database models. That structure made it practical to add modules without turning the API into a collection of unrelated endpoints.
+
+## Typed frontend, shared contract
+
+The frontend is a React and TypeScript admin workspace generated against the backend's Swagger contract. A sync script converts the Swagger snapshot to OpenAPI 3 and regenerates API types, so contract changes appear as reviewable diffs instead of drifting silently.
+
+TanStack Query owns server state, Zustand holds the small amount of global session and UI state, and React Hook Form with Zod handles typed validation. An Axios interceptor keeps the token flow in one place: concurrent `401` responses share a single refresh request, retry the original calls, and clear the session if the refresh fails. Permission gates hide unavailable actions, while the API remains the authority.
+
+## Delivery and operations
+
+Database migrations are embedded into the Go binary and applied at startup, followed by idempotent seeders for roles, permissions, settings, and the first admin account. Docker Compose provides a repeatable local stack, while the production image is a multi-stage, non-root build.
+
+GitHub Actions handles checks and image delivery, Swagger documents the API, and Railway hosts the deployed backend. Backup and migration scripts cover the operational work that a demo usually leaves out.
+
+Both the API and frontend repositories are private, so this case study documents the architecture and product scope rather than exposing client data or deployment credentials.

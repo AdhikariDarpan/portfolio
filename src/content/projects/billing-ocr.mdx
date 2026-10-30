@@ -1,0 +1,47 @@
+---
+title: "Billing OCR & Reconciliation"
+seoTitle: "Billing OCR and Reconciliation"
+description: "A private computer-vision pipeline that extracts billing fields from photographed documents and reconciles uncertain values into structured records."
+summary: "A private computer-vision pipeline that extracts billing fields from photographed documents and reconciles uncertain values into structured records."
+outcome: "Low-confidence values routed to review instead of silently accepted."
+category: "ai"
+status: "private"
+year: "2025 - 2026"
+role: "Full-Stack Developer"
+timeline: "Private engagement"
+stack: ["Python", "YOLO", "OpenCV", "OCR", "Flask", "MySQL"]
+tags: ["Computer Vision", "OCR", "Billing", "Reconciliation", "Automation"]
+private: true
+order: 6
+accent: "#ff9b6a"
+highlights:
+  - "Built a region-aware extraction flow combining object detection and targeted OCR for photographed billing documents."
+  - "Added normalization, fuzzy matching, and confidence handling so uncertain values could be reviewed instead of silently accepted."
+  - "Converted extraction output into structured records for downstream reconciliation and billing workflows."
+decisions:
+  - title: "Detect before reading"
+    body: "YOLO locates the relevant regions, then OCR runs only where it matters."
+  - title: "Uncertainty is a first-class state"
+    body: "Low-confidence values are flagged for review instead of being silently accepted."
+  - title: "Normalize before reconciliation"
+    body: "Values are normalized and checked against expected relationships before downstream billing."
+capabilities:
+  - "Region detection with YOLO"
+  - "Targeted OCR on detected fields"
+  - "Image preprocessing for camera captures"
+  - "Value normalization and validation"
+  - "Fuzzy matching against expected relationships"
+  - "Review flags for low-confidence results"
+---
+
+## Where OCR alone breaks down
+
+Billing documents are not clean inputs. They are photographed at an angle, printed on faded paper, and filled with numbers that look similar. Running OCR across the whole image produces a crowd of plausible but unreliable values.
+
+This project narrows the problem with detection. A YOLO-based model locates the relevant regions, and OCR is applied only where it matters. That makes the output easier to validate and gives the pipeline a way to reject a document when the region itself cannot be found.
+
+## The reconciliation layer is the product
+
+The extractor does not exist in isolation. It is one stage in a larger billing workflow: extracted values are normalized, checked against expected relationships, and passed to reconciliation. The most valuable engineering work was in the boundaries between those stages, including confidence handling and making uncertain results visible to an operator.
+
+The implementation is private because it is part of a production client system. The case study focuses on the computer-vision and integration approach without exposing client details.

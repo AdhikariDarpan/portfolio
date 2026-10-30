@@ -1,0 +1,112 @@
+---
+title: "DRP Image SDK"
+seoTitle: "JavaScript Image SDK for Compression"
+description: "A single-call JavaScript image SDK for conversion, resizing, cropping, filtering, target-size compression, editing, and metadata."
+summary: "One JavaScript method for image conversion, compression, resizing, filtering, editing, and batch processing."
+outcome: "6 output formats with target-size compression in the browser."
+category: "open-source"
+status: "live"
+year: "2026"
+role: "Author"
+timeline: "Published on npm · v2.0.0"
+stack: ["TypeScript", "JavaScript", "Canvas API", "Web Workers", "npm"]
+tags:
+  ["Image Processing", "Compression", "Image Conversion", "SDK", "Editing", "npm", "Open Source"]
+image: "/images/projects/image-sdk.jpeg"
+imageAlt: "DRP Image SDK image editing and compression interface"
+repo: "https://github.com/DarpanAdhikari/image-conversions"
+packageUrl: "https://www.npmjs.com/package/drp-imagesdk"
+usage:
+  intro: "Install the SDK, pass a supported image source, and include only the options you need. DRP builds the processing pipeline in a fixed order."
+  installs:
+    - label: "npm"
+      lang: "bash"
+      code: |
+        npm install drp-imagesdk
+    - label: "CDN (no build step)"
+      lang: "html"
+      code: |
+        <script src="https://unpkg.com/drp-imagesdk@latest/dist/image-sdk.min.js"></script>
+  examples:
+    - title: "Process and compress an image"
+      description: "The source can be a File, Blob, URL string, image element, or canvas."
+      lang: "ts"
+      code: |
+        import { DRP } from "drp-imagesdk";
+
+        const result = await DRP(file, {
+          format: "webp",
+          width: 800,
+          targetSize: "500KB",
+        });
+
+        const url = URL.createObjectURL(result.blob);
+    - title: "Preview before compressing"
+      description: "Estimate the output size before running the full compression pass."
+      lang: "ts"
+      code: |
+        import { DRP, getCompressionPreview } from "drp-imagesdk";
+
+        const preview = await getCompressionPreview(file, "webp");
+        console.log(preview.estimatedSavingsPercent);
+
+        const result = await DRP(file, {
+          format: "webp",
+          targetSize: "200KB",
+        });
+    - title: "Process a batch"
+      description: "Apply one operation across multiple files and inspect each result."
+      lang: "ts"
+      code: |
+        import { DRP } from "drp-imagesdk";
+
+        const results = await DRP.batch(files, {
+          type: "resize",
+          options: { width: 800 },
+        });
+  notes:
+    - "Use targetSize when you need a file-size budget, or quality when you want direct control."
+    - "No React or bundler is required. The CDN build exposes the SDK as window.DRP."
+    - "Canvas and worker support depend on the browser."
+order: 34
+accent: "#7dd3fc"
+highlights:
+  - "Published a single-method SDK that accepts any combination of format, resize, crop, rotate, flip, filter, adjustment, and metadata options."
+  - "Built target-size compression around a binary search over quality, so callers can ask for a file-size budget instead of tuning quality by hand."
+  - "Added an editor, batch processing, EXIF handling, social export presets, modular imports, and typed ESM/UMD builds."
+capabilities:
+  - "Image conversion across six formats"
+  - "Resize, crop, rotate, and flip"
+  - "Target-size compression"
+  - "Color and tone adjustments"
+  - "Ten filter presets"
+  - "Non-destructive editor with undo/redo"
+  - "Text, shape, and image layers"
+  - "Batch processing"
+  - "EXIF and metadata handling"
+  - "Social media export presets"
+  - "TypeScript types and modular imports"
+metrics:
+  - value: "1"
+    label: "entry method"
+  - value: "6"
+    label: "output formats"
+  - value: "10"
+    label: "filter presets"
+---
+
+## One method instead of twenty
+
+Most image libraries expose a separate function for every operation. DRP keeps one entry point: pass a source and any combination of options, and the SDK builds the correct pipeline. Resize, crop, rotate, flip, adjust, filter, encode, and metadata handling happen in a defined order without the caller having to assemble it.
+
+The source can be a `File`, `Blob`, URL, image element, or canvas. The result is a blob plus the output dimensions, format, quality, and size. That makes the SDK useful in upload flows, editors, and browser tools without tying it to a framework.
+
+## Compression as a budget
+
+`targetSize: "500KB"` is the idea that shaped the package. Instead of exposing only a raw quality slider, the compressor searches across quality levels to land inside a requested file-size budget. Presets for web, email, print, and thumbnails cover the common cases, while a preview API estimates savings before the expensive work begins.
+
+The editor adds non-destructive crop, resize, transform, adjustment, filter, and layer operations with undo and redo. A separate batch API applies one operation across a list of files, and export presets map directly to common social-platform dimensions.
+
+## Built to be dropped in
+
+The package ships typed ESM and UMD builds, modular imports for tree-shaking, and a CDN bundle that exposes `window.DRP`. It works in modern browsers, including worker-backed processing where the platform supports it, and keeps the API consistent whether the caller needs one image or a batch.

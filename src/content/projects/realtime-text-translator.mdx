@@ -1,0 +1,35 @@
+---
+title: "Realtime Text Translator"
+seoTitle: "Realtime Multilingual Text Translator"
+description: "A Python translation tool using mBART-50 and transformer pipelines for fast multilingual text-to-text translation."
+summary: "A Python translation tool using mBART-50 and transformer pipelines for fast multilingual text-to-text translation."
+category: "ai"
+status: "shipped"
+year: "2025"
+role: "Designer & Developer"
+timeline: "Research build"
+stack: ["Python", "Transformers", "mBART-50", "Hugging Face", "NLP"]
+tags: ["Translation", "NLP", "Multilingual", "Transformers", "Python"]
+order: 31
+accent: "#5eead4"
+highlights:
+  - "Built a translation workflow around Facebook's mBART-large-50 many-to-many model."
+  - "Supported bidirectional translation across a wide range of languages with batch and streaming-style usage."
+  - "Kept the interface small enough to embed in chat, content, or localization workflows."
+capabilities:
+  - "Many-to-many text translation"
+  - "Batch translation"
+  - "Streaming-style interaction"
+  - "Model and pipeline configuration"
+  - "Lightweight Python API"
+---
+
+## Translation as a pipeline
+
+This project uses transformer models for multilingual text translation, with mBART-50 as the primary many-to-many model and optional text-to-text pipelines for comparison. The focus was on a clean Python interface that could be reused across applications.
+
+Bidirectional translation is handled through language tokens and model configuration rather than a separate model per language pair. That keeps the system compact and makes it easier to experiment with new directions.
+
+## Practical constraints
+
+Large translation models need memory and time. The implementation supports batch processing and exposes the model choice rather than pretending latency does not exist. It is a useful foundation for localization tooling and chat translation, not a claim of perfect translation quality.

@@ -1,0 +1,188 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Icon from "../components/Icon.astro";
+import ProcessSteps from "../components/ProcessSteps.astro";
+import ServiceOfferCard from "../components/ServiceOfferCard.astro";
+import {
+  ENGAGEMENT_MODELS,
+  PROCESS_STEPS,
+  SERVICE_FAQS,
+  SERVICE_OFFERS,
+} from "../data/services";
+import { SITE } from "../data/site";
+
+const serviceJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Full-stack development services",
+  serviceType: SERVICE_OFFERS.map((offer) => offer.title),
+  description:
+    "Full-stack development services for AI document automation, internal web platforms, device integrations, and cross-platform products.",
+  url: new URL("/services/", SITE.url).href,
+  provider: { "@id": `${SITE.url}/#person` },
+  areaServed: { "@type": "Place", name: "Worldwide" },
+  availableLanguage: ["English", "Nepali"],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Development services",
+    itemListElement: SERVICE_OFFERS.map((offer, index) => ({
+      "@type": "Offer",
+      position: index + 1,
+      itemOffered: {
+        "@type": "Service",
+        name: offer.title,
+        description: offer.summary,
+        url: new URL(`/services/#${offer.slug}`, SITE.url).href,
+      },
+    })),
+  },
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: SERVICE_FAQS.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
+    },
+  })),
+};
+---
+
+<BaseLayout
+  title="Full-Stack Development Services"
+  description="Hire Darpan Adhikari for AI document automation, internal web platforms, device integrations, and cross-platform products from Kathmandu, Nepal."
+  pageType="CollectionPage"
+  jsonLd={[serviceJsonLd, faqJsonLd]}
+>
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">Services / Full-stack delivery</span>
+          <h1 class="display-xl text-balance">Hire one developer for the whole build.</h1>
+        </div>
+        <p class="lede reveal reveal-delay-1" style="max-width: 28rem">
+          I handle the architecture, implementation, deployment, and handover for systems that have to work
+          outside a demo. You get direct access to the person doing the work.
+        </p>
+      </div>
+
+      <div class="hero-actions reveal" style="margin-top: 1.5rem">
+        <a class="btn btn--primary" href="/contact/">
+          Start a project
+          <Icon name="arrow-up-right" />
+        </a>
+        <a class="btn btn--secondary" href="/projects/">
+          See selected work
+          <Icon name="arrow-right" />
+        </a>
+      </div>
+
+      <div class="panel reveal" style="margin-top: 1.5rem; padding: 1.1rem 1.2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+        <p class="mono" style="color: var(--muted); max-width: 50rem;">
+          Based in {SITE.location}. Available for freelance projects, audits, and full-time roles.
+        </p>
+        <span class="status-pill">
+          <span class="status-dot"></span>
+          {SITE.availability}
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--rule" id="offers">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">What I can build</span>
+          <h2 class="section-title text-balance">Start with the problem, not the stack.</h2>
+        </div>
+        <p class="lede reveal reveal-delay-1" style="max-width: 27rem">
+          Four kinds of work where I am most useful. Each offer includes the constraints it fits and what you
+          actually receive.
+        </p>
+      </div>
+
+      <div class="offer-grid">
+        {SERVICE_OFFERS.map((offer) => <ServiceOfferCard offer={offer} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">Process</span>
+          <h2 class="section-title text-balance">A short path from problem to working system.</h2>
+        </div>
+        <p class="lede reveal reveal-delay-1" style="max-width: 27rem">
+          You work directly with me from scope through handover. No account layer, no handoff gap.
+        </p>
+      </div>
+
+      <ProcessSteps steps={PROCESS_STEPS} />
+    </div>
+  </section>
+
+  <section class="section section--rule" id="engagement">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">Engagement models</span>
+          <h2 class="section-title text-balance">Ways to work together.</h2>
+        </div>
+        <p class="lede reveal reveal-delay-1" style="max-width: 27rem">
+          The right structure depends on how clear the scope is and how much of the system already exists.
+        </p>
+      </div>
+
+      <div class="principle-grid">
+        {ENGAGEMENT_MODELS.map((model) => (
+          <article class="principle reveal">
+            <h3>{model.title}</h3>
+            <p>{model.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">Common questions</span>
+          <h2 class="section-title text-balance">Before we start.</h2>
+        </div>
+        <p class="lede reveal reveal-delay-1" style="max-width: 27rem">
+          If your question is not here, send it with the project context. I reply within one business day.
+        </p>
+      </div>
+
+      <div class="faq-list reveal">
+        {SERVICE_FAQS.map((faq) => (
+          <details class="faq-item">
+            <summary>{faq.question}</summary>
+            <p>{faq.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="Next step"
+    title="Tell me what needs to work."
+    body="Share the workflow, the constraint, and what a good outcome looks like. I reply within one business day."
+    primaryLabel="Start a project"
+    secondaryLabel="See selected work"
+    secondaryHref="/projects/"
+    secondaryIcon="arrow-right"
+  />
+</BaseLayout>

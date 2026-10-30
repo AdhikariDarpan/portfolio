@@ -1,0 +1,57 @@
+---
+import Icon from "./Icon.astro";
+import type { ServiceOffer } from "../data/services";
+
+interface Props {
+  offer: ServiceOffer;
+  compact?: boolean;
+}
+
+const { offer, compact = false } = Astro.props;
+---
+
+<article
+  class:list={["offer-card", { "offer-card--compact": compact }]}
+  id={compact ? undefined : offer.slug}
+  style={`--offer-accent: ${offer.accent}`}
+>
+  <div class="offer-top">
+    <span class="offer-number">{offer.number}</span>
+    <span class="offer-line" aria-hidden="true"></span>
+  </div>
+
+  <h3 class="offer-title">{offer.title}</h3>
+  <p class="offer-summary">{offer.summary}</p>
+
+  {
+    compact ? (
+      <ul class="offer-list offer-list--compact">
+        <li>{offer.fit[0]}</li>
+      </ul>
+    ) : (
+      <div class="offer-detail-grid">
+        <div>
+          <h4>Good fit if</h4>
+          <ul class="offer-list">
+            {offer.fit.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+        <div>
+          <h4>You get</h4>
+          <ul class="offer-list">
+            {offer.deliverables.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      </div>
+    )
+  }
+
+  <div class="chip-row">
+    {offer.tags.map((tag) => <span class="chip">{tag}</span>)}
+  </div>
+
+  <a class="link-arrow" href={compact ? `/services/#${offer.slug}` : "/contact/"}>
+    {compact ? "See the service" : "Discuss this offer"}
+    <Icon name="arrow-up-right" />
+  </a>
+</article>

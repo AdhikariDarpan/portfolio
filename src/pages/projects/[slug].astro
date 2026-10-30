@@ -1,0 +1,320 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import ProjectCover from "../../components/ProjectCover.astro";
+import UsageGuide from "../../components/UsageGuide.astro";
+import Icon from "../../components/Icon.astro";
+import { CATEGORY_LABELS, SITE, STATUS_LABELS } from "../../data/site";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects", ({ data }) => !data.draft);
+  return projects.map((project) => ({
+    params: { slug: project.id.replace(/\.mdx$/, "") },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const data = project.data;
+const cleanId = project.id.replace(/\.mdx$/, "");
+const categoryLabel = CATEGORY_LABELS[data.category];
+const statusLabel = STATUS_LABELS[data.status];
+
+const allProjects = await getCollection("projects", ({ data }) => !data.draft);
+const ordered = allProjects.sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
+const currentIndex = ordered.findIndex((item) => item.id === project.id);
+const nextProject = ordered[(currentIndex + 1) % ordered.length];
+const related = ordered
+  .filter((item) => item.data.category === data.category && item.id !== project.id)
+  .slice(0, 3);
+
+const seoTitle = data.seoTitle ?? data.title;
+const projectImage = data.image ? new URL(data.image, SITE.url).href : new URL(SITE.ogImage, SITE.url).href;
+
+const links = [
+  data.live ? { href: data.live, label: "View live site", icon: "external" as const } : null,
+  data.repo ? { href: data.repo, label: "View repository", icon: "github" as const } : null,
+  data.packageUrl ? { href: data.packageUrl, label: "View package", icon: "external" as const } : null,
+  ...data.links.map((link) => ({
+    href: link.href,
+    label: link.label,
+    icon: link.icon,
+  })),
+].filter(Boolean);
+
+const projectJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  name: data.title,
+  description: data.description,
+  url: new URL(`/projects/${cleanId}/`, SITE.url).href,
+  image: projectImage,
+  creator: { "@id": `${SITE.url}/#person` },
+  author: { "@id": `${SITE.url}/#person` },
+  dateCreated: data.year,
+  genre: categoryLabel,
+  keywords: [...data.stack, ...data.tags].join(", "),
+  inLanguage: "en",
+  isAccessibleForFree: true,
+  creativeWorkStatus: statusLabel,
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: SITE.url,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Work",
+      item: new URL("/projects/", SITE.url).href,
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: data.title,
+      item: new URL(`/projects/${cleanId}/`, SITE.url).href,
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={data.description}
+  type="article"
+  pageType="ItemPage"
+  jsonLd={[projectJsonLd, breadcrumbJsonLd]}
+>
+  <article>
+    <header class="detail-hero">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <span class="sep">/</span>
+          <a href="/projects/">Work</a>
+          <span class="sep">/</span>
+          <span aria-current="page">{data.title}</span>
+        </nav>
+
+        <div class="detail-head reveal">
+          <div class="chip-row">
+            <span class="chip chip--accent">{categoryLabel}</span>
+            <span class="chip">{statusLabel}</span>
+            {data.private && <span class="chip">Private case study</span>}
+          </div>
+          <h1 class="detail-title">{data.title}</h1>
+          <p class="detail-summary">{data.summary}</p>
+        </div>
+
+        <dl class="detail-meta reveal">
+          <div class="detail-meta__item">
+            <dt>Year</dt>
+            <dd>{data.year}</dd>
+          </div>
+          <div class="detail-meta__item">
+            <dt>Role</dt>
+            <dd>{data.role}</dd>
+          </div>
+          <div class="detail-meta__item">
+            <dt>Timeline</dt>
+            <dd>{data.timeline ?? data.year}</dd>
+          </div>
+          <div class="detail-meta__item">
+            <dt>Context</dt>
+            <dd>{data.client ?? "Independent build"}</dd>
+          </div>
+        </dl>
+
+        <div
+          class:list={["detail-cover", { "detail-cover--mobile": data.category === "mobile" }]}
+          style={`--accent: ${data.accent}`}
+        >
+          <ProjectCover
+            title={data.title}
+            category={data.category}
+            accent={data.accent}
+            image={data.image}
+            imageAlt={data.imageAlt}
+            label={`${categoryLabel} / ${data.stack.slice(0, 3).join(" · ")}`}
+          />
+        </div>
+      </div>
+    </header>
+
+    <div class="container detail-layout">
+      <div>
+        <div class="case-study">
+          {
+            data.highlights.length > 0 && (
+              <section class="case-block" aria-labelledby="scope-heading">
+                <h2 id="scope-heading">Scope and outcome</h2>
+                <div class="highlight-grid">
+                  {data.highlights.map((highlight, index) => (
+                    <div class="highlight-card">
+                      <span class="highlight-card__index">{String(index + 1).padStart(2, "0")}</span>
+                      <p>{highlight}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )
+          }
+
+          {
+            data.decisions.length > 0 && (
+              <section class="case-block" aria-labelledby="decisions-heading">
+                <h2 id="decisions-heading">Key decisions</h2>
+                <div class="highlight-grid">
+                  {data.decisions.map((decision, index) => (
+                    <article class="highlight-card highlight-card--decision">
+                      <span class="highlight-card__index">{String(index + 1).padStart(2, "0")}</span>
+                      <h3>{decision.title}</h3>
+                      <p>{decision.body}</p>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            )
+          }
+
+          <div class="prose">
+            <Content />
+          </div>
+
+          {data.usage && <UsageGuide usage={data.usage} />}
+
+          {
+            data.capabilities.length > 0 && (
+              <section class="case-block" aria-labelledby="capabilities-heading">
+                <h2 id="capabilities-heading">What the system covers</h2>
+                <ul>
+                  {data.capabilities.map((capability) => (
+                    <li>{capability}</li>
+                  ))}
+                </ul>
+              </section>
+            )
+          }
+        </div>
+
+        <a class="next-project" href={`/projects/${nextProject.id.replace(/\.mdx$/, "")}/`}>
+          <span>
+            <small>Next project</small>
+            <strong>{nextProject.data.title}</strong>
+          </span>
+          <span class="project-arrow" aria-hidden="true">
+            <Icon name="arrow-right" class="icon" />
+          </span>
+        </a>
+      </div>
+
+      <aside class="detail-aside" aria-label="Project details">
+        <div class="aside-card">
+          <span class="aside-card__label">Project index</span>
+          <div class="chip-row">
+            <span class="chip chip--accent">{statusLabel}</span>
+            <span class="chip">{data.year}</span>
+          </div>
+          <div class="aside-links">
+            {data.usage && (
+              <a href="#how-to-use">
+                How to use
+                <Icon name="arrow-right" class="icon" />
+              </a>
+            )}
+            {links.map((link) => (
+              <a href={link!.href} target="_blank" rel="noreferrer">
+                {link!.label}
+                <Icon name={link!.icon} class="icon" />
+              </a>
+            ))}
+            {links.length === 0 && (
+              <span class="aside-note">
+                <strong>Private build.</strong> Source code and operational details are not public.
+              </span>
+            )}
+          </div>
+        </div>
+
+        {data.metrics.length > 0 && (
+          <div class="aside-card">
+            <span class="aside-card__label">At a glance</span>
+            <dl class="about-facts">
+              {data.metrics.map((metric) => (
+                <div class="about-fact">
+                  <dt>{metric.label}</dt>
+                  <dd>{metric.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        )}
+
+        <div class="aside-card">
+          <span class="aside-card__label">Stack</span>
+          <div class="chip-row">
+            {data.stack.map((item) => (
+              <span class="chip">{item}</span>
+            ))}
+          </div>
+        </div>
+
+        {data.status === "in-progress" && (
+          <div class="aside-card">
+            <span class="aside-card__label">Current status</span>
+            <div class="progress-bar" aria-label="Project in progress">
+              <span></span>
+            </div>
+            <p class="aside-note">
+              This project is still being built. The case study documents the current architecture and direction.
+            </p>
+          </div>
+        )}
+
+        <div class="aside-card">
+          <span class="aside-card__label">Bring this problem to me</span>
+          <p class="aside-note" style="margin: 0">
+            Have a similar workflow, integration, or data problem? Send the constraint and I will reply within one business day.
+          </p>
+          <a class="btn btn--secondary btn--small" href="/contact/">
+            Start a project
+            <Icon name="arrow-up-right" />
+          </a>
+        </div>
+      </aside>
+    </div>
+  </article>
+
+  {
+    related.length > 0 && (
+      <section class="section section--rule">
+        <div class="container">
+          <div class="section-head">
+            <div class="section-head__copy">
+              <span class="eyebrow">More work</span>
+              <h2 class="display-md">Related projects</h2>
+            </div>
+            <a class="link-arrow" href="/projects/">
+              All work
+              <Icon name="arrow-up-right" />
+            </a>
+          </div>
+          <div class="project-grid project-grid--three">
+            {related.map((item, index) => (
+              <ProjectCard project={item} index={index} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>

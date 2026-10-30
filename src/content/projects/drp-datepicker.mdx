@@ -1,0 +1,127 @@
+---
+title: "DRP Datepicker"
+seoTitle: "Bikram Sambat Datepicker for Web and Flutter"
+description: "A dependency-free Bikram Sambat ↔ Gregorian datepicker published for the web and Flutter, with dual-calendar cells and native form integration."
+summary: "One datepicker across npm and pub.dev, showing Nepali Bikram Sambat and Gregorian dates together on every day cell."
+outcome: "A zero-runtime-dependency datepicker for custom frontends."
+category: "open-source"
+status: "live"
+year: "2026"
+role: "Author"
+timeline: "Published on npm and pub.dev"
+stack: ["TypeScript", "JavaScript", "Web Components", "Dart", "Flutter"]
+tags:
+  ["Nepali Calendar", "Bikram Sambat", "Date Picker", "Flutter", "npm", "pub.dev", "Open Source"]
+image: "/images/projects/drp-datepicker-cover.jpeg"
+imageAlt: "DRP Datepicker calendar showing Bikram Sambat and Gregorian dates together"
+repo: "https://github.com/DarpanAdhikari/date-calender"
+links:
+  - label: "npm package"
+    href: "https://www.npmjs.com/package/drp-datepicker"
+    icon: "external"
+  - label: "pub.dev package"
+    href: "https://pub.dev/packages/drp_date_picker"
+    icon: "external"
+  - label: "Flutter repository"
+    href: "https://github.com/DarpanAdhikari/drp_date_picker_flutter"
+    icon: "github"
+usage:
+  intro: "Use the web component in any page or framework, or add the Flutter package where the app needs a native mobile form. Both packages return the selected BS and AD dates together."
+  installs:
+    - label: "npm"
+      lang: "bash"
+      code: |
+        npm install drp-datepicker
+    - label: "Flutter"
+      lang: "bash"
+      code: |
+        flutter pub add drp_date_picker
+    - label: "CDN (global build)"
+      lang: "html"
+      code: |
+        <drp-datepicker id="dp"></drp-datepicker>
+        <script src="https://unpkg.com/drp-datepicker@latest/dist/drp-datepicker.global.js"></script>
+  examples:
+    - title: "Add the web component"
+      description: "Importing the package registers the custom element. The change event returns both calendar representations."
+      lang: "html"
+      code: |
+        <drp-datepicker id="dp" digits="ne"></drp-datepicker>
+
+        <script type="module">
+          import "drp-datepicker";
+
+          document.getElementById("dp").addEventListener("change", (event) => {
+            console.log("BS", event.detail.bs.formatted);
+            console.log("AD", event.detail.ad.formatted);
+          });
+        </script>
+    - title: "Convert dates without the UI"
+      description: "Use the core engine in Node, Electron, or a custom calendar interface."
+      lang: "js"
+      code: |
+        import { DrpNepaliCalendar } from "drp-datepicker/core";
+
+        const calendar = new DrpNepaliCalendar();
+        const bs = calendar.eng_to_nep(2025, 6, 10);
+        const ad = calendar.nep_to_eng(2082, 2, 27);
+
+        console.log(bs);
+        console.log(ad);
+    - title: "Use the Flutter picker"
+      description: "The Flutter package uses the same dual-calendar model and supports form validation, holidays, and typed events."
+      lang: "dart"
+      code: |
+        import "package:drp_date_picker/drp_date_picker.dart";
+
+        DrpDatePicker(
+          onChanged: (date) {
+            print("BS: ${date?.bs.iso} AD: ${date?.ad.iso}");
+          },
+        );
+  notes:
+    - "The web component works in plain HTML, React, Vue, Angular, Laravel, and Electron without a wrapper."
+    - "No React wrapper is needed. Use the CDN global build for plain HTML, Blade, or any server-rendered page."
+    - "Supported ranges are BS 2000 to 2098 and AD 1944 to 2041."
+    - "Holidays and events are developer-provided in BS format."
+order: 21
+accent: "#c8ff5e"
+highlights:
+  - "Published a dependency-free BS ↔ AD conversion engine with a standards-based web component, so the picker works in plain HTML, React, Vue, Angular, Electron, and Laravel."
+  - "Rendered both calendars in every day cell and added native form integration, keyboard navigation, ARIA announcements, theming, and Nepali or Western digits."
+  - "Shipped a parallel Flutter package with the same dual-calendar model, developer-provided holidays and events, min/max dates, validation, and zero runtime dependencies."
+capabilities:
+  - "Bikram Sambat to Gregorian conversion"
+  - "Gregorian to Bikram Sambat conversion"
+  - "Dual-calendar day cells"
+  - "Web Component with Shadow DOM"
+  - "Native form participation"
+  - "Keyboard and screen-reader support"
+  - "Flutter form validation"
+  - "Holidays and typed calendar events"
+  - "Configurable date ranges and formats"
+  - "No runtime dependencies"
+metrics:
+  - value: "2"
+    label: "calendar systems"
+  - value: "2"
+    label: "published packages"
+  - value: "0"
+    label: "runtime dependencies"
+---
+
+## One date, two calendars
+
+Nepali products often need to display and accept dates in both Bikram Sambat and the Gregorian calendar. Most datepickers make the developer choose one calendar, hide the other behind conversion utilities, and then require manual wiring into forms.
+
+DRP Datepicker treats both calendars as first-class. Every day cell shows the BS and AD dates together, a selection returns both representations, and the same conversion engine can be used without rendering a picker at all. The web package is a dependency-free Web Component; the Flutter package brings the same model to native forms.
+
+## Web and Flutter, without divergent behaviour
+
+The npm package ships a standalone conversion engine plus `<drp-datepicker>`, a form-associated custom element. It supports BS-first or AD-first modes, shared date ranges, fiscal-year helpers, month boundaries, multi-month ranges, custom formats, and theme tokens. Because it is a native element, it can be dropped into any framework without a wrapper.
+
+The Flutter package implements the same interaction model for mobile and desktop apps. It supports controlled and uncontrolled selection, holidays and typed events, disabled dates, Saturday highlighting, Devanagari digits, and validation inside a Flutter `Form`.
+
+## Small surface, careful edge cases
+
+The hard part is not drawing a calendar. It is keeping month boundaries, supported date ranges, Nepali digit formatting, form values, and accessibility behaviour consistent across two ecosystems. The packages deliberately avoid heavy date libraries so the conversion rules stay visible and testable, and both expose the core calendar engine separately from the UI for server-side or non-visual use.

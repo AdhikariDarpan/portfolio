@@ -1,0 +1,67 @@
+---
+title: "DRP Attendance Server"
+seoTitle: "ZKTeco Attendance Server in Flask"
+description: "A Flask platform that connects to a ZKTeco attendance device, syncs employees and punches, and provides dashboards, reports, exports, and a REST API."
+summary: "A Python service that bridges a local ZKTeco attendance machine to a live admin dashboard, REST API, and scheduled sync."
+outcome: "Duplicate-safe device sync with an operator-visible health dashboard."
+category: "web"
+status: "shipped"
+year: "2026"
+role: "Designer & Developer"
+timeline: "Production build"
+stack:
+  ["Python", "Flask", "SQLAlchemy", "SQLite", "Flask-SocketIO", "APScheduler", "pyzk", "Bootstrap 5", "Pandas", "OpenPyXL"]
+tags: ["ZKTeco", "Attendance", "Device Integration", "Flask", "Real-time", "Automation"]
+private: true
+order: 35
+accent: "#22d3ee"
+highlights:
+  - "Connected a local ZKTeco device over the ZK protocol and automated employee and attendance synchronization on a configurable schedule."
+  - "Built a responsive admin workspace with live device status, attendance filters, employee management, shift settings, charts, and CSV or Excel export."
+  - "Added duplicate-safe log ingestion, categorized logging, device controls, and SocketIO updates so new punches appear without a page refresh."
+decisions:
+  - title: "Duplicate-safe by constraint"
+    body: "A database uniqueness constraint on user, timestamp, and punch type prevents duplicate rows even when sync runs overlap."
+  - title: "Treat device failure as normal"
+    body: "Every device call is wrapped. Timeouts and authentication failures return structured errors instead of crashing the process."
+  - title: "Make sync state visible"
+    body: "Connection status, cached device information, and scheduler history are shown to the operator."
+capabilities:
+  - "ZKTeco device connection and status"
+  - "Employee sync from the device"
+  - "Scheduled attendance sync"
+  - "Duplicate-safe punch storage"
+  - "Dashboard counters and charts"
+  - "Employee and attendance management"
+  - "Shift configuration"
+  - "CSV and Excel exports"
+  - "Device restart, shutdown, enable, and disable controls"
+  - "Session authentication, REST API, and live API docs"
+metrics:
+  - value: "180s"
+    label: "default sync interval"
+  - value: "Live"
+    label: "dashboard updates"
+  - value: "CSV + XLSX"
+    label: "report exports"
+---
+
+## A small server for a physical device
+
+The project starts with hardware that many businesses already own: a ZKTeco biometric attendance machine on the local network. The device stores users and punches, but its built-in interface is limited and the records are difficult to use elsewhere.
+
+This Flask application bridges that device to a web workspace. It runs on a local server, or anywhere the device is reachable through routing or a VPN, and exposes the same records through a dashboard and REST API. Device settings can be changed from the interface, so routine changes do not require editing environment files and restarting the service.
+
+## Sync that tolerates real devices
+
+The scheduler runs on a configurable interval, connects to the device, pulls attendance, and stores only new records. A database uniqueness constraint on user, timestamp, and punch type prevents duplicate rows even when a sync overlaps or is triggered manually.
+
+Every device call is wrapped because timeouts, wrong addresses, and authentication failures are normal operating conditions. Failures are logged and returned as structured errors instead of crashing the process. Connection status, cached device information, and scheduler history are kept visible so an operator can tell whether the last sync actually worked.
+
+## From device records to reports
+
+The web layer consumes the internal REST API rather than talking to the device directly. That separation keeps the Flask routes thin and makes the same data available to the dashboard, exports, and external tools.
+
+Employees can be searched, edited, bulk-deleted, and synchronized back to the device. Attendance can be filtered by date range and employee, then exported to CSV or Excel. Shift rules, late-arrival charts, log categories, light and dark themes, and SocketIO updates turn raw punches into something a team can actually review.
+
+The repository is private. This case study documents the integration and operational model without exposing device addresses, credentials, or employee records.

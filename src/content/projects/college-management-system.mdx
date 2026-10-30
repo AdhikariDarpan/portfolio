@@ -1,0 +1,43 @@
+---
+title: "College Management System"
+seoTitle: "College Management System with QR Attendance"
+description: "A full college operations platform with QR attendance, automatic routine generation, role-based dashboards, fees, and results."
+summary: "A full college operations platform with QR attendance, automatic routine generation, role-based dashboards, fees, and results."
+category: "web"
+status: "shipped"
+year: "2024"
+role: "Full-Stack Developer"
+client: "Education client"
+timeline: "Delivered"
+stack: ["PHP", "Laravel", "Python", "MySQL", "QR", "eSewa", "Khalti"]
+tags: ["Education", "ERP", "Attendance", "Payments", "Scheduling"]
+image: "/images/projects/college.webp"
+imageAlt: "College management system dashboard"
+repo: "https://github.com/DarpanAdhikari/college_project"
+order: 13
+accent: "#5eead4"
+highlights:
+  - "Built role-based dashboards for students, teachers, and administrators across academic and financial workflows."
+  - "Implemented QR attendance, digital marksheets, fee tracking, and local payment gateway integration."
+  - "Used a backtracking algorithm to generate class routines instead of relying on manual scheduling."
+capabilities:
+  - "Student, teacher, and admin dashboards"
+  - "QR-based attendance"
+  - "Automatic class routine generation"
+  - "Marksheet and result management"
+  - "Fee tracking and payments"
+  - "Performance analytics"
+  - "Permission-based access control"
+---
+
+## One system, three audiences
+
+A college management system only works if it is useful to the people doing different jobs. Students need results and schedules. Teachers need attendance and marks. Administrators need fees, reporting, and oversight. This project was built around those separate workflows without splitting into three disconnected applications.
+
+The routine generator was a particularly interesting piece: class scheduling has hard constraints, teacher availability, room conflicts, and subject requirements. A backtracking approach provided a practical way to produce a valid starting schedule that staff could refine.
+
+## Payments and records
+
+Fee collection used local gateways, with transaction state reflected in the student record. Attendance, marks, and fee history were designed as related records rather than isolated screens, so a student profile could become a coherent view of progress.
+
+The public repository is available as a reference implementation. It demonstrates the combination of academic administration, scheduling logic, and payment integration in a single Laravel and Python stack.

@@ -1,0 +1,85 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectExplorer from "../../components/ProjectExplorer";
+import CtaBand from "../../components/CtaBand.astro";
+import Icon from "../../components/Icon.astro";
+import { SITE } from "../../data/site";
+
+const projects = await getCollection("projects", ({ data }) => !data.draft);
+const ordered = projects.sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
+
+const explorerProjects = ordered.map((project) => ({
+  id: project.id.replace(/\.mdx$/, ""),
+  title: project.data.title,
+  summary: project.data.summary,
+  outcome: project.data.outcome,
+  category: project.data.category,
+  status: project.data.status,
+  year: project.data.year,
+  stack: project.data.stack,
+  tags: project.data.tags,
+  image: project.data.image,
+  imageAlt: project.data.imageAlt,
+  accent: project.data.accent,
+  private: project.data.private,
+  order: project.data.order,
+}));
+
+const itemListJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Full-stack, AI, and mobile projects by Darpan Adhikari",
+  numberOfItems: ordered.length,
+  itemListElement: ordered.map((project, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: project.data.title,
+    url: new URL(`/projects/${project.id.replace(/\.mdx$/, "")}/`, SITE.url).href,
+  })),
+};
+---
+
+<BaseLayout
+  title="Full-Stack, AI, and Mobile Projects"
+  description="Selected full-stack, AI/OCR, desktop, mobile, integration, and open-source projects by Darpan Adhikari, a developer in Kathmandu, Nepal."
+  pageType="CollectionPage"
+  jsonLd={itemListJsonLd}
+>
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__copy reveal">
+          <span class="eyebrow">Portfolio / {ordered.length} projects</span>
+          <h1 class="display-xl text-balance">Work that had to run in the real world.</h1>
+        </div>
+        <div class="measure reveal reveal-delay-1">
+          <p class="lede">
+            Production platforms, AI pipelines, desktop tools, mobile apps, and small open-source utilities.
+            Filter by domain or search by the problem, stack, or name.
+          </p>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-1">
+        <ProjectExplorer projects={explorerProjects} client:load />
+      </div>
+
+      <div class="panel reveal" style="margin-top: 2rem; padding: 1.1rem 1.2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+        <p class="mono" style="color: var(--muted)">
+          Looking for something specific? The résumé groups the same experience by role and technology.
+        </p>
+        <a class="link-arrow" href="/resume/">
+          Open résumé
+          <Icon name="arrow-up-right" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="Availability"
+    title="Have a project that does not fit a template?"
+    body="I’m open to full-time roles and freelance work across AI automation, web platforms, desktop tools, mobile apps, and hardware integrations."
+  />
+</BaseLayout>

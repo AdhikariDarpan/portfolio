@@ -1,0 +1,80 @@
+---
+title: "Speech Into Text"
+seoTitle: "Browser Speech to Text npm Package"
+description: "A lightweight npm package for real-time speech-to-text in the browser using the Web Speech API, with a small API and simple controls."
+summary: "A lightweight npm package for real-time speech-to-text using the browser Web Speech API."
+category: "open-source"
+status: "live"
+year: "2024"
+role: "Author"
+timeline: "Published package"
+stack: ["JavaScript", "Web Speech API", "npm"]
+tags: ["Speech", "npm", "Accessibility", "Browser API", "Open Source"]
+repo: "https://github.com/DarpanAdhikari/speech-into-text"
+packageUrl: "https://www.npmjs.com/package/speech-into-text"
+usage:
+  intro: "Add an output element and the controls you want, then initialize the package with selectors. The package handles recognition events and writes the transcript into the output element."
+  installs:
+    - label: "npm"
+      lang: "bash"
+      code: |
+        npm install speech-into-text
+    - label: "CDN (ES module)"
+      lang: "html"
+      code: |
+        <script type="module">
+          import { speechToText } from "https://unpkg.com/speech-into-text@latest/index.js";
+
+          speechToText({
+            outPut: "#outPut",
+            startBtn: "#startBtn",
+          });
+        </script>
+  examples:
+    - title: "Add the output and controls"
+      lang: "html"
+      code: |
+        <textarea id="outPut" rows="5" placeholder="Start speaking..."></textarea>
+
+        <button id="startBtn">Start</button>
+        <button id="stopBtn">Stop</button>
+        <select id="langSelection"></select>
+    - title: "Initialize speech recognition"
+      lang: "js"
+      code: |
+        import { speechToText } from "speech-into-text";
+
+        await speechToText({
+          outPut: "#outPut",
+          startBtn: "#startBtn",
+          stopBtn: "#stopBtn",
+          langSelection: "#langSelection",
+        });
+  notes:
+    - "outPut can be a textarea or another HTML element."
+    - "Pass a language code such as ne-NP instead of a selector to lock the language."
+    - "Requires HTTPS and a browser with SpeechRecognition support, typically Chrome or Edge."
+    - "Use the CDN module in plain HTML when you do not want npm, React, or a bundler."
+order: 26
+accent: "#c8ff5e"
+highlights:
+  - "Published a small npm package for adding speech recognition to browser forms and notes."
+  - "Added start, stop, continuous listening, language, and recognition settings."
+  - "Kept the API minimal by leaning on the Web Speech API instead of bundling a large model."
+capabilities:
+  - "Real-time speech-to-text"
+  - "Multiple language settings"
+  - "Start and stop controls"
+  - "Continuous listening"
+  - "Framework-agnostic JavaScript API"
+---
+
+## A small primitive, packaged well
+
+Speech Into Text is a deliberately small package. It wraps browser speech recognition in a predictable API so a developer can add voice input to a note field or form without building the event handling from scratch.
+
+The package supports language selection, continuous listening, and explicit start/stop control. It works with the browser's Web Speech API, which keeps the install light and the integration direct.
+
+## Know the boundary
+
+Browser speech recognition depends on the browser and its underlying service. The package is useful precisely because it does not pretend otherwise: it exposes the controls and events developers need to handle that reality.

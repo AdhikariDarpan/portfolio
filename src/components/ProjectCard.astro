@@ -1,0 +1,72 @@
+---
+import { CATEGORY_LABELS, STATUS_LABELS, type ProjectCategory } from "../data/site";
+import ProjectCover from "./ProjectCover.astro";
+import Icon from "./Icon.astro";
+
+interface Props {
+  project: {
+    id: string;
+    data: {
+      title: string;
+      summary: string;
+      outcome?: string;
+      category: Exclude<ProjectCategory, "all">;
+      status: keyof typeof STATUS_LABELS;
+      year: string;
+      stack: string[];
+      tags: string[];
+      image?: string;
+      imageAlt?: string;
+      accent: string;
+      featured: boolean;
+      private: boolean;
+      order: number;
+    };
+  };
+  index?: number;
+  featured?: boolean;
+}
+
+const { project, index = 0, featured = false } = Astro.props;
+const { data } = project;
+const isMobile = data.category === "mobile";
+const statusLabel = STATUS_LABELS[data.status];
+---
+
+<a
+  href={`/projects/${project.id.replace(/\.mdx$/, "")}/`}
+  class:list={["project-card", { "project-card--featured": featured }]}
+  style={`--card-accent: ${data.accent}`}
+>
+  <div class:list={["project-media", { "project-media--mobile": isMobile }]}>
+    <ProjectCover
+      title={data.title}
+      category={data.category}
+      accent={data.accent}
+      image={data.image}
+      imageAlt={data.imageAlt}
+    />
+    <div class="project-media__top">
+      <span class="project-badge">{CATEGORY_LABELS[data.category]}</span>
+      <span class="project-number">{String(index + 1).padStart(2, "0")}</span>
+    </div>
+  </div>
+
+  <div class="project-body">
+    <div class="project-kicker">
+      <span>{data.year}</span>
+      <span>{statusLabel}</span>
+    </div>
+    <h3 class="project-title">{data.title}</h3>
+    <p class="project-summary">{data.summary}</p>
+    {data.outcome && <p class="project-outcome">{data.outcome}</p>}
+    <div class="project-footer">
+      <div class="chip-row">
+        {data.stack.slice(0, 3).map((item) => <span class="chip">{item}</span>)}
+      </div>
+      <span class="project-arrow" aria-hidden="true">
+        <Icon name="arrow-up-right" class="icon" />
+      </span>
+    </div>
+  </div>
+</a>

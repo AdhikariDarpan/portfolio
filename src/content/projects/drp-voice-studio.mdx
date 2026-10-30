@@ -1,0 +1,44 @@
+---
+title: "DRP Voice Studio"
+seoTitle: "Voice Cloning and Speech Generation"
+description: "An in-progress voice cloning and speech generation platform for training a model on a speaker's own audio."
+summary: "An in-progress voice cloning and speech generation platform for training a model on a speaker's own audio."
+category: "ai"
+status: "in-progress"
+year: "2026"
+role: "Designer & Developer"
+timeline: "In development"
+stack: ["Python", "PyTorch", "FFmpeg", "librosa", "torchaudio", "soundfile"]
+tags: ["Voice Cloning", "Audio", "Speech", "PyTorch", "In Progress"]
+private: true
+order: 10
+accent: "#b9a5ff"
+highlights:
+  - "Building an audio workflow for dataset preparation, training, and speech generation from a user's own recordings."
+  - "Using FFmpeg, librosa, and torchaudio for normalization, segmentation, and feature preparation."
+  - "Designing around consent and clear ownership of the voice data used to train a model."
+capabilities:
+  - "Audio upload and preprocessing"
+  - "Dataset segmentation and normalization"
+  - "Voice model training workflow"
+  - "Text-to-speech generation"
+  - "Speaker-specific model storage"
+  - "Consent-aware project boundaries"
+metrics:
+  - value: "Own voice"
+    label: "training source"
+  - value: "Audio"
+    label: "processing pipeline"
+  - value: "In progress"
+    label: "current state"
+---
+
+## Voice as a personal model
+
+DRP Voice Studio is an in-progress platform for training a voice model on a speaker's own audio and using it to generate speech. The technical problem spans data preparation, model training, audio quality, and inference, but the product problem is equally important: voice data is personal, and the system should make ownership and consent explicit.
+
+The pipeline uses FFmpeg, librosa, and torchaudio to normalize and segment source recordings before training. A Flask-based backend coordinates jobs, while the interface keeps the workflow understandable for someone who is not an audio engineer.
+
+## Still being built
+
+The project is not presented as a finished product. The training and generation pipeline is the current focus, followed by quality controls and a reviewable output workflow. The private case study documents the intended system and the decisions being made along the way.

@@ -1,0 +1,43 @@
+---
+title: "Dental Clinic Platform"
+seoTitle: "Django Dental Clinic Management Platform"
+description: "A Django clinic management platform for appointments, doctor assignment, prescriptions, patient records, and payment-gated reports."
+summary: "A Django clinic management platform for appointments, doctor assignment, prescriptions, patient records, and payment-gated reports."
+category: "web"
+status: "shipped"
+year: "2025"
+role: "Full-Stack Developer"
+client: "Dental clinic"
+timeline: "Delivered"
+stack: ["Django", "Python", "MySQL", "Email", "Payments", "Dashboard"]
+tags: ["Healthcare", "Appointments", "Payments", "Django", "Reports"]
+image: "/images/projects/dental-care-index.webp"
+imageAlt: "Dental clinic management dashboard"
+repo: "https://github.com/DarpanAdhikari/dental-care-django"
+order: 14
+accent: "#5eead4"
+highlights:
+  - "Built patient, doctor, and administrator workflows around appointments, prescriptions, and treatment history."
+  - "Added availability-aware doctor assignment and email notifications for appointment updates."
+  - "Implemented payment-gated access to reports and a structured patient history view."
+capabilities:
+  - "Online appointment booking"
+  - "Availability-aware doctor assignment"
+  - "Digital prescriptions"
+  - "Patient history and treatment tracking"
+  - "Email notifications"
+  - "Payment-gated reports"
+  - "Role-based dashboards"
+---
+
+## A clinic day, modeled honestly
+
+The platform was designed around the actual sequence of a clinic visit: book an appointment, assign an available doctor, record the consultation, issue a prescription, and make any paid reports accessible to the patient.
+
+Django provided the structure for those related records and permissions. The interface separates the concerns by role while keeping the underlying patient history connected.
+
+## Payments with a purpose
+
+Payment integration was not added as an isolated checkout. It controls access to specific reports, which meant the transaction state had to be trustworthy and visible in both the patient and administrative views. Email notifications close the loop by giving patients a clear next step after booking or payment.
+
+The public repository contains the reference implementation of the platform.

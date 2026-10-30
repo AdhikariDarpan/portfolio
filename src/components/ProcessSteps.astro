@@ -1,0 +1,24 @@
+---
+interface Props {
+  steps: ReadonlyArray<{
+    number: string;
+    title: string;
+    body: string;
+  }>;
+  compact?: boolean;
+}
+
+const { steps, compact = false } = Astro.props;
+---
+
+<div class:list={["process-grid", { "process-grid--compact": compact }]}>
+  {
+    steps.map((step) => (
+      <article class="process-step">
+        <span class="process-step__number">{step.number}</span>
+        <h3>{step.title}</h3>
+        <p>{step.body}</p>
+      </article>
+    ))
+  }
+</div>

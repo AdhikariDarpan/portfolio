@@ -1,0 +1,22 @@
+{
+  "name": "Darpan Adhikari | Full-Stack Developer",
+  "short_name": "Darpan Adhikari",
+  "description": "Portfolio of Darpan Adhikari, a full-stack developer building web platforms, AI systems, and cross-platform products.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07090b",
+  "theme_color": "#07090b",
+  "icons": [
+    {
+      "src": "/images/logo.webp",
+      "sizes": "1200x1200",
+      "type": "image/webp",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/logo.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}

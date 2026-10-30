@@ -1,0 +1,53 @@
+---
+title: "DRP Transcribe"
+seoTitle: "Transcription and Speaker Diarization Pipeline"
+description: "A GPU-backed transcription and captioning pipeline with speaker diarization, translation, and SRT/VTT export."
+summary: "A GPU-backed transcription and captioning pipeline with speaker diarization, translation, and clean caption exports."
+outcome: "Async GPU transcription pipeline with progress tracking and download-ready output."
+category: "ai"
+status: "in-progress"
+year: "2026"
+role: "Designer & Developer"
+timeline: "In development"
+stack: ["Python", "Flask", "Celery", "Redis", "PostgreSQL", "WhisperX", "pyannote", "NLLB-200", "Docker"]
+tags: ["Speech", "Transcription", "Diarization", "Translation", "GPU"]
+featured: true
+private: true
+order: 2
+accent: "#b9a5ff"
+highlights:
+  - "Built an asynchronous GPU pipeline around faster-whisper and WhisperX for word-level transcription and speaker diarization."
+  - "Added multilingual translation paths with NLLB-200 and optional provider fallbacks, plus SRT, VTT, and text exports."
+  - "Used Celery, Redis, and PostgreSQL to keep long-running media jobs observable and separate from the web request lifecycle."
+capabilities:
+  - "Word-level transcription with timestamps"
+  - "Speaker diarization with pyannote"
+  - "Multilingual translation paths"
+  - "SRT, VTT, and plain-text export"
+  - "Asynchronous job queue and progress tracking"
+  - "GPU-aware Docker deployment"
+  - "Upload, review, and download workflow"
+metrics:
+  - value: "3"
+    label: "caption formats"
+  - value: "GPU"
+    label: "processing target"
+  - value: "Async"
+    label: "job pipeline"
+---
+
+## The problem with long media jobs
+
+Transcription looks like a single API call until the input is a long recording, multiple speakers overlap, and the output needs to be both readable and usable in an editing tool. DRP Transcribe is built around that reality: upload a media file, run the expensive work outside the request cycle, then return a transcript that can be reviewed and exported.
+
+The pipeline uses faster-whisper and WhisperX for recognition and alignment, with pyannote for speaker separation. Celery workers handle the long-running stages while Redis and PostgreSQL track job state.
+
+## More than a transcript
+
+The system treats transcription, diarization, and translation as separate but connected stages. That makes it possible to improve one part without destabilizing the others, and it allows the output to be rendered as plain text, SRT, or VTT depending on what the user needs next.
+
+Translation is handled through NLLB-200 with optional provider fallbacks, so the workflow is not tied to a single external service. The interface exposes progress and failure states clearly rather than hiding a multi-minute job behind a spinner.
+
+## Current state
+
+The project is still in active development. The core pipeline, processing model, and exports are in place; the remaining work is around production hardening, review ergonomics, and deployment polish. It is presented here as a private case study, not a public repository.
