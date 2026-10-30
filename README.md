@@ -10,7 +10,7 @@ Live site: [www.darpanadhikari.com.np](https://www.darpanadhikari.com.np)
 - MDX content collections for project case studies
 - React 19 islands for project filtering and the command palette
 - GitHub Pages deployment through GitHub Actions
-- Custom domain via `public/CNAME`
+- Custom domain via `public/CNAME` (root `CNAME` kept during the legacy Pages migration)
 
 ## Local development
 
@@ -89,7 +89,7 @@ In the GitHub repository settings:
 
 1. Set **Pages → Build and deployment → Source** to **GitHub Actions**.
 2. Keep the custom domain configured as `www.darpanadhikari.com.np`.
-3. Ensure DNS points to GitHub Pages; `public/CNAME` is copied into the build.
+3. Ensure DNS points to GitHub Pages; `public/CNAME` is copied into the build. The root `CNAME` is only for the existing legacy Pages source and can be removed after switching to GitHub Actions.
 4. After the first successful deployment, enable **Enforce HTTPS** and disable the old `3d-portfolio` Pages site to avoid duplicate indexing.
 
 The workflow pins Node 22 and uses `withastro/action@v3` to install, build, and upload the static output.
