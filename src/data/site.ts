@@ -73,17 +73,20 @@ export const SKILL_GROUPS = [
 
 export const EXPERIENCE = [
   {
-    role: "Freelance Nepali Translator",
-    company: "3*Company",
+    role: "Freelance Nepali Translator & AI Data Specialist",
+    company: "Freelance / Independent",
     location: "Remote",
     period: "Sep 2026 - Present",
     summary:
-      "Translate and localize Nepali content while maintaining terminology, tone, and formatting across client workflows.",
+      "Support AI/ML language projects as a remote freelancer, combining Nepali-English localization with AI training data preparation, dataset cleaning, and output review.",
     highlights: [
-      "Localization and translation work delivered remotely.",
-      "Maintains software delivery and open-source work alongside freelance projects.",
+      "Localize Nepali and English content for AI training, evaluation, and client delivery workflows while preserving terminology, tone, and formatting.",
+      "Clean, normalize, and structure multilingual datasets for model training, including duplicate removal, label checks, and consistency reviews.",
+      "Review AI-generated Nepali and English outputs for fluency, factual fit, and cultural accuracy, then document corrections for client teams.",
+      "Prepare AI training examples and annotation guidance that help maintain consistent quality across freelance batches.",
+      "Balance remote freelance delivery with full-stack and open-source project work.",
     ],
-    stack: ["Nepali", "English", "Localization"],
+    stack: ["Nepali", "English", "Localization", "AI Training", "Data Cleaning", "Dataset QA"],
     current: true,
   },
   {
