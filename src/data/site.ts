@@ -1,10 +1,10 @@
 export const SITE = {
   name: "Darpan Adhikari",
   shortName: "Darpan",
-  title: "Full-Stack Developer in Kathmandu, Nepal",
-  tagline: "I build production systems across web, AI, mobile, and desktop.",
+  title: "Full Stack Developer in Nepal | Darpan Adhikari",
+  tagline: "Nepali full-stack software developer building production systems across web, AI, mobile, and desktop.",
   description:
-    "Darpan Adhikari is a full-stack developer in Kathmandu, Nepal, building web platforms, AI/OCR pipelines, mobile apps, desktop tools, and device integrations.",
+    "Darpan Adhikari is a Nepali full-stack developer based in Kathmandu, Nepal building scalable web platforms, AI/OCR pipelines, mobile apps, desktop tools, ERP systems, and custom software solutions.",
   url: "https://www.darpanadhikari.com.np",
   email: "darpand263@gmail.com",
   location: "Kathmandu, Nepal",
@@ -16,7 +16,7 @@ export const SITE = {
   npm: "https://www.npmjs.com/~darpan-adhikari",
   pubDev: "https://pub.dev/publishers/darpanadhikari.com.np/packages",
   portrait: "/images/professional-img.png",
-  logo: "/images/logo.webp",
+  logo: "/images/drp-whiteback-logo.png",
   ogImage: "/images/og-default.png",
 } as const;
 

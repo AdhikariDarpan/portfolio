@@ -55,7 +55,7 @@ const person = {
   name: SITE.name,
   url: SITE.url,
   image: new URL(SITE.portrait, SITE.url).href,
-  jobTitle: SITE.title,
+  jobTitle: "Full Stack Developer",
   description: SITE.description,
   email: `mailto:${SITE.email}`,
   address: {
@@ -64,8 +64,19 @@ const person = {
     addressRegion: "Bagmati",
     addressCountry: "NP",
   },
+  nationality: {
+    "@type": "Country",
+    name: "Nepal",
+  },
   sameAs: [SITE.github, SITE.linkedin, SITE.x, SITE.npm],
-  knowsAbout: SKILL_GROUPS.flatMap((group) => group.items),
+  knowsAbout: [
+    ...SKILL_GROUPS.flatMap((group) => group.items),
+    "Full Stack Development",
+    "Web Development",
+    "Software Development Nepal",
+    "AI Development",
+    "ERP Systems",
+  ],
   knowsLanguage: ["en", "ne", "hi"],
   alumniOf: [
     {
@@ -119,16 +130,18 @@ const serialize = (value: unknown) => JSON.stringify(value).replaceAll("<", "\\u
     <meta name="description" content={description} />
     <meta name="author" content={SITE.name} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#07090b" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#07090b" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f8f9fa" media="(prefers-color-scheme: light)" />
+    <meta name="color-scheme" content="dark light" />
     <meta name="format-detection" content="telephone=no" />
     <meta
       name="robots"
       content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}
     />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" href="/images/logo.ico" sizes="any" />
-    <link rel="apple-touch-icon" href="/images/logo.webp" />
+    <link rel="icon" href="/images/drp-logo.webp" type="image/webp" sizes="any" />
+    <link rel="icon" href="/images/drp-whiteback-logo.png" type="image/png" sizes="any" />
+    <link rel="apple-touch-icon" href="/images/drp-logo.webp" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
 
@@ -155,6 +168,16 @@ const serialize = (value: unknown) => JSON.stringify(value).replaceAll("<", "\\u
 
     <script is:inline>
       document.documentElement.classList.add("js");
+      (function() {
+        try {
+          const stored = localStorage.getItem("theme");
+          if (stored === "light" || stored === "dark") {
+            document.documentElement.setAttribute("data-theme", stored);
+          } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
+            document.documentElement.setAttribute("data-theme", "light");
+          }
+        } catch (e) {}
+      })();
     </script>
     {jsonLdItems.map((item) => (
       <script type="application/ld+json" set:html={serialize(item)} />

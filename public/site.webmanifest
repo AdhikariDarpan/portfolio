@@ -8,15 +8,16 @@
   "theme_color": "#07090b",
   "icons": [
     {
-      "src": "/images/logo.webp",
-      "sizes": "1200x1200",
+      "src": "/images/drp-logo.webp",
+      "sizes": "512x512",
       "type": "image/webp",
       "purpose": "any"
     },
     {
-      "src": "/images/logo.ico",
-      "sizes": "any",
-      "type": "image/x-icon"
+      "src": "/images/drp-whiteback-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
